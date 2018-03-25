@@ -5,6 +5,8 @@ namespace B18_Ex01_03
 {
     class Program
     {
+        private const string k_Space = " ";
+
         public static void Main()
         {
             int sizeToPrint;
@@ -33,7 +35,7 @@ namespace B18_Ex01_03
 
                 previousStringLength += singleLineOfStars.Length;
                 singleLineOfStars.Remove(0, i + 1);
-                singleLineOfStars.Insert(0, " ", i);
+                singleLineOfStars.Insert(0, k_Space, i);
 
                 io_triangleToPrint.Insert(previousStringLength, singleLineOfStars);
 

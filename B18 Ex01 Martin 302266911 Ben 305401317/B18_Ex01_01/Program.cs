@@ -17,11 +17,10 @@ namespace B18_Ex01_01
 
         }
 
-        private static void getInputStatistics(ref short io_decreasingSequenceCounter, ref short io_oneDigitCounter, ref short io_powerOfTwoCounter,
-                                               ref int io_totalNumberSum)
+        private static void getInputStatistics(ref short io_decreasingSequenceCounter, ref short io_oneDigitCounter, ref short io_powerOfTwoCounter, ref int io_totalNumberSum)
         {
             string userInput;
-            int binaryNumber,decimalNumber;
+            int binaryNumber, decimalNumber;
 
             for (int i = 0; i < k_NumberOfInputs; i++)
             {
@@ -32,19 +31,33 @@ namespace B18_Ex01_01
                     Console.WriteLine("Invalid Input! Try again . . .\n");
                     i--;
                     continue;
-
                 }
-
-                decimalNumber = Convert.ToInt32(userInput, 2);
-                io_decreasingSequenceCounter += isDecreasingSequence(decimalNumber);
 
                 binaryNumber = int.Parse(userInput);
                 io_oneDigitCounter += getNumberOfOnes(binaryNumber);
 
+                decimalNumber = convertBinaryToDec(binaryNumber);
+                io_decreasingSequenceCounter += isDecreasingSequence(decimalNumber);
+
                 io_powerOfTwoCounter += isPowerOfTwo(binaryNumber);
                 io_totalNumberSum += decimalNumber;
-
             }
+        }
+
+        private static int convertBinaryToDec(int binaryNumber)
+        {
+            int decimalNum = 0, currDig;
+            double currPow = 0;
+
+            while (binaryNumber != 0)
+            {
+                currDig = binaryNumber % 10;
+                decimalNum += (int)Math.Pow(2.0, currPow)*currDig;   
+                currPow ++;
+                binaryNumber /= 10;                            
+            }
+
+            return decimalNum;
         }
 
         private static void printInputStatistics(short i_oneDigitCounter, int i_totalNumberSum, short i_decreasingSequenceCounter, short i_powerOfTwoCounter)
@@ -72,7 +85,6 @@ The total average is: {6:00.00}
 
         private static short getNumberOfOnes(int i_currentNumber)
         {
-
             int currentDigit = 0;
             short  numOfOnes = 0;
             while(i_currentNumber != 0)
@@ -136,7 +148,6 @@ The total average is: {6:00.00}
                 return false;
             }
             return true;
-
         }
     }
 }
