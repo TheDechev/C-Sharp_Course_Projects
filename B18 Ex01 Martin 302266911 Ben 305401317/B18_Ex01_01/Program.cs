@@ -11,14 +11,15 @@ namespace B18_Ex01_01
         {
             int totalNumberSum = 0;
             short powerOfTwoCounter = 0, decreasingSequenceCounter = 0, oneDigitCounter = 0;
-
-            getInputStatistics(ref decreasingSequenceCounter, ref oneDigitCounter, ref powerOfTwoCounter, ref totalNumberSum);
-            printInputStatistics(oneDigitCounter, totalNumberSum, decreasingSequenceCounter, powerOfTwoCounter);
+            string theThreeNumbers = "";
+            getInputStatistics(ref decreasingSequenceCounter, ref oneDigitCounter, ref powerOfTwoCounter, ref totalNumberSum, ref theThreeNumbers);
+            printInputStatistics(oneDigitCounter, totalNumberSum, decreasingSequenceCounter, powerOfTwoCounter , theThreeNumbers);
 
         }
 
-        private static void getInputStatistics(ref short io_DecreasingSequenceCounter, ref short io_OneDigitCounter, ref short io_PowerOfTwoCounter, ref int io_TotalNumberSum)
+        private static void getInputStatistics(ref short io_DecreasingSequenceCounter, ref short io_OneDigitCounter, ref short io_PowerOfTwoCounter, ref int io_TotalNumberSum , ref string io_TheThreeNumbers)
         {
+            
             int firstNumber = 0, secondNumber = 0 , thirdNumber = 0;
             string userInput;
             int binaryNumber, decimalNumber;
@@ -39,25 +40,12 @@ namespace B18_Ex01_01
 
                 decimalNumber = convertBinaryToDec(binaryNumber);
                 io_DecreasingSequenceCounter += isDecreasingSequence(decimalNumber);
-
-                if (i == 0)
-                {
-                    firstNumber = decimalNumber;
-                }
-                else if (i == 1)
-                    {
-                    secondNumber = decimalNumber;
-                }
-                else
-                {
-                    thirdNumber = decimalNumber;
-                }
-
+                io_TheThreeNumbers += " " + decimalNumber.ToString();
+                
                 io_PowerOfTwoCounter += isPowerOfTwo(binaryNumber);
                 io_TotalNumberSum += decimalNumber;
             }
 
-            Console.WriteLine("The numbers are: " +  firstNumber + " " + secondNumber + " " + thirdNumber);
         }
 
         private static int convertBinaryToDec(int binaryNumber)
@@ -76,17 +64,18 @@ namespace B18_Ex01_01
             return decimalNum;
         }
 
-        private static void printInputStatistics(short i_OneDigitCounter, int i_TotalNumberSum, short i_DecreasingSequenceCounter, short i_PowerOfTwoCounter)
+        private static void printInputStatistics(short i_OneDigitCounter, int i_TotalNumberSum, short i_DecreasingSequenceCounter, short i_PowerOfTwoCounter, string i_TheThreeNumbers)
         {
 
             string statisticsMessage = String.Format(
-@"{0} zeroes is: {2:.00} 
+@"The numbers are: {7}
+{0} zeroes is: {2:.00} 
 {0} ones is: {3:.00}
 {1} power of two: {4}
 {1} a decreasing sequence: {5}
 The total average is: {6:00.00}
 ", "The average number of ", "Numbers that are ", (float)(k_InputSize * k_NumberOfInputs - i_OneDigitCounter) / k_NumberOfInputs, (float)i_OneDigitCounter / k_NumberOfInputs ,
- i_PowerOfTwoCounter, i_DecreasingSequenceCounter, (float)i_TotalNumberSum / k_NumberOfInputs);
+ i_PowerOfTwoCounter, i_DecreasingSequenceCounter, (float)i_TotalNumberSum / k_NumberOfInputs , i_TheThreeNumbers);
             Console.WriteLine(statisticsMessage);
         }
 
