@@ -19,6 +19,7 @@ namespace B18_Ex01_01
 
         private static void getInputStatistics(ref short io_DecreasingSequenceCounter, ref short io_OneDigitCounter, ref short io_PowerOfTwoCounter, ref int io_TotalNumberSum)
         {
+            int firstNumber = 0, secondNumber = 0 , thirdNumber = 0;
             string userInput;
             int binaryNumber, decimalNumber;
 
@@ -39,9 +40,24 @@ namespace B18_Ex01_01
                 decimalNumber = convertBinaryToDec(binaryNumber);
                 io_DecreasingSequenceCounter += isDecreasingSequence(decimalNumber);
 
+                if (i == 0)
+                {
+                    firstNumber = decimalNumber;
+                }
+                else if (i == 1)
+                    {
+                    secondNumber = decimalNumber;
+                }
+                else
+                {
+                    thirdNumber = decimalNumber;
+                }
+
                 io_PowerOfTwoCounter += isPowerOfTwo(binaryNumber);
                 io_TotalNumberSum += decimalNumber;
             }
+
+            Console.WriteLine("The numbers are: " +  firstNumber + " " + secondNumber + " " + thirdNumber);
         }
 
         private static int convertBinaryToDec(int binaryNumber)
@@ -64,8 +80,7 @@ namespace B18_Ex01_01
         {
 
             string statisticsMessage = String.Format(
-@"
-{0} zeroes is: {2:.00} 
+@"{0} zeroes is: {2:.00} 
 {0} ones is: {3:.00}
 {1} power of two: {4}
 {1} a decreasing sequence: {5}
