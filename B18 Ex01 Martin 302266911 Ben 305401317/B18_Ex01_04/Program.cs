@@ -6,16 +6,46 @@ namespace B18_Ex01_04
 {
     class Program
     {
+
+        public enum checkValid { onlyNumbers , onlyLetters, notValid}
+
         public static void Main()
         {
             string userInput = Console.ReadLine();
-            string stringAnalysis = getStringAnalysis(userInput);
+            int inputStatus = (int)checkValid.notValid;
+
+            while (inputStatus == (int)checkValid.notValid)
+            {
+                Console.WriteLine("Invalid Input, try again . . .\n");
+                userInput = Console.ReadLine();
+                inputStatus = checkInput(userInput); 
+            }
+
+            string stringAnalysis = getStringAnalysis(userInput , inputStatus == (int)checkValid.onlyNumbers);
 
             Console.WriteLine(stringAnalysis);
 
         }
 
-        private static string getStringAnalysis(string i_userInput)
+        private static int checkInput(string i_userInput)
+        {
+            int userNumber;
+
+            if(int.TryParse(i_userInput, out userNumber)) // it's a number
+            {
+                return (int) checkValid.onlyNumbers;
+            }
+            else if (i_userInput.All(char.IsDigit))
+            {
+                return (int)checkValid.onlyLetters;
+            }
+            else
+            {
+                return (int) checkValid.notValid;
+            }
+        }
+
+        private static string getStringAnalysis(string i_userInput, bool isNumber)
         {
             
             int userNumber;
@@ -32,7 +62,7 @@ namespace B18_Ex01_04
             }
 
 
-            if (int.TryParse(i_userInput, out userNumber)) // it's a number
+            if (isNumber) // it's a number
             {
                 if (isEven(i_userInput))
                 {
@@ -44,7 +74,7 @@ namespace B18_Ex01_04
                 }
 
             }
-            else // it's NOT a number
+            else // it's a string
             {
                 stringAnalysis.AppendLine("Number of lowercase characters is: " + getLowerCaseNumber(i_userInput));
             }
