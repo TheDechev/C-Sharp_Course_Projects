@@ -7,52 +7,55 @@ namespace B18_Ex01_04
     class Program
     {
 
-        public enum checkValid { onlyNumbers , onlyLetters, notValid}
+        public enum stringStatus { onlyNumbers , onlyLetters, notValid}
 
         public static void Main()
         {
-            string userInput = Console.ReadLine();
-            int inputStatus = (int)checkValid.notValid;
+            string userInputAnalysis = getValidUserInput();
+            Console.WriteLine(userInputAnalysis);
+        }
 
-            while (inputStatus == (int)checkValid.notValid)
+        private static string getValidUserInput()
+        {
+            string userInput = Console.ReadLine();
+            stringStatus inputStatus = checkInput(userInput);
+
+            while (inputStatus == stringStatus.notValid)
             {
                 Console.WriteLine("Invalid Input, try again . . .\n");
                 userInput = Console.ReadLine();
-                inputStatus = checkInput(userInput); 
+                inputStatus = checkInput(userInput);
             }
 
-            string stringAnalysis = getStringAnalysis(userInput , inputStatus == (int)checkValid.onlyNumbers);
+            string stringAnalysis = getStringAnalysis(userInput, inputStatus == stringStatus.onlyNumbers);
 
-            Console.WriteLine(stringAnalysis);
-
+            return stringAnalysis;
         }
 
-        private static int checkInput(string i_userInput)
+        private static stringStatus checkInput(string i_UserInput)
         {
             int userNumber;
 
-            if(int.TryParse(i_userInput, out userNumber)) // it's a number
+            if(int.TryParse(i_UserInput, out userNumber)) // it's a number
             {
-                return (int) checkValid.onlyNumbers;
+                return stringStatus.onlyNumbers;
             }
-            else if (i_userInput.All(char.IsDigit))
+            else if (!(i_UserInput.Any(char.IsDigit))) //it contains only letters
             {
-                return (int)checkValid.onlyLetters;
+                return stringStatus.onlyLetters;
             }
-            else
+            else // not a valid string - has letters and numbers in it
             {
-                return (int) checkValid.notValid;
+                return stringStatus.notValid;
             }
         }
 
-        private static string getStringAnalysis(string i_userInput, bool isNumber)
+        private static string getStringAnalysis(string i_UserInput, bool isNumber)
         {
-            
-            int userNumber;
             StringBuilder stringAnalysis = new StringBuilder();
 
             
-            if (isPalindrome(i_userInput))
+            if (isPalindrome(i_UserInput))
             {
                 stringAnalysis.AppendLine("The input is a palindrome.");
             }
@@ -64,7 +67,7 @@ namespace B18_Ex01_04
 
             if (isNumber) // it's a number
             {
-                if (isEven(i_userInput))
+                if (isEven(i_UserInput))
                 {
                     stringAnalysis.AppendLine("The number is even.");
                 }
@@ -76,30 +79,30 @@ namespace B18_Ex01_04
             }
             else // it's a string
             {
-                stringAnalysis.AppendLine("Number of lowercase characters is: " + getLowerCaseNumber(i_userInput));
+                stringAnalysis.AppendLine("Number of lowercase characters in it are: " + getLowerCaseNumber(i_UserInput));
             }
 
             return stringAnalysis.ToString();
         }
 
-        private static bool isPalindrome(string i_userInput)
+        private static bool isPalindrome(string i_UserInput)
         {
-            return i_userInput.SequenceEqual(i_userInput.Reverse());
+            return i_UserInput.SequenceEqual(i_UserInput.Reverse());
         }
 
-        private static bool isEven(string i_userInput)
+        private static bool isEven(string i_UserInput)
         {
-            return int.Parse(i_userInput) % 2 == 0;
+            return int.Parse(i_UserInput) % 2 == 0;
         }
 
-        private static short getLowerCaseNumber(string i_userInput)
+        private static short getLowerCaseNumber(string i_UserInput)
         {
             short numberOfLowerCase = 0;
-            string lowerUserInput = i_userInput.ToLower();
+            string lowerUserInput = i_UserInput.ToLower();
 
-            for(int i = 0; i < i_userInput.Length ; i++)
+            for(int i = 0; i < i_UserInput.Length ; i++)
             {
-                if (i_userInput[i] == lowerUserInput[i])
+                if (i_UserInput[i] == lowerUserInput[i])
                 {
                     numberOfLowerCase++;
                 }

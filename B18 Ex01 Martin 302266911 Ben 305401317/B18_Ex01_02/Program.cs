@@ -19,33 +19,33 @@ namespace B18_Ex01_02
 
         }
 
-        public static void CreateSandClock(ref StringBuilder io_triangleToPrint, int i_sizeToPrint)
+        public static void CreateSandClock(ref StringBuilder io_TriangleToPrint, int i_SizeToPrint)
         {
             int previousStringLength = 0;
             StringBuilder singleLineOfStars = new StringBuilder();
 
-            string myStr = new string('*', i_sizeToPrint);
+            string myStr = new string('*', i_SizeToPrint);
 
             singleLineOfStars.AppendLine(myStr);
-            io_triangleToPrint.AppendLine(myStr);
-            io_triangleToPrint.AppendLine(myStr);
+            io_TriangleToPrint.AppendLine(myStr);
+            io_TriangleToPrint.AppendLine(myStr);
 
-            for (int i = 1; i <= i_sizeToPrint / 2; i++)
+            for (int i = 1; i <= i_SizeToPrint / 2; i++)
             {
 
                 previousStringLength += singleLineOfStars.Length;
                 singleLineOfStars.Remove(0, i + 1);
                 singleLineOfStars.Insert(0, " ", i);
 
-                io_triangleToPrint.Insert(previousStringLength, singleLineOfStars);
+                io_TriangleToPrint.Insert(previousStringLength, singleLineOfStars);
 
-                if (i != i_sizeToPrint / 2) //won't print one too many * in the middle of the triangle
+                if (i != i_SizeToPrint / 2) //won't print one too many * in the middle of the triangle
                 {
-                    io_triangleToPrint.Insert(previousStringLength, singleLineOfStars);
+                    io_TriangleToPrint.Insert(previousStringLength, singleLineOfStars);
                 }
-                else if (i_sizeToPrint % 2 == 0) // an even number
+                else if (i_SizeToPrint % 2 == 0) // an even number
                 {
-                    io_triangleToPrint.Remove(previousStringLength + i - 1, i + 2);
+                    io_TriangleToPrint.Remove(previousStringLength + i - 1, i + 2);
                 }
 
             }
