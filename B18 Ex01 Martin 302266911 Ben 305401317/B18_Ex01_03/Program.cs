@@ -3,10 +3,8 @@ using System.Text;
 
 namespace B18_Ex01_03
 {
-    class Program
+    public class Program
     {
-        
-
         public static void Main()
         {
             int sizeToPrint;
@@ -16,8 +14,6 @@ namespace B18_Ex01_03
             B18_Ex01_02.Program.CreateSandClock(ref triangleToPrint, sizeToPrint);
 
             Console.WriteLine(triangleToPrint);
-
         }
-        
     }
 }

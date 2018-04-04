@@ -4,10 +4,12 @@ using System.Text;
 
 namespace B18_Ex01_04
 {
-    class Program
+    public class Program
     {
-
-        public enum stringStatus { onlyNumbers , onlyLetters, notValid}
+        public enum stringStatus
+        {
+            onlyNumbers, onlyLetters, notValid
+        }
 
         public static void Main()
         {
@@ -36,15 +38,15 @@ namespace B18_Ex01_04
         {
             int userNumber;
 
-            if(int.TryParse(i_UserInput, out userNumber)) // it's a number
+            if (int.TryParse(i_UserInput, out userNumber)) 
             {
                 return stringStatus.onlyNumbers;
             }
-            else if (!(i_UserInput.Any(char.IsDigit))) //it contains only letters
+            else if (!i_UserInput.Any(char.IsDigit)) 
             {
                 return stringStatus.onlyLetters;
             }
-            else // not a valid string - has letters and numbers in it
+            else 
             {
                 return stringStatus.notValid;
             }
@@ -53,8 +55,7 @@ namespace B18_Ex01_04
         private static string getStringAnalysis(string i_UserInput, bool isNumber)
         {
             StringBuilder stringAnalysis = new StringBuilder();
-
-            
+  
             if (isPalindrome(i_UserInput))
             {
                 stringAnalysis.AppendLine("The input is a palindrome.");
@@ -64,8 +65,7 @@ namespace B18_Ex01_04
                 stringAnalysis.AppendLine("The input is NOT a palindrome.");
             }
 
-
-            if (isNumber) // it's a number
+            if (isNumber)
             {
                 if (isEven(i_UserInput))
                 {
@@ -75,9 +75,8 @@ namespace B18_Ex01_04
                 {
                     stringAnalysis.AppendLine("The number is odd.");
                 }
-
             }
-            else // it's a string
+            else 
             {
                 stringAnalysis.AppendLine("Number of lowercase characters in it are: " + getLowerCaseNumber(i_UserInput));
             }
@@ -100,7 +99,7 @@ namespace B18_Ex01_04
             short numberOfLowerCase = 0;
             string lowerUserInput = i_UserInput.ToLower();
 
-            for(int i = 0; i < i_UserInput.Length ; i++)
+            for(int i = 0; i < i_UserInput.Length; i++)
             {
                 if (i_UserInput[i] == lowerUserInput[i])
                 {
@@ -110,6 +109,5 @@ namespace B18_Ex01_04
             
             return numberOfLowerCase;
         }
-
     }
 }

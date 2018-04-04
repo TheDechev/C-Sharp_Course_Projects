@@ -2,29 +2,23 @@
 
 namespace B18_Ex01_01
 {
-    class Program
+    public class Program
     {
-        private const short k_InputSize = 9;
-        private const short k_NumberOfInputs = 3;
-
         public static void Main()
         {
             int totalNumberSum = 0;
             short powerOfTwoCounter = 0, decreasingSequenceCounter = 0, oneDigitCounter = 0;
-            string theThreeNumbers = "";
+            string theThreeNumbers = string.Empty;
             getInputStatistics(ref decreasingSequenceCounter, ref oneDigitCounter, ref powerOfTwoCounter, ref totalNumberSum, ref theThreeNumbers);
-            printInputStatistics(oneDigitCounter, totalNumberSum, decreasingSequenceCounter, powerOfTwoCounter , theThreeNumbers);
-
+            printInputStatistics(oneDigitCounter, totalNumberSum, decreasingSequenceCounter, powerOfTwoCounter, theThreeNumbers);
         }
 
-        private static void getInputStatistics(ref short io_DecreasingSequenceCounter, ref short io_OneDigitCounter, ref short io_PowerOfTwoCounter, ref int io_TotalNumberSum , ref string io_TheThreeNumbers)
+        private static void getInputStatistics(ref short io_DecreasingSequenceCounter, ref short io_OneDigitCounter, ref short io_PowerOfTwoCounter, ref int io_TotalNumberSum, ref string io_TheThreeNumbers)
         {
-            
-            int firstNumber = 0, secondNumber = 0 , thirdNumber = 0;
             string userInput;
             int binaryNumber, decimalNumber;
 
-            for (int i = 0; i < k_NumberOfInputs; i++)
+            for (int i = 0; i < 3; i++)
             {
                 userInput = Console.ReadLine();
 
@@ -45,7 +39,6 @@ namespace B18_Ex01_01
                 io_PowerOfTwoCounter += isPowerOfTwo(binaryNumber);
                 io_TotalNumberSum += decimalNumber;
             }
-
         }
 
         private static int convertBinaryToDec(int binaryNumber)
@@ -56,8 +49,8 @@ namespace B18_Ex01_01
             while (binaryNumber != 0)
             {
                 currDig = binaryNumber % 10;
-                decimalNum += (int)Math.Pow(2.0, currPow)*currDig;   
-                currPow ++;
+                decimalNum += (int)Math.Pow(2.0, currPow) * currDig;   
+                currPow++;
                 binaryNumber /= 10;                            
             }
 
@@ -66,24 +59,28 @@ namespace B18_Ex01_01
 
         private static void printInputStatistics(short i_OneDigitCounter, int i_TotalNumberSum, short i_DecreasingSequenceCounter, short i_PowerOfTwoCounter, string i_TheThreeNumbers)
         {
-
-            string statisticsMessage = String.Format(
-@"The numbers are: {7}
-{0} zeroes is: {2:.00} 
-{0} ones is: {3:.00}
-{1} power of two: {4}
-{1} a decreasing sequence: {5}
-The total average is: {6:00.00}
-", "The average number of ", "Numbers that are ", (float)(k_InputSize * k_NumberOfInputs - i_OneDigitCounter) / k_NumberOfInputs, (float)i_OneDigitCounter / k_NumberOfInputs ,
- i_PowerOfTwoCounter, i_DecreasingSequenceCounter, (float)i_TotalNumberSum / k_NumberOfInputs , i_TheThreeNumbers);
+            string statisticsMessage = string.Format(
+                @"The numbers are: {7}
+                {0} zeroes is: {2:.00} 
+                {0} ones is: {3:.00}
+                {1} power of two: {4}
+                {1} a decreasing sequence: {5} The total average is: {6:00.00}",
+                "The average number of ", 
+                "Numbers that are ", 
+                (float)(9 * (3 - i_OneDigitCounter)) / 3, 
+                (float)i_OneDigitCounter / 3, 
+                i_PowerOfTwoCounter, 
+                i_DecreasingSequenceCounter, 
+                (float)i_TotalNumberSum / 3, 
+                i_TheThreeNumbers);
             Console.WriteLine(statisticsMessage);
         }
 
         private static short getNumberOfOnes(int i_CurrentNumber)
         {
             int currentDigit = 0;
-            short  numOfOnes = 0;
-            while(i_CurrentNumber != 0)
+            short numOfOnes = 0;
+            while (i_CurrentNumber != 0)
             {
                 currentDigit = i_CurrentNumber & 1;
                 i_CurrentNumber /= 10;
@@ -92,6 +89,7 @@ The total average is: {6:00.00}
                     numOfOnes++;
                 }
             }
+
             return numOfOnes;
         }
 
@@ -102,12 +100,12 @@ The total average is: {6:00.00}
             {
                 return 1;
             }
+
             return 0;
         }
 
         private static short isDecreasingSequence(int i_CurrentNumber)
         {
-         
             int previousDigit, currentDigit;
             previousDigit = i_CurrentNumber % 10;
             i_CurrentNumber /= 10;
@@ -117,19 +115,21 @@ The total average is: {6:00.00}
                 i_CurrentNumber /= 10;
 
                 if (!(currentDigit > previousDigit))
+                { 
                     return 0;
+                }
 
                 previousDigit = currentDigit;
             }
+
             return 1;
         }
 
         private static bool isInputValid(string i_CurrentNumber)
         {
-
             int inputSize = i_CurrentNumber.Length;
 
-            if (inputSize == k_InputSize)
+            if (inputSize == 9)
             {
                 foreach (char currentChar in i_CurrentNumber)
                 {
@@ -143,6 +143,7 @@ The total average is: {6:00.00}
             {
                 return false;
             }
+
             return true;
         }
     }
