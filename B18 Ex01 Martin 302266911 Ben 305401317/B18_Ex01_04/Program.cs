@@ -37,19 +37,22 @@ namespace B18_Ex01_04
         private static stringStatus checkInput(string i_UserInput)
         {
             int userNumber;
+            stringStatus inputStatus;
 
             if (int.TryParse(i_UserInput, out userNumber)) 
             {
-                return stringStatus.onlyNumbers;
+                inputStatus = stringStatus.onlyNumbers;
             }
             else if (!isThereADigit(i_UserInput)) 
             {
-                return stringStatus.onlyLetters;
+                inputStatus =  stringStatus.onlyLetters;
             }
             else 
             {
-                return stringStatus.notValid;
+                inputStatus = stringStatus.notValid;
             }
+
+            return inputStatus;
         }
 
         private static bool isThereADigit(string i_UserInput)

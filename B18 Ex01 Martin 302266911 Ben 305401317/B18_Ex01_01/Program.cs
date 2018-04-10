@@ -6,18 +6,23 @@ namespace B18_Ex01_01
     {
         public static void Main()
         {
-            int totalNumberSum = 0;
-            short powerOfTwoCounter = 0, decreasingSequenceCounter = 0, oneDigitCounter = 0;
-            string theThreeNumbers = string.Empty;
+            int totalNumberSum;
+            short powerOfTwoCounter, decreasingSequenceCounter, oneDigitCounter;
+            string theThreeNumbers;
 
-            getInputStatistics(ref decreasingSequenceCounter, ref oneDigitCounter, ref powerOfTwoCounter, ref totalNumberSum, ref theThreeNumbers);
+            getInputStatistics(out decreasingSequenceCounter, out oneDigitCounter, out powerOfTwoCounter, out totalNumberSum, out theThreeNumbers);
             printInputStatistics(oneDigitCounter, totalNumberSum, decreasingSequenceCounter, powerOfTwoCounter, theThreeNumbers);
         }
 
-        private static void getInputStatistics(ref short io_DecreasingSequenceCounter, ref short io_OneDigitCounter, ref short io_PowerOfTwoCounter, ref int io_TotalNumberSum, ref string io_TheThreeNumbers)
+        private static void getInputStatistics(out short o_DecreasingSequenceCounter, out short o_OneDigitCounter, out short o_PowerOfTwoCounter, out int o_TotalNumberSum, out string o_TheThreeNumbers)
         {
             string userInput;
             int binaryNumber, decimalNumber;
+            o_TotalNumberSum = 0;
+            o_DecreasingSequenceCounter = 0;
+            o_OneDigitCounter = 0;
+            o_PowerOfTwoCounter = 0;
+            o_TheThreeNumbers = "";
 
             Console.WriteLine("Please enter 3 binary numbers ( 9 digits each ): ");
             for (int i = 0; i < 3; i++)
@@ -32,12 +37,12 @@ namespace B18_Ex01_01
                 }
 
                 binaryNumber = int.Parse(userInput);
-                io_OneDigitCounter += getNumberOfOnes(binaryNumber);
+                o_OneDigitCounter += getNumberOfOnes(binaryNumber);
                 decimalNumber = convertBinaryToDec(binaryNumber);
-                io_DecreasingSequenceCounter += isDecreasingSequence(decimalNumber);
-                io_TheThreeNumbers += " " + decimalNumber.ToString();
-                io_PowerOfTwoCounter += isPowerOfTwo(binaryNumber);
-                io_TotalNumberSum += decimalNumber;
+                o_DecreasingSequenceCounter += isDecreasingSequence(decimalNumber);
+                o_TheThreeNumbers += " " + decimalNumber.ToString();
+                o_PowerOfTwoCounter += isPowerOfTwo(binaryNumber);
+                o_TotalNumberSum += decimalNumber;
             }
         }
 
@@ -100,10 +105,10 @@ The total average is: {6:00.00}",
             int x = i_CurrentNumber & i_CurrentNumber - 1;
             if (x == 0)
             {
-                return 1;
+                return 1; //represents true
             }
 
-            return 0;
+            return 0; //represents false
         }
 
         private static short isDecreasingSequence(int i_CurrentNumber)
@@ -118,13 +123,13 @@ The total average is: {6:00.00}",
 
                 if (!(currentDigit > previousDigit))
                 { 
-                    return 0;
+                    return 0; //represents false
                 }
 
                 previousDigit = currentDigit;
             }
 
-            return 1;
+            return 1; //represents true
         }
 
         private static bool isInputValid(string i_CurrentNumber)
