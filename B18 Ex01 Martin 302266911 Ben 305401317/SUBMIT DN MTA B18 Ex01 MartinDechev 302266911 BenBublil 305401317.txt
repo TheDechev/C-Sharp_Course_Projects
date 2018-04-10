@@ -1,0 +1,9 @@
+==========================Exercise Checking Report========================== Exercise No...........: 1 
+First Student Details.: 302266911 - Martin Dechev
+Second Student Details: 305401317- Ben Bublil
+Delivery Date.........: 10 - April - 2018
+Delivered In Delay....: No
+Delay Reason..........: -
+Visual Studio Version.: 2015 
+Comments..............: In Ex01_05 we assumed that the input is a 6 digit integer as stated.
+========================End Exercise Checking Report======================== 
