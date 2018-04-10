@@ -10,9 +10,9 @@ namespace B18_Ex01_03
             int sizeToPrint;
             StringBuilder triangleToPrint = new StringBuilder();
 
+            Console.WriteLine("Please enter the Sandclock height:");
             sizeToPrint = int.Parse(Console.ReadLine());
             B18_Ex01_02.Program.CreateSandClock(ref triangleToPrint, sizeToPrint);
-
             Console.WriteLine(triangleToPrint);
         }
     }

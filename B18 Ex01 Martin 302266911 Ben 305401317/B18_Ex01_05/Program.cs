@@ -17,13 +17,22 @@ namespace B18_Ex01_05
             minDigit = getMinDigit(userInput);
             evenDigitsCounter = countEvenDigitsInNum(userInput);
             lowerThenFirstCounter = countLowerThanFirstigitsInNum(userInput);
+
+            string statisticsMessage = string.Format(
+@"
+The maximum digit in the number is: {0}
+The minimum digit in the number is: {1} 
+There are {2} even digits in the number.
+There are {3} digits thats small from the first digits in the number.",
+            maxDigit, minDigit, evenDigitsCounter, lowerThenFirstCounter);
+            Console.WriteLine(statisticsMessage);
         }
 
         private static int getMaxDigit(int i_number)
         {
             int max = i_number % 10;
             int currDigit;
-
+        
             i_number /= 10;
  
             while (i_number != 0)
@@ -55,7 +64,7 @@ namespace B18_Ex01_05
 
         private static int countEvenDigitsInNum(int i_number)
         {
-            int evenCounter = 0, currDigit;
+            int evenCounter = 0, digitCounter = 0, currDigit;
 
             while (i_number != 0)
             {
@@ -66,6 +75,12 @@ namespace B18_Ex01_05
                 }
               
                 i_number /= 10;
+                digitCounter++;
+            }
+
+            if (digitCounter < 6)
+            {
+                evenCounter += (6 - digitCounter);
             }
 
             return evenCounter;
@@ -73,7 +88,7 @@ namespace B18_Ex01_05
 
         private static int countLowerThanFirstigitsInNum(int i_number)
         {
-            int lowerThenFirstCounter = 0, currDigit;
+            int lowerThenFirstCounter = 0, digitCounter = 0, currDigit;
             int firstDigit = i_number % 10;
 
             while (i_number != 0)
@@ -86,6 +101,12 @@ namespace B18_Ex01_05
                 }
 
                 i_number /= 10;
+                digitCounter++;
+            }
+
+            if (digitCounter < 6 && firstDigit != 0)
+            {
+                lowerThenFirstCounter += (6 - digitCounter);
             }
 
             return lowerThenFirstCounter;

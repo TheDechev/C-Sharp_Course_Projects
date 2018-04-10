@@ -5,13 +5,11 @@ namespace B18_Ex01_02
 {
     public class Program
     {
-        private const short k_defaultSandClockSize = 5;
-
         public static void Main()
         {
             StringBuilder sandClockToPrint = new StringBuilder();
-
-            CreateSandClock(ref sandClockToPrint, k_defaultSandClockSize);
+            Console.WriteLine("Begginers Sandclock:\n");
+            CreateSandClock(ref sandClockToPrint, 5);
             Console.WriteLine(sandClockToPrint);
         }
 
@@ -19,7 +17,6 @@ namespace B18_Ex01_02
         {
             int previousStringLength = 0;
             StringBuilder singleLineOfStars = new StringBuilder();
-
             string myStr = new string('*', i_SizeToPrint);
 
             singleLineOfStars.AppendLine(myStr);
@@ -31,7 +28,6 @@ namespace B18_Ex01_02
                 previousStringLength += singleLineOfStars.Length;
                 singleLineOfStars.Remove(0, i + 1);
                 singleLineOfStars.Insert(0, " ", i);
-
                 io_TriangleToPrint.Insert(previousStringLength, singleLineOfStars);
 
                 // won't print one too many * in the middle of the triangle
@@ -40,7 +36,7 @@ namespace B18_Ex01_02
                     io_TriangleToPrint.Insert(previousStringLength, singleLineOfStars);
                 } 
                 else if (i_SizeToPrint % 2 == 0)
-                { 
+                {
                     io_TriangleToPrint.Remove(previousStringLength + i - 1, i + 2);
                 }
             }

@@ -9,6 +9,7 @@ namespace B18_Ex01_01
             int totalNumberSum = 0;
             short powerOfTwoCounter = 0, decreasingSequenceCounter = 0, oneDigitCounter = 0;
             string theThreeNumbers = string.Empty;
+
             getInputStatistics(ref decreasingSequenceCounter, ref oneDigitCounter, ref powerOfTwoCounter, ref totalNumberSum, ref theThreeNumbers);
             printInputStatistics(oneDigitCounter, totalNumberSum, decreasingSequenceCounter, powerOfTwoCounter, theThreeNumbers);
         }
@@ -18,6 +19,7 @@ namespace B18_Ex01_01
             string userInput;
             int binaryNumber, decimalNumber;
 
+            Console.WriteLine("Please enter 3 binary numbers ( 9 digits each ): ");
             for (int i = 0; i < 3; i++)
             {
                 userInput = Console.ReadLine();
@@ -31,11 +33,9 @@ namespace B18_Ex01_01
 
                 binaryNumber = int.Parse(userInput);
                 io_OneDigitCounter += getNumberOfOnes(binaryNumber);
-
                 decimalNumber = convertBinaryToDec(binaryNumber);
                 io_DecreasingSequenceCounter += isDecreasingSequence(decimalNumber);
                 io_TheThreeNumbers += " " + decimalNumber.ToString();
-                
                 io_PowerOfTwoCounter += isPowerOfTwo(binaryNumber);
                 io_TotalNumberSum += decimalNumber;
             }
@@ -60,14 +60,16 @@ namespace B18_Ex01_01
         private static void printInputStatistics(short i_OneDigitCounter, int i_TotalNumberSum, short i_DecreasingSequenceCounter, short i_PowerOfTwoCounter, string i_TheThreeNumbers)
         {
             string statisticsMessage = string.Format(
-                @"The numbers are: {7}
-                {0} zeroes is: {2:.00} 
-                {0} ones is: {3:.00}
-                {1} power of two: {4}
-                {1} a decreasing sequence: {5} The total average is: {6:00.00}",
+@"
+The numbers are: {7}
+{0} zeroes is: {2:.00} 
+{0} ones is: {3:.00}
+{1} power of two: {4}
+{1} a decreasing sequence: {5} 
+The total average is: {6:00.00}",
                 "The average number of ", 
                 "Numbers that are ", 
-                (float)(9 * (3 - i_OneDigitCounter)) / 3, 
+                (float)((9 * 3) - i_OneDigitCounter) / 3, 
                 (float)i_OneDigitCounter / 3, 
                 i_PowerOfTwoCounter, 
                 i_DecreasingSequenceCounter, 
