@@ -26,7 +26,7 @@ namespace B18_Ex01_01
 
                 if (!isInputValid(userInput))
                 {
-                    Console.WriteLine("Invalid Input! Try again . . .\n");
+                    Console.WriteLine("Invalid Input! Try again . . .");
                     i--;
                     continue;
                 }
@@ -61,14 +61,14 @@ namespace B18_Ex01_01
         {
             string statisticsMessage = string.Format(
 @"
-The numbers are: {7}
+The numbers are:{7}
 {0} zeroes is: {2:.00} 
 {0} ones is: {3:.00}
 {1} power of two: {4}
 {1} a decreasing sequence: {5} 
 The total average is: {6:00.00}",
-                "The average number of ", 
-                "Numbers that are ", 
+                "The total average number of", 
+                "Numbers that are", 
                 (float)((9 * 3) - i_OneDigitCounter) / 3, 
                 (float)i_OneDigitCounter / 3, 
                 i_PowerOfTwoCounter, 

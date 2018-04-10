@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 
 namespace B18_Ex01_04
@@ -13,6 +12,7 @@ namespace B18_Ex01_04
 
         public static void Main()
         {
+            Console.WriteLine("Please enter a word <8 characters>:");
             string userInputAnalysis = getValidUserInput();
             Console.WriteLine(userInputAnalysis);
         }
@@ -24,7 +24,7 @@ namespace B18_Ex01_04
 
             while (inputStatus == stringStatus.notValid)
             {
-                Console.WriteLine("Invalid Input, try again . . .\n");
+                Console.WriteLine("Invalid Input, try again . . .");
                 userInput = Console.ReadLine();
                 inputStatus = checkInput(userInput);
             }
@@ -42,7 +42,7 @@ namespace B18_Ex01_04
             {
                 return stringStatus.onlyNumbers;
             }
-            else if (!i_UserInput.Any(char.IsDigit)) 
+            else if (!isThereADigit(i_UserInput)) 
             {
                 return stringStatus.onlyLetters;
             }
@@ -50,6 +50,18 @@ namespace B18_Ex01_04
             {
                 return stringStatus.notValid;
             }
+        }
+
+        private static bool isThereADigit(string i_UserInput)
+        {
+            foreach (char currentChar in i_UserInput)
+            {
+                if (currentChar >= '1' && currentChar <= '9')
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private static string getStringAnalysis(string i_UserInput, bool isNumber)
@@ -86,7 +98,19 @@ namespace B18_Ex01_04
 
         private static bool isPalindrome(string i_UserInput)
         {
-            return i_UserInput.SequenceEqual(i_UserInput.Reverse());
+            int leftIndex = 0;
+            int rightIndex = i_UserInput.Length - 1;
+
+            while(leftIndex <= rightIndex)
+            {
+                if(i_UserInput[leftIndex] != i_UserInput[rightIndex])
+                {
+                    return false;
+                }
+                leftIndex++;
+                rightIndex--;
+            }
+            return true;
         }
 
         private static bool isEven(string i_UserInput)
