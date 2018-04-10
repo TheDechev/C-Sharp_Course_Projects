@@ -23,7 +23,7 @@ namespace B18_Ex01_05
 The maximum digit in the number is: {0}
 The minimum digit in the number is: {1} 
 There are {2} even digits in the number.
-There are {3} digits thats small from the first digits in the number.",
+There are {3} digits that are smaller than the first digit in the number.",
             maxDigit, minDigit, evenDigitsCounter, lowerThenFirstCounter);
             Console.WriteLine(statisticsMessage);
         }
