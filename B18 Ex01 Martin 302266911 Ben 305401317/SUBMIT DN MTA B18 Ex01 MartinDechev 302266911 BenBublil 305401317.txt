@@ -1,4 +1,5 @@
-==========================Exercise Checking Report========================== Exercise No...........: 1 
+==========================Exercise Checking Report========================== 
+Exercise No...........: 1 
 First Student Details.: 302266911 - Martin Dechev
 Second Student Details: 305401317- Ben Bublil
 Delivery Date.........: 10 - April - 2018
