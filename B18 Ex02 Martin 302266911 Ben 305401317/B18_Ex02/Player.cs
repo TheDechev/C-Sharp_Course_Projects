@@ -8,6 +8,20 @@ namespace B18_Ex02
 {
     class Player
     {
+        private string name;
 
+        public string Name
+        {
+            set
+            {
+                name = value;
+            }
+
+            get
+            {
+                return name;
+            }
+        }
+        
     }
 }

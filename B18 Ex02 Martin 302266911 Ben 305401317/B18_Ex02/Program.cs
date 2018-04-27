@@ -12,8 +12,8 @@ namespace B18_Ex02
     {
         public static void Main()
         {
-            Game newGame = new Game(10);
-            newGame.PrintGame();
+            Game newGame = new Game();
+            newGame.StartGame();
         }
 
     }
