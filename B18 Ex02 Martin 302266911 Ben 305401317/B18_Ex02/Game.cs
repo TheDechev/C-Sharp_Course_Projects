@@ -77,7 +77,6 @@ namespace B18_Ex02
             {
                 Console.WriteLine("Invalid board size, please enter the size again...");
             }
-            PrintGame();
 
             Console.WriteLine("Choose your opponent: ");
             Console.WriteLine("1. Another player ");
