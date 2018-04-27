@@ -10,6 +10,11 @@ namespace B18_Ex02
 {
     class Program
     {
-        //<insert Checkers game here>
+        public static void Main()
+        {
+            Game newGame = new Game(10);
+            newGame.PrintGame();
+        }
+
     }
 }
