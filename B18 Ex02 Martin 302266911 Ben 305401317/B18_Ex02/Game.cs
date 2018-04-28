@@ -6,70 +6,78 @@ using System.Threading.Tasks;
 
 namespace B18_Ex02
 {
-    class Game
+    public class Game
     {
-        private enum e_PlayerIndicator { playerOne = 1, playerTwo = 2 }
+        private enum e_PlayerIndicator
+        {
+            playerOne = 1,
+            playerTwo = 2
+        }
+
         private Player m_PlayerOne;
+
         private Player m_PlayerTwo;
+
         private Board m_Board;
 
         private int m_TurnCounter = 0;
    
         public void StartGame()
         {
-            int currentPosCol;
-            int currentPosRow;
-            Figure currentFigure;
             Console.WriteLine("Welcome to the game! ");
-            initGame();
-            string playerChoice = "";
+            this.initGame();
+            string playerChoice = string.Empty;
             
             while (playerChoice != "Exit")
             {
                 Ex02.ConsoleUtils.Screen.Clear(); // clearing the screen for a new round
-                m_Board.PrintBoard();
+                this.m_Board.PrintBoard();
 
-                if (m_TurnCounter % 2 == 0) // first players turn
-                {
-                    Console.Write(m_PlayerOne.Name + "'s turn:");
+                if (this.m_TurnCounter % 2 == 0)
+                {// first players turn
+                    Console.Write(this.m_PlayerOne.Name + "'s turn:");
                 }
-                else // second players turn
-                {
-                    Console.Write(m_PlayerTwo.Name + "'s turn:");
+                else
+                {// second players turn
+                    Console.Write(this.m_PlayerTwo.Name + "'s turn:");
                 }
 
                 playerChoice = Console.ReadLine();
+                bool isCurrent = true;
+                Figure currentFigure = new Figure();
+                Figure nextMoveFigure = new Figure();
+
+                currentFigure.updateFigurePosAccordingToPlayerMove(playerChoice, isCurrent);
+                nextMoveFigure.updateFigurePosAccordingToPlayerMove(playerChoice, !isCurrent);
 
                 //player enters string : currentPos / nextPos
                 //(has figure there)
-                currentFigure = m_PlayerTwo.checkExistance(5, 4);
+                currentFigure = this.m_PlayerTwo.checkExistance(5, 4);
 
                 if (currentFigure != null)
                 {
-                    if (m_Board.isEmptySpot(6, 5))
+                    if (this.m_Board.isEmptySpot(6, 5))
                     {
                         currentFigure.Row = 6;
                         currentFigure.Col = 5;
-                        m_Board.updateBoard(5, 4, 6, 5, (int)e_PlayerIndicator.playerTwo);
-
+                        this.m_Board.updateBoard(5, 4, 6, 5, (int)e_PlayerIndicator.playerTwo);
                     }
                 }
 
-                m_TurnCounter++;
+                this.m_TurnCounter++;
             }
-
         }
 
         public void initGame()
         {
             string playerChoice;
 
-            AddNewPlayer();
-            
-            getBoardSizeFromUser();
+            this.AddNewPlayer();
 
-            m_PlayerOne.figuresNum = m_Board.Size;
-            m_PlayerOne.initFigures(0, m_Board.Size);
+            this.getBoardSizeFromUser();
+
+            this.m_PlayerOne.figuresNum = this.m_Board.Size;
+            this.m_PlayerOne.initFigures(0, this.m_Board.Size);
 
             Console.WriteLine("Choose your opponent: ");
             Console.WriteLine("1. Another player ");
@@ -84,10 +92,10 @@ namespace B18_Ex02
 
             if (playerChoice == "1")
             {
-                AddNewPlayer();
-                m_PlayerTwo.figuresNum = m_Board.Size;
-                m_PlayerTwo.initFigures(m_PlayerOne.lastFigure.Row + 3, m_Board.Size);
-                m_Board.initBoard(m_PlayerOne, m_PlayerTwo);
+                this.AddNewPlayer();
+                this.m_PlayerTwo.figuresNum = this.m_Board.Size;
+                this.m_PlayerTwo.initFigures(this.m_PlayerOne.lastFigure.Row + 3, this.m_Board.Size);
+                this.m_Board.initBoard(this.m_PlayerOne, this.m_PlayerTwo);
             }
             else
             {
@@ -95,8 +103,6 @@ namespace B18_Ex02
                 Console.WriteLine("The Computer is not ready to play againsnt you yet!");
                 return;
             }
-
-
         }
 
         public void AddNewPlayer()
@@ -112,22 +118,20 @@ namespace B18_Ex02
                 m_PlayerName = Console.ReadLine();
             }
 
-            if (m_TurnCounter == 0)
+            if (this.m_TurnCounter == 0)
             {
-                m_PlayerOne = new Player();
-                m_PlayerOne.Shape = 'X';
-                m_PlayerOne.Name = m_PlayerName;
-               
+                this.m_PlayerOne = new Player();
+                this.m_PlayerOne.Shape = 'X';
+                this.m_PlayerOne.Name = m_PlayerName;
             }
             else
             {
-                m_PlayerTwo = new Player();
-                m_PlayerTwo.Shape = 'O';
-                m_PlayerTwo.Name = m_PlayerName;
+                this.m_PlayerTwo = new Player();
+                this.m_PlayerTwo.Shape = 'O';
+                this.m_PlayerTwo.Name = m_PlayerName;
             }
 
-            m_TurnCounter++;
-
+            this.m_TurnCounter++;
         }
 
         public void getBoardSizeFromUser()
@@ -142,7 +146,7 @@ namespace B18_Ex02
                 playerChoice = Console.ReadLine();
             }
 
-            m_Board = new Board(int.Parse(playerChoice));
+            this.m_Board = new Board(int.Parse(playerChoice));
         }
     }
 }

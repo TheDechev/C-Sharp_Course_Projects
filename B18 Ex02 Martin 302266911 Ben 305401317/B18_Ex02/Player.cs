@@ -6,12 +6,12 @@ using System.Drawing;
 
 namespace B18_Ex02
 {
-    class Player
+    public class Player
     {
         private string m_Name;
         private int m_FigureCount;
-        private int m_Score;
-        private bool m_IsComputer = false;
+        ////private int m_Score;
+        ////private bool m_IsComputer = false;
         private char m_Shape;
         private List<Figure> m_Figures;
 
@@ -19,53 +19,54 @@ namespace B18_Ex02
         {
             get
             {
-                return m_Figures.Last();
+                return this.m_Figures.Last();
             }
         }
 
         public int figuresNum
         {
+            get
+            {
+                return this.m_FigureCount;
+            }
 
             set
             {
-                if(m_FigureCount == 0)
+                if(this.m_FigureCount == 0)
                 {
-                    m_FigureCount = ((value - 2) / 2) * (value / 2);
-                    m_Figures = new List<Figure>(m_FigureCount);
+                    this.m_FigureCount = ((value - 2) / 2) * (value / 2);
+                    this.m_Figures = new List<Figure>(this.m_FigureCount);
                 }
                 else
                 {
                     Console.WriteLine("Invalid size");
                 }
             }
-            get
-            {
-                return m_FigureCount;
-            }
         }
 
         public string Name
         {
-            set
-            {
-                m_Name = value;
-            }
-
             get
             {
-                return m_Name;
+                return this.m_Name;
+            }
+
+            set
+            {
+                this.m_Name = value;
             }
         }
 
         public char Shape
         {
-            set
-            {
-                m_Shape = value;
-            }
             get
             {
-                return m_Shape;
+                return this.m_Shape;
+            }
+
+            set
+            {
+                this.m_Shape = value;
             }
         }
 
@@ -75,18 +76,16 @@ namespace B18_Ex02
             int m_currentCol;
             int m_currentRow = i_StartLine;
 
-            //second player
             if(i_StartLine == 0)
-            {
+            {////second player
                 m_currentCol = 1;
             }
-            //first player
             else
-            {
+            {////first player
                 m_currentCol = 0;
             }
 
-            for (int i = 0; i < m_FigureCount; i++)
+            for (int i = 0; i < this.m_FigureCount; i++)
             {
                 if(m_figuresOnRowCounter == i_BoardSize / 2)
                 {
@@ -96,34 +95,30 @@ namespace B18_Ex02
                     if(m_currentCol == i_BoardSize + 1)
                     {
                         m_currentCol = 0;
-                        
-                    } else
+                    }
+                    else
                     {
                         m_currentCol = 1;
                     }
                 }
                 
                 m_figuresOnRowCounter++;
-                
-                Console.WriteLine("Row:" + m_currentRow +  " Col:" + m_currentCol);
-                m_Figures.Add(new Figure(m_currentRow, m_currentCol));
+                Console.WriteLine("Row:" + m_currentRow + " Col:" + m_currentCol);
+                this.m_Figures.Add(new Figure(m_currentRow, m_currentCol));
                 m_currentCol += 2;
-
             }
-
         }
 
         public Figure getFigure(int i_Index)
         {
-           
-            return m_Figures[i_Index];
+            return this.m_Figures[i_Index];
         }
 
         public Figure checkExistance(int i_CurrentRow, int i_CurrentCol)
         {
             Figure checkFigure = new Figure(i_CurrentRow, i_CurrentCol);
             
-            foreach(Figure currentFig in m_Figures)
+            foreach(Figure currentFig in this.m_Figures)
             {
                 if (currentFig.Equals(checkFigure))
                 {
@@ -131,12 +126,7 @@ namespace B18_Ex02
                 }
             }
 
-            return null;
-            
+            return null;  
         }
-
-
-
-
     }
 }
