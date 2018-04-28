@@ -8,81 +8,75 @@ namespace B18_Ex02
 {
     class Game
     {
+        private enum e_PlayerIndicator { playerOne = 1, playerTwo = 2 }
+        private Player m_PlayerOne;
+        private Player m_PlayerTwo;
+        private Board m_Board;
 
-        private Player playerOne;
-        private Player playerTwo;
-        private int boardSize = 8;
-        private const int requiredSpaceForFigure = 4;
-        private int turnCounter = 0;
-
-        public void PrintGame()
-        {
-            char currentChar = 'a';
-
-            for (int i = 0; i < boardSize * 2 + 1; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    for (int j = 0; j <= boardSize* requiredSpaceForFigure + 1 ; j++)
-                    {
-                        Console.Write("=");
-                    }
-                }
-                else
-                {
-                    Console.Write(currentChar++);
-
-                    for (int j = 0; j <= boardSize; j++)
-                    {
-                        Console.Write("| ");
-                        if (false) // the figures logic
-                        {
-                            Console.Write("X ");
-                        }
-                        else
-                        {
-                            Console.Write("  ");
-                        }
-                    }
-                    
-                }
-                
-                Console.WriteLine();
-            }
-
-
-            currentChar = 'a';
-            Console.WriteLine();
-
-        }
+        private int m_TurnCounter = 0;
+   
         public void StartGame()
         {
+            int currentPosCol;
+            int currentPosRow;
+            Figure currentFigure;
+            Console.WriteLine("Welcome to the game! ");
+            initGame();
+            string playerChoice = "";
+            
+            while (playerChoice != "Exit")
+            {
+                Ex02.ConsoleUtils.Screen.Clear(); // clearing the screen for a new round
+                m_Board.PrintBoard();
+
+                if (m_TurnCounter % 2 == 0) // first players turn
+                {
+                    Console.Write(m_PlayerOne.Name + "'s turn:");
+                }
+                else // second players turn
+                {
+                    Console.Write(m_PlayerTwo.Name + "'s turn:");
+                }
+
+                playerChoice = Console.ReadLine();
+
+                //player enters string : currentPos / nextPos
+                //(has figure there)
+                currentFigure = m_PlayerTwo.checkExistance(5, 4);
+
+                if (currentFigure != null)
+                {
+                    if (m_Board.isEmptySpot(6, 5))
+                    {
+                        currentFigure.Row = 6;
+                        currentFigure.Col = 5;
+                        m_Board.updateBoard(5, 4, 6, 5, (int)e_PlayerIndicator.playerTwo);
+
+                    }
+                }
+
+                m_TurnCounter++;
+            }
+
+        }
+
+        public void initGame()
+        {
             string playerChoice;
-            playerOne = new Player();
-            string playerName;
 
-            Console.WriteLine("Welcome to the game!" + Environment.NewLine + "Please enter your name: ");
-            playerName = Console.ReadLine();
+            AddNewPlayer();
+            
+            getBoardSizeFromUser();
 
-            while (playerName.Length > 20 || playerName.Length == 0)
-            {
-                Console.WriteLine("Invalid name size, please enter your name again...");
-                playerName = Console.ReadLine();
-            }
-
-            playerOne.Name = playerName;
-
-            Console.WriteLine("Enter the board size: (6/8/10) ");
-            while(!(int.TryParse(Console.ReadLine(),out boardSize)) || (boardSize!=6 && boardSize !=8 && boardSize != 10))
-            {
-                Console.WriteLine("Invalid board size, please enter the size again...");
-            }
+            m_PlayerOne.figuresNum = m_Board.Size;
+            m_PlayerOne.initFigures(0, m_Board.Size);
 
             Console.WriteLine("Choose your opponent: ");
             Console.WriteLine("1. Another player ");
             Console.WriteLine("2. The PC ");
 
             playerChoice = Console.ReadLine();
+
             while (playerChoice != "1" && playerChoice != "2")
             {
                 playerChoice = Console.ReadLine();
@@ -90,18 +84,10 @@ namespace B18_Ex02
 
             if (playerChoice == "1")
             {
-                playerTwo = new Player();
-                Console.WriteLine("Please enter the second player's name: ");
-                playerName = Console.ReadLine();
-
-                while (playerName.Length > 20 || playerName.Length == 0)
-                {
-                    Console.WriteLine("Invalid name size, please enter your name again...");
-                    playerName = Console.ReadLine();
-                }
-
-                playerTwo.Name = playerName;
-
+                AddNewPlayer();
+                m_PlayerTwo.figuresNum = m_Board.Size;
+                m_PlayerTwo.initFigures(m_PlayerOne.lastFigure.Row + 3, m_Board.Size);
+                m_Board.initBoard(m_PlayerOne, m_PlayerTwo);
             }
             else
             {
@@ -110,25 +96,53 @@ namespace B18_Ex02
                 return;
             }
 
-            while (playerChoice != "Exit")
-            {
-                Ex02.ConsoleUtils.Screen.Clear(); // clearing the screen for a new round
-                turnCounter++;
-                PrintGame();
-                if (turnCounter % 2 == 0) // first players turn
-                {
-                    Console.Write(playerOne.Name + "'s turn:");
-                }
-                else // second players turn
-                {
-                    Console.Write(playerTwo.Name + "'s turn:");
-                }
-
-                playerChoice = Console.ReadLine();
-            }
-
 
         }
 
+        public void AddNewPlayer()
+        {
+            string m_PlayerName;
+
+            Console.WriteLine("Please enter your name: ");
+            m_PlayerName = Console.ReadLine();
+
+            while (m_PlayerName.Length > 20 || m_PlayerName.Length == 0)
+            {
+                Console.WriteLine("Invalid name size, please enter your name again...");
+                m_PlayerName = Console.ReadLine();
+            }
+
+            if (m_TurnCounter == 0)
+            {
+                m_PlayerOne = new Player();
+                m_PlayerOne.Shape = 'X';
+                m_PlayerOne.Name = m_PlayerName;
+               
+            }
+            else
+            {
+                m_PlayerTwo = new Player();
+                m_PlayerTwo.Shape = 'O';
+                m_PlayerTwo.Name = m_PlayerName;
+            }
+
+            m_TurnCounter++;
+
+        }
+
+        public void getBoardSizeFromUser()
+        {
+            string playerChoice;
+
+            Console.WriteLine("Enter the board size: (6/8/10) ");
+            playerChoice = Console.ReadLine();
+            while (playerChoice != "6" && playerChoice != "8" && playerChoice != "10")
+            {
+                Console.WriteLine("Invalid board size, please enter the size again...");
+                playerChoice = Console.ReadLine();
+            }
+
+            m_Board = new Board(int.Parse(playerChoice));
+        }
     }
 }
