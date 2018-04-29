@@ -168,8 +168,8 @@ namespace B18_Ex02
 
         public List<Move> getObligatoryMoves(Board i_gameBoard)
         {
-            List<Move> obligatoryMoves = new List<Move>(); 
-
+            List<Move> obligatoryMoves = new List<Move>();
+            
             foreach (Figure currFigure in m_Figures)
             {
                 // TODO: Move in boundries func in board

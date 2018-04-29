@@ -188,7 +188,7 @@ namespace B18_Ex02
             return false;
         }
 
-        private bool isPositionValid(int i_Row, int i_Col)
+        public bool isPositionValid(int i_Row, int i_Col)
         {
             return (i_Row < m_BoardSize && i_Col < m_BoardSize && i_Row >= 0 && i_Col >= 0);
         }

@@ -64,18 +64,11 @@ namespace B18_Ex02
             }
         }
 
-        public void updateFigurePosAccordingToPlayerMove(string i_playerInput, bool isCurrent)
+        public void updateFigureWithString(string i_PlayerInput)
         {
             int i = 0;
-
-            if(!isCurrent)
-            {
-                i = 3;
-            }
-
-            i_playerInput = i_playerInput.Replace(" ", string.Empty);
-            this.m_Col = i_playerInput[i] - 'A';
-            this.m_Row = i_playerInput[++i] - 'a';      
+            this.m_Col = i_PlayerInput[i++] - 'A';
+            this.m_Row = i_PlayerInput[i] - 'a';      
         }
 
         public static bool operator ==(Figure i_FigureOne, Figure i_FigureTwo)

@@ -22,6 +22,7 @@ namespace B18_Ex02
             Console.WriteLine("Welcome to the game! ");
             this.initGame();
             string playerChoice = string.Empty;
+            bool isInputValid;
             bool playedObligatoryMove = false;
             Player.e_PlayerType currentPlayer;
 
@@ -173,14 +174,23 @@ namespace B18_Ex02
 
         public Move getUserInput()
         {
-            string playerChoice = Console.ReadLine();
-            bool isCurrent = true;
+            string playerInput = Console.ReadLine();
 
             Figure currentFigure = new Figure();
             Figure nextMoveFigure = new Figure();
 
-            currentFigure.updateFigurePosAccordingToPlayerMove(playerChoice, isCurrent);
-            nextMoveFigure.updateFigurePosAccordingToPlayerMove(playerChoice, !isCurrent);
+            playerInput = playerInput.Replace(" ", string.Empty);
+
+            while (playerInput.Length != 5 || playerInput[0] < 'A' || playerInput[0] > 'Z' || playerInput[2] != '>'
+                || playerInput[3] < 'A' || playerInput[3] > 'Z'  || playerInput[1] < 'a' || playerInput[3] > 'z'
+                || playerInput[4] < 'a' || playerInput[4] > 'z')
+            {
+                playerInput = Console.ReadLine();
+                playerInput = playerInput.Replace(" ", string.Empty);
+            }
+
+            currentFigure.updateFigureWithString(playerInput.Substring(0,2));
+            nextMoveFigure.updateFigureWithString(playerInput.Substring(3, 2));
 
             return new Move(currentFigure, nextMoveFigure);
         }
