@@ -181,18 +181,42 @@ namespace B18_Ex02
 
             playerInput = playerInput.Replace(" ", string.Empty);
 
-            while (playerInput.Length != 5 || playerInput[0] < 'A' || playerInput[0] > 'Z' || playerInput[2] != '>'
-                || playerInput[3] < 'A' || playerInput[3] > 'Z'  || playerInput[1] < 'a' || playerInput[3] > 'z'
-                || playerInput[4] < 'a' || playerInput[4] > 'z')
+
+            while (!isUserMoveValid(playerInput))
             {
                 playerInput = Console.ReadLine();
                 playerInput = playerInput.Replace(" ", string.Empty);
             }
 
+            //while (playerInput.Length != 5 || playerInput[0] < 'A' || playerInput[0] > 'Z' || playerInput[2] != '>'
+            //    || playerInput[3] < 'A' || playerInput[3] > 'Z'  || playerInput[1] < 'a' || playerInput[3] > 'z'
+            //    || playerInput[4] < 'a' || playerInput[4] > 'z')
+            //{
+            //    playerInput = Console.ReadLine();
+            //    playerInput = playerInput.Replace(" ", string.Empty);
+            //}
+
             currentFigure.updateFigureWithString(playerInput.Substring(0,2));
             nextMoveFigure.updateFigureWithString(playerInput.Substring(3, 2));
 
             return new Move(currentFigure, nextMoveFigure);
+        }
+
+        public bool isUserMoveValid(string i_playerMov)
+        {
+            bool test1, test2;
+
+            test1 = i_playerMov.Length == 5 && char.IsUpper(i_playerMov[0]) && i_playerMov[0] < ('A' + m_Board.Size) &&
+                    char.IsLower(i_playerMov[1]) && i_playerMov[0] < ('a' + m_Board.Size) && i_playerMov[2] == '>' &&
+                    char.IsUpper(i_playerMov[3]) && i_playerMov[3] < ('A' + m_Board.Size) &&
+                    char.IsLower(i_playerMov[4]) && i_playerMov[4] < ('a' + m_Board.Size);
+
+            test2 = Math.Abs(i_playerMov[0] - i_playerMov[3]) < 2 && Math.Abs(i_playerMov[1] - i_playerMov[4]) < 2;
+
+
+            return test1 && test2;
+
+
         }
 
         public void eliminateOpponent(Move i_UserInput, Player.e_PlayerType i_CurrentPlayer)
