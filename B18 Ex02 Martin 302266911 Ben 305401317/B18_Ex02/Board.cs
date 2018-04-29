@@ -24,8 +24,18 @@ namespace B18_Ex02
 
         public void PrintBoard()
         {
-            char currentChar = 'a';
+            char currentChar = 'A';
             int m_BoardRow = 0;
+
+            Console.Write(" ");
+
+            for (int j = 0; j < this.m_BoardSize; j++)
+            {
+                Console.Write("  " +currentChar+++" ");
+            }
+
+            Console.WriteLine();
+            currentChar = 'a';
 
             for (int i = 0; i < this.m_BoardSize * 2 + 1; i++)
             {
@@ -102,43 +112,54 @@ namespace B18_Ex02
         public List<Move> EliminationAvailable(int i_Row, int i_Col, Player.e_PlayerType i_currentPlayer)
         {
             int offsetCol = 1;  //X
-            int offsetRow = 1;  //Y
+            int offsetRow = -1;  //Y
+            int addition = 1;
             int currentPos;
             bool isPosValid;
             List<Move> eliminationList = new List<Move>();
             Figure currentFigure = new Figure(i_Row, i_Col);
 
+            //check right pos
+
             if (!(i_currentPlayer == Player.e_PlayerType.playerOne))
             {
-                offsetRow = -1;
+                addition = -1;
             }
 
-            isPosValid = isPositionValid(i_Row + offsetRow*2, i_Col + offsetRow*2);
-
+            isPosValid = isPositionValid(i_Row + offsetRow * (addition + 1), i_Col + offsetCol + 1);
             if (isPosValid)
             {
-                currentPos = m_BoardGame[i_Row + offsetRow, i_Col + offsetCol];
+                currentPos = m_BoardGame[i_Row + offsetRow * addition, i_Col + offsetCol];
                 if (currentPos != (int)i_currentPlayer && currentPos != (int)Player.e_PlayerType.none)
                 {
-                    currentPos = m_BoardGame[i_Row + offsetRow + 1, i_Col + offsetCol + 1];
+                    offsetCol++;
+                    offsetRow--;
+                    currentPos = m_BoardGame[i_Row + offsetRow*addition, i_Col + offsetCol];
+
                     if (currentPos == (int)Player.e_PlayerType.none)
                     {
-                        Move moveRight = new Move(currentFigure, new Figure(i_Row + offsetRow + 1, i_Col + offsetCol + 1));
+                        Move moveRight = new Move(currentFigure, new Figure(i_Row + offsetRow * addition, i_Col + offsetCol));
                         eliminationList.Add(moveRight);
                     }
                 }
             }
 
-            isPosValid = isPositionValid(i_Row - offsetRow - 1, i_Col + offsetRow + 1);
+            offsetCol = -1;
+            offsetRow = -1;
+            //check left pos
+            isPosValid = isPositionValid(i_Row + offsetRow* (addition + 1), i_Col + offsetCol - 1);
             if (isPosValid)
             {
-                currentPos = m_BoardGame[i_Row - offsetRow, i_Col + offsetCol];
-                if (currentPos == (int)Player.e_PlayerType.playerTwo)
+                currentPos = m_BoardGame[i_Row + offsetRow * addition, i_Col + offsetCol];
+                if (currentPos != (int)i_currentPlayer && currentPos != (int)Player.e_PlayerType.none)
                 {
-                    currentPos = m_BoardGame[i_Row - offsetRow - 1, i_Col + offsetCol + 1];
+                    offsetCol--;
+                    offsetRow--;
+                    currentPos = m_BoardGame[i_Row + offsetRow * addition, i_Col + offsetCol];
                     if (currentPos == (int)Player.e_PlayerType.none)
                     {
-                        Move moveLeft = new Move(currentFigure, new Figure(i_Row - offsetRow - 1, i_Col + offsetCol + 1));
+
+                        Move moveLeft = new Move(currentFigure, new Figure(i_Row + offsetRow * addition, i_Col + offsetCol));
                         eliminationList.Add(moveLeft);
                     }
                 }

@@ -44,14 +44,14 @@ namespace B18_Ex02
                 }
 
                 Move inputMove = getUserInput();
-
-                if (obligatoryMoves.Count != 0 )  ///Player Must Kill the rival 
+                
+                if (obligatoryMoves.Count != 0 )  /// Player Must Kill the rival 
                 {
                     while (!playedObligatoryMove)
                     {
                         foreach (Move optionaObligatorylMove in obligatoryMoves)
                         {
-                            if (optionaObligatorylMove == inputMove)
+                            if (optionaObligatorylMove.Equals(inputMove))
                             {
                                 eliminateOpponent(inputMove,currentPlayer);
                                 playedObligatoryMove = true;
@@ -65,13 +65,20 @@ namespace B18_Ex02
                         } 
                     }
                 }
-                else // Player can play normal
+                else // Player can move normally
                 {
                     m_Board.updateBoardAfterMove(inputMove, currentPlayer);
+                    if (currentPlayer == Player.e_PlayerType.playerOne) // player one
+                    {
+                        m_PlayerOne.UpdateFigure(inputMove);
+                    }
+                    else
+                    {
+                        m_PlayerTwo.UpdateFigure(inputMove);
+                    }
                 }
 
                 playedObligatoryMove = false;
-                m_Board.PrintBoard();
                 this.m_TurnCounter++;
             }
         }

@@ -191,5 +191,18 @@ namespace B18_Ex02
             }
         }
 
+        public void UpdateFigure(Move i_PlayerMove)
+        {
+            foreach(Figure currentFigure in m_Figures)
+            {
+                if(currentFigure.Equals(i_PlayerMove.FigureFrom))
+                {
+                    currentFigure.Col = i_PlayerMove.FigureTo.Col;
+                    currentFigure.Row = i_PlayerMove.FigureTo.Row;
+                    break;
+                }
+            }
+        }
+
     }
 }
