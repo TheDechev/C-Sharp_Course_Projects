@@ -93,6 +93,11 @@ namespace B18_Ex02
             }
         }
 
+        public Player.e_PlayerType getSquareStatus(int i_Row, int i_Class)
+        {
+            return (Player.e_PlayerType)m_BoardGame[i_Row, i_Class];
+        }
+
         public void initBoard(Player i_PlayerOne, Player i_PlayerTwo)
         {
             for (int i = 0; i < i_PlayerOne.figuresNum; i++)
@@ -168,14 +173,28 @@ namespace B18_Ex02
             return eliminationList;
         }
 
-        public bool updateBoardAfterMove(Move i_UserMove, Player.e_PlayerType i_WhichPlayer)
+        public bool updateBoardAfterMove(Move i_UserMove, Player.e_PlayerType i_WhichPlayer, bool needToEliminate)
         {
-            bool fromUpdate, toUpdate;
-            
-            fromUpdate = updateBoard(i_UserMove.FigureFrom.Row, i_UserMove.FigureFrom.Col, Player.e_PlayerType.none);
-            toUpdate = updateBoard(i_UserMove.FigureTo.Row, i_UserMove.FigureTo.Col, i_WhichPlayer);
+            int areaCheck = 1;
 
-            return fromUpdate && toUpdate;
+            if (needToEliminate)
+            {
+                areaCheck++;
+            }
+
+            if( Math.Abs(i_UserMove.FigureFrom.Row - i_UserMove.FigureTo.Row) <= areaCheck &&
+                Math.Abs(i_UserMove.FigureFrom.Col - i_UserMove.FigureTo.Col) <= areaCheck)
+            {
+                if (getSquareStatus(i_UserMove.FigureTo.Row, i_UserMove.FigureTo.Col) == Player.e_PlayerType.none &&
+    getSquareStatus(i_UserMove.FigureFrom.Row, i_UserMove.FigureFrom.Col) == i_WhichPlayer)
+                {
+                    updateBoard(i_UserMove.FigureFrom.Row, i_UserMove.FigureFrom.Col, Player.e_PlayerType.none);
+                    updateBoard(i_UserMove.FigureTo.Row, i_UserMove.FigureTo.Col, i_WhichPlayer);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool updateBoard(int i_Row, int i_Col, Player.e_PlayerType i_Value )
@@ -190,7 +209,15 @@ namespace B18_Ex02
 
         public bool isPositionValid(int i_Row, int i_Col)
         {
+            //TODO: add the check for -1 (unavailble space)
             return (i_Row < m_BoardSize && i_Col < m_BoardSize && i_Row >= 0 && i_Col >= 0);
         }
+        
+        public bool isFreeSpace(int i_Row, int i_Col)
+        {
+            return m_BoardGame[i_Row, i_Col] == (int)Player.e_PlayerType.none;
+        }   
     }
+
+    
 }

@@ -22,7 +22,7 @@ namespace B18_Ex02
             Console.WriteLine("Welcome to the game! ");
             this.initGame();
             string playerChoice = string.Empty;
-            bool isInputValid;
+            bool movedSuccesfully = true;
             bool playedObligatoryMove = false;
             Player.e_PlayerType currentPlayer;
 
@@ -68,7 +68,14 @@ namespace B18_Ex02
                 }
                 else // Player can move normally
                 {
-                    m_Board.updateBoardAfterMove(inputMove, currentPlayer);
+
+                    movedSuccesfully = m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
+                    while (!movedSuccesfully)
+                    {
+                        Console.WriteLine("Invalid move, try again . . .");
+                        inputMove = getUserInput();
+                        movedSuccesfully = m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
+                    }
                     if (currentPlayer == Player.e_PlayerType.playerOne) // player one
                     {
                         m_PlayerOne.UpdateFigure(inputMove);
@@ -188,14 +195,6 @@ namespace B18_Ex02
                 playerInput = playerInput.Replace(" ", string.Empty);
             }
 
-            //while (playerInput.Length != 5 || playerInput[0] < 'A' || playerInput[0] > 'Z' || playerInput[2] != '>'
-            //    || playerInput[3] < 'A' || playerInput[3] > 'Z'  || playerInput[1] < 'a' || playerInput[3] > 'z'
-            //    || playerInput[4] < 'a' || playerInput[4] > 'z')
-            //{
-            //    playerInput = Console.ReadLine();
-            //    playerInput = playerInput.Replace(" ", string.Empty);
-            //}
-
             currentFigure.updateFigureWithString(playerInput.Substring(0,2));
             nextMoveFigure.updateFigureWithString(playerInput.Substring(3, 2));
 
@@ -204,24 +203,29 @@ namespace B18_Ex02
 
         public bool isUserMoveValid(string i_playerMov)
         {
-            bool test1, test2;
 
-            test1 = i_playerMov.Length == 5 && char.IsUpper(i_playerMov[0]) && i_playerMov[0] < ('A' + m_Board.Size) &&
+
+            return i_playerMov.Length == 5 && char.IsUpper(i_playerMov[0]) && i_playerMov[0] < ('A' + m_Board.Size) &&
                     char.IsLower(i_playerMov[1]) && i_playerMov[0] < ('a' + m_Board.Size) && i_playerMov[2] == '>' &&
                     char.IsUpper(i_playerMov[3]) && i_playerMov[3] < ('A' + m_Board.Size) &&
                     char.IsLower(i_playerMov[4]) && i_playerMov[4] < ('a' + m_Board.Size);
-
-            test2 = Math.Abs(i_playerMov[0] - i_playerMov[3]) < 2 && Math.Abs(i_playerMov[1] - i_playerMov[4]) < 2;
-
-
-            return test1 && test2;
 
 
         }
 
         public void eliminateOpponent(Move i_UserInput, Player.e_PlayerType i_CurrentPlayer)
         {
-            ///bool isUpdateSuccesful;
+            bool movedSuccesfully;
+            // TODO: Move to a function
+            movedSuccesfully = m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
+
+            while (!movedSuccesfully)
+            {
+                Console.WriteLine("Invalid move, try again . . .");
+                i_UserInput = getUserInput();
+                movedSuccesfully = m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
+            }
+
             int opponnentCol = ((i_UserInput.FigureTo.Col - i_UserInput.FigureFrom.Col) / 2) + i_UserInput.FigureFrom.Col;
             int opponnentRow = ((i_UserInput.FigureTo.Row - i_UserInput.FigureFrom.Row) / 2) + +i_UserInput.FigureFrom.Row;
 
@@ -236,7 +240,8 @@ namespace B18_Ex02
                 m_PlayerOne.deleteFigure(new Figure(opponnentRow, opponnentCol));
             }
 
-            m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer);
+
+
 
         }
     }
