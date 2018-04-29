@@ -9,7 +9,10 @@ namespace B18_Ex02
     public class Figure
     {
         private int m_Row;
+
         private int m_Col;
+
+        private bool m_IsKing = false;
 
         public Figure(int i_Row, int i_Col)
         {
@@ -21,6 +24,18 @@ namespace B18_Ex02
         {
             this.m_Row = -1;
             this.m_Col = -1;
+        }
+
+        public bool IsKing
+        {
+            set
+            {
+                this.m_IsKing = value;
+            }
+            get
+            {
+                return this.m_IsKing;
+            }
         }
 
         public int Row
@@ -61,6 +76,27 @@ namespace B18_Ex02
             i_playerInput = i_playerInput.Replace(" ", string.Empty);
             this.m_Col = i_playerInput[i] - 'A';
             this.m_Row = i_playerInput[++i] - 'a';      
+        }
+
+        public static bool operator ==(Figure i_FigureOne, Figure i_FigureTwo)
+        {
+            return (i_FigureOne.Row == i_FigureTwo.Row && i_FigureOne.Col == i_FigureTwo.Col);
+        }
+
+        public static bool operator !=(Figure i_FigureOne, Figure i_FigureTwo)
+        {
+            return (i_FigureOne.Row != i_FigureTwo.Row || i_FigureOne.Col != i_FigureTwo.Col);
+        }
+
+        public override bool Equals(object i_Figure)
+        {
+            if (i_Figure == null || i_Figure.GetType() != GetType())
+            {
+                return false;
+            }
+
+            Figure movObj = (Figure)i_Figure;
+            return this == movObj;
         }
     }
 }

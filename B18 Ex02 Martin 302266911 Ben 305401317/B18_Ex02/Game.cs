@@ -8,12 +8,6 @@ namespace B18_Ex02
 {
     public class Game
     {
-        private enum e_PlayerIndicator
-        {
-            playerOne = 1,
-            playerTwo = 2
-        }
-
         private Player m_PlayerOne;
 
         private Player m_PlayerTwo;
@@ -24,10 +18,13 @@ namespace B18_Ex02
    
         public void StartGame()
         {
+            List<Move> obligatoryMoves;
             Console.WriteLine("Welcome to the game! ");
             this.initGame();
             string playerChoice = string.Empty;
-            
+            bool playedObligatoryMove = false;
+            Player.e_PlayerType currentPlayer;
+
             while (playerChoice != "Exit")
             {
                 Ex02.ConsoleUtils.Screen.Clear(); // clearing the screen for a new round
@@ -35,35 +32,46 @@ namespace B18_Ex02
 
                 if (this.m_TurnCounter % 2 == 0)
                 {// first players turn
+                    currentPlayer = Player.e_PlayerType.playerOne;
                     Console.Write(this.m_PlayerOne.Name + "'s turn:");
+                    obligatoryMoves = m_PlayerOne.getObligatoryMoves(m_Board);
                 }
                 else
                 {// second players turn
+                    currentPlayer = Player.e_PlayerType.playerTwo;
                     Console.Write(this.m_PlayerTwo.Name + "'s turn:");
+                    obligatoryMoves = m_PlayerTwo.getObligatoryMoves(m_Board);
                 }
 
-                playerChoice = Console.ReadLine();
-                bool isCurrent = true;
-                Figure currentFigure = new Figure();
-                Figure nextMoveFigure = new Figure();
+                Move inputMove = getUserInput();
 
-                currentFigure.updateFigurePosAccordingToPlayerMove(playerChoice, isCurrent);
-                nextMoveFigure.updateFigurePosAccordingToPlayerMove(playerChoice, !isCurrent);
-
-                //player enters string : currentPos / nextPos
-                //(has figure there)
-                currentFigure = this.m_PlayerTwo.checkExistance(5, 4);
-
-                if (currentFigure != null)
+                if (obligatoryMoves.Count != 0 )  ///Player Must Kill the rival 
                 {
-                    if (this.m_Board.isEmptySpot(6, 5))
+                    while (!playedObligatoryMove)
                     {
-                        currentFigure.Row = 6;
-                        currentFigure.Col = 5;
-                        this.m_Board.updateBoard(5, 4, 6, 5, (int)e_PlayerIndicator.playerTwo);
+                        foreach (Move optionaObligatorylMove in obligatoryMoves)
+                        {
+                            if (optionaObligatorylMove == inputMove)
+                            {
+                                eliminateOpponent(inputMove,currentPlayer);
+                                playedObligatoryMove = true;
+                                break;
+                            }
+                        }
+                        if(!playedObligatoryMove)
+                        {
+                            Console.WriteLine("Invalid move, you must eliminate your opponnent");
+                            inputMove = getUserInput();
+                        } 
                     }
                 }
+                else // Player can play normal
+                {
+                    m_Board.updateBoardAfterMove(inputMove, currentPlayer);
+                }
 
+                playedObligatoryMove = false;
+                m_Board.PrintBoard();
                 this.m_TurnCounter++;
             }
         }
@@ -72,12 +80,12 @@ namespace B18_Ex02
         {
             string playerChoice;
 
-            this.AddNewPlayer();
+            this.AddNewPlayer(Player.e_PlayerType.playerOne);
 
             this.getBoardSizeFromUser();
 
             this.m_PlayerOne.figuresNum = this.m_Board.Size;
-            this.m_PlayerOne.initFigures(0, this.m_Board.Size);
+            this.m_PlayerOne.initFigures(Player.e_PlayerType.playerOne, this.m_Board.Size);
 
             Console.WriteLine("Choose your opponent: ");
             Console.WriteLine("1. Another player ");
@@ -92,9 +100,9 @@ namespace B18_Ex02
 
             if (playerChoice == "1")
             {
-                this.AddNewPlayer();
+                this.AddNewPlayer(Player.e_PlayerType.playerTwo);
                 this.m_PlayerTwo.figuresNum = this.m_Board.Size;
-                this.m_PlayerTwo.initFigures(this.m_PlayerOne.lastFigure.Row + 3, this.m_Board.Size);
+                this.m_PlayerTwo.initFigures(Player.e_PlayerType.playerTwo, this.m_Board.Size);
                 this.m_Board.initBoard(this.m_PlayerOne, this.m_PlayerTwo);
             }
             else
@@ -105,33 +113,40 @@ namespace B18_Ex02
             }
         }
 
-        public void AddNewPlayer()
+        public void AddNewPlayer(Player.e_PlayerType playerType)
         {
-            string m_PlayerName;
+            string m_PlayerName = string.Empty;
 
-            Console.WriteLine("Please enter your name: ");
-            m_PlayerName = Console.ReadLine();
-
-            while (m_PlayerName.Length > 20 || m_PlayerName.Length == 0)
+            if (playerType != Player.e_PlayerType.playerPC)
             {
-                Console.WriteLine("Invalid name size, please enter your name again...");
+
+                Console.WriteLine("Please enter your name: ");
                 m_PlayerName = Console.ReadLine();
+
+                while (m_PlayerName.Length > 20 || m_PlayerName.Length == 0)
+                {
+                    Console.WriteLine("Invalid name size, please enter your name again...");
+                    m_PlayerName = Console.ReadLine();
+                }
             }
 
-            if (this.m_TurnCounter == 0)
+            if (playerType == Player.e_PlayerType.playerOne)
             {
                 this.m_PlayerOne = new Player();
                 this.m_PlayerOne.Shape = 'X';
                 this.m_PlayerOne.Name = m_PlayerName;
+                this.m_PlayerOne.PlayerType = Player.e_PlayerType.playerOne;
             }
-            else
+            else if(playerType == Player.e_PlayerType.playerTwo)
             {
                 this.m_PlayerTwo = new Player();
                 this.m_PlayerTwo.Shape = 'O';
                 this.m_PlayerTwo.Name = m_PlayerName;
+                this.m_PlayerTwo.PlayerType = Player.e_PlayerType.playerTwo;
             }
-
-            this.m_TurnCounter++;
+            else
+            {//// TODO: PC implemantion 
+            }
         }
 
         public void getBoardSizeFromUser()
@@ -147,6 +162,41 @@ namespace B18_Ex02
             }
 
             this.m_Board = new Board(int.Parse(playerChoice));
+        }
+
+        public Move getUserInput()
+        {
+            string playerChoice = Console.ReadLine();
+            bool isCurrent = true;
+
+            Figure currentFigure = new Figure();
+            Figure nextMoveFigure = new Figure();
+
+            currentFigure.updateFigurePosAccordingToPlayerMove(playerChoice, isCurrent);
+            nextMoveFigure.updateFigurePosAccordingToPlayerMove(playerChoice, !isCurrent);
+
+            return new Move(currentFigure, nextMoveFigure);
+        }
+
+        public void eliminateOpponent(Move i_UserInput, Player.e_PlayerType i_CurrentPlayer)
+        {
+            ///bool isUpdateSuccesful;
+            int opponnentCol = ((i_UserInput.FigureTo.Col - i_UserInput.FigureFrom.Col) / 2) + i_UserInput.FigureFrom.Col;
+            int opponnentRow = ((i_UserInput.FigureTo.Row - i_UserInput.FigureFrom.Row) / 2) + +i_UserInput.FigureFrom.Row;
+
+            m_Board.updateBoard(opponnentRow, opponnentCol, Player.e_PlayerType.none);
+
+            if (i_CurrentPlayer == Player.e_PlayerType.playerOne)
+            {
+                m_PlayerTwo.deleteFigure(new Figure(opponnentRow, opponnentCol));
+            }
+            else
+            {
+                m_PlayerOne.deleteFigure(new Figure(opponnentRow, opponnentCol));
+            }
+
+            m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer);
+
         }
     }
 }

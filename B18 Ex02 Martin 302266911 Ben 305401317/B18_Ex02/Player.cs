@@ -8,11 +8,22 @@ namespace B18_Ex02
 {
     public class Player
     {
+        public enum e_PlayerType
+        {
+            none,
+            playerOne,
+            playerTwo,
+            playerPC
+        }
+
         private string m_Name;
-        private int m_FigureCount;
-        ////private int m_Score;
-        ////private bool m_IsComputer = false;
+
+        private e_PlayerType m_PlayerType;
+
+        private int m_Score;
+
         private char m_Shape;
+
         private List<Figure> m_Figures;
 
         public Figure lastFigure
@@ -23,24 +34,48 @@ namespace B18_Ex02
             }
         }
 
+        public int Score
+        {
+            get
+            {
+                return this.m_Score;
+            }
+            set
+            {
+                this.m_Score = value;
+            }
+        }
+
         public int figuresNum
         {
             get
             {
-                return this.m_FigureCount;
+                return this.m_Figures.Count;
             }
 
             set
             {
-                if(this.m_FigureCount == 0)
+                if(this.m_Figures == null)
                 {
-                    this.m_FigureCount = ((value - 2) / 2) * (value / 2);
-                    this.m_Figures = new List<Figure>(this.m_FigureCount);
+                    int figuresCount = ((value - 2) / 2) * (value / 2);
+                    this.m_Figures = new List<Figure>(figuresCount);
                 }
                 else
                 {
                     Console.WriteLine("Invalid size");
                 }
+            }
+        }
+
+        public e_PlayerType PlayerType
+        {
+            get
+            {
+                return this.m_PlayerType;
+            }
+            set
+            {
+                m_PlayerType = value;
             }
         }
 
@@ -70,35 +105,37 @@ namespace B18_Ex02
             }
         }
 
-        public void initFigures(int i_StartLine, int i_BoardSize)
+        public void initFigures(Player.e_PlayerType currentPlayer, int i_BoardSize)
         {
             int m_figuresOnRowCounter = 0;
             int m_currentCol;
-            int m_currentRow = i_StartLine;
+            int m_currentRow;
 
-            if(i_StartLine == 0)
-            {////second player
-                m_currentCol = 1;
+            if(currentPlayer == Player.e_PlayerType.playerOne)
+            {
+                m_currentCol = 0;
+                m_currentRow = i_BoardSize / 2 + 1;
             }
             else
-            {////first player
-                m_currentCol = 0;
+            {
+                m_currentCol = 1;
+                m_currentRow = 0;
             }
 
-            for (int i = 0; i < this.m_FigureCount; i++)
+            for (int i = 0; i < this.m_Figures.Capacity; i++)
             {
                 if(m_figuresOnRowCounter == i_BoardSize / 2)
                 {
                     m_figuresOnRowCounter = 0;
                     m_currentRow++;
                     
-                    if(m_currentCol == i_BoardSize + 1)
+                    if(m_currentCol == i_BoardSize)
                     {
-                        m_currentCol = 0;
+                        m_currentCol = 1;
                     }
                     else
                     {
-                        m_currentCol = 1;
+                        m_currentCol = 0;
                     }
                 }
                 
@@ -128,5 +165,31 @@ namespace B18_Ex02
 
             return null;  
         }
+
+        public List<Move> getObligatoryMoves(Board i_gameBoard)
+        {
+            List<Move> obligatoryMoves = new List<Move>(); 
+
+            foreach (Figure currFigure in m_Figures)
+            {
+                // TODO: Move in boundries func in board
+                    obligatoryMoves.AddRange(i_gameBoard.EliminationAvailable(currFigure.Row, currFigure.Col, this.m_PlayerType));
+            }
+
+            return obligatoryMoves;
+        }
+
+        public void deleteFigure(Figure i_FigureToDelete)
+        {
+            foreach (Figure currFigure in m_Figures)
+            {
+                if (i_FigureToDelete == currFigure)
+                { 
+                    m_Figures.Remove(currFigure);
+                    break;
+                }
+            }
+        }
+
     }
 }

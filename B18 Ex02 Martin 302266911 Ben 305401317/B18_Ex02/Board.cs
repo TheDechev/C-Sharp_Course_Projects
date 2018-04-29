@@ -12,12 +12,6 @@ namespace B18_Ex02
 
         private const int k_DefaultBoardSize = 8;
 
-        private enum e_PlayerIndicator
-        {
-            playerOne = 1,
-            playerTwo = 2
-        }
-
         private int m_BoardSize = k_DefaultBoardSize;
 
         private int[,] m_BoardGame;
@@ -51,13 +45,13 @@ namespace B18_Ex02
                         Console.Write("| ");
                         //// the figures logic
 
-                        if (this.m_BoardGame[m_BoardRow, j] == (int) e_PlayerIndicator.playerOne) 
-                        {
-                            Console.Write("O ");
-                        }
-                        else if (this.m_BoardGame[m_BoardRow, j] == (int)e_PlayerIndicator.playerTwo)
+                        if (this.m_BoardGame[m_BoardRow, j] == (int) Player.e_PlayerType.playerOne) 
                         {
                             Console.Write("X ");
+                        }
+                        else if (this.m_BoardGame[m_BoardRow, j] == (int)Player.e_PlayerType.playerTwo)
+                        {
+                            Console.Write("O ");
                         }
                         else
                         {
@@ -93,32 +87,89 @@ namespace B18_Ex02
         {
             for (int i = 0; i < i_PlayerOne.figuresNum; i++)
             {
-                this.m_BoardGame[i_PlayerOne.getFigure(i).Row, i_PlayerOne.getFigure(i).Col] = (int)e_PlayerIndicator.playerOne;
+                this.m_BoardGame[i_PlayerOne.getFigure(i).Row, i_PlayerOne.getFigure(i).Col] = (int)Player.e_PlayerType.playerOne;
             }
 
             if(!(i_PlayerTwo == null))
             {
                 for (int i = 0; i < i_PlayerTwo.figuresNum; i++)
                 {
-                    this.m_BoardGame[i_PlayerTwo.getFigure(i).Row, i_PlayerTwo.getFigure(i).Col] = (int)e_PlayerIndicator.playerTwo;
+                    this.m_BoardGame[i_PlayerTwo.getFigure(i).Row, i_PlayerTwo.getFigure(i).Col] = (int)Player.e_PlayerType.playerTwo;
                 }
             }
         }
 
-        public bool isEmptySpot(int i_Row, int i_Col)
+        public List<Move> EliminationAvailable(int i_Row, int i_Col, Player.e_PlayerType i_currentPlayer)
         {
-            if(this.m_BoardGame[i_Row, i_Col] == 0)
+            int offsetCol = 1;  //X
+            int offsetRow = 1;  //Y
+            int currentPos;
+            bool isPosValid;
+            List<Move> eliminationList = new List<Move>();
+            Figure currentFigure = new Figure(i_Row, i_Col);
+
+            if (!(i_currentPlayer == Player.e_PlayerType.playerOne))
             {
-                return true;
+                offsetRow = -1;
             }
 
+            isPosValid = isPositionValid(i_Row + offsetRow*2, i_Col + offsetRow*2);
+
+            if (isPosValid)
+            {
+                currentPos = m_BoardGame[i_Row + offsetRow, i_Col + offsetCol];
+                if (currentPos != (int)i_currentPlayer && currentPos != (int)Player.e_PlayerType.none)
+                {
+                    currentPos = m_BoardGame[i_Row + offsetRow + 1, i_Col + offsetCol + 1];
+                    if (currentPos == (int)Player.e_PlayerType.none)
+                    {
+                        Move moveRight = new Move(currentFigure, new Figure(i_Row + offsetRow + 1, i_Col + offsetCol + 1));
+                        eliminationList.Add(moveRight);
+                    }
+                }
+            }
+
+            isPosValid = isPositionValid(i_Row - offsetRow - 1, i_Col + offsetRow + 1);
+            if (isPosValid)
+            {
+                currentPos = m_BoardGame[i_Row - offsetRow, i_Col + offsetCol];
+                if (currentPos == (int)Player.e_PlayerType.playerTwo)
+                {
+                    currentPos = m_BoardGame[i_Row - offsetRow - 1, i_Col + offsetCol + 1];
+                    if (currentPos == (int)Player.e_PlayerType.none)
+                    {
+                        Move moveLeft = new Move(currentFigure, new Figure(i_Row - offsetRow - 1, i_Col + offsetCol + 1));
+                        eliminationList.Add(moveLeft);
+                    }
+                }
+            }
+
+            return eliminationList;
+        }
+
+        public bool updateBoardAfterMove(Move i_UserMove, Player.e_PlayerType i_WhichPlayer)
+        {
+            bool fromUpdate, toUpdate;
+            
+            fromUpdate = updateBoard(i_UserMove.FigureFrom.Row, i_UserMove.FigureFrom.Col, Player.e_PlayerType.none);
+            toUpdate = updateBoard(i_UserMove.FigureTo.Row, i_UserMove.FigureTo.Col, i_WhichPlayer);
+
+            return fromUpdate && toUpdate;
+        }
+
+        public bool updateBoard(int i_Row, int i_Col, Player.e_PlayerType i_Value )
+        {
+            if (isPositionValid(i_Row, i_Col))
+            {
+                this.m_BoardGame[i_Row, i_Col] = (int)i_Value;
+                return true;
+            }
             return false;
         }
 
-        public void updateBoard(int i_PrevRow, int i_PrevCol, int i_NextRow, int i_nextCol, int i_WhichPlayer)
+        private bool isPositionValid(int i_Row, int i_Col)
         {
-            this.m_BoardGame[i_PrevRow, i_PrevCol] = 0;
-            this.m_BoardGame[i_NextRow, i_nextCol] = i_WhichPlayer;
+            return (i_Row < m_BoardSize && i_Col < m_BoardSize && i_Row >= 0 && i_Col >= 0);
         }
     }
 }
