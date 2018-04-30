@@ -91,6 +91,18 @@ namespace B18_Ex02
                     return;
                 }
 
+
+                if(m_PlayerOne.figuresNum == 0)
+                {
+                    Console.WriteLine(m_PlayerTwo.Name + " lost.");
+                    return;
+                } 
+                else if(m_PlayerTwo.figuresNum == 0)
+                {
+                    Console.WriteLine(m_PlayerOne.Name + " lost.");
+                    return;
+                }
+
                 this.m_TurnCounter++;
             }
         }
@@ -291,6 +303,10 @@ namespace B18_Ex02
             Figure figureToDelete;
             bool movedSuccesfully;
             // TODO: Move to a function
+
+            int opponnentCol = ((i_UserInput.FigureTo.Col - i_UserInput.FigureFrom.Col) / 2) + i_UserInput.FigureFrom.Col;
+            int opponnentRow = ((i_UserInput.FigureTo.Row - i_UserInput.FigureFrom.Row) / 2) + +i_UserInput.FigureFrom.Row;
+
             movedSuccesfully = m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
 
             while (!movedSuccesfully)
@@ -298,10 +314,9 @@ namespace B18_Ex02
                 Console.WriteLine("Invalid move, try again . . .");
                 i_UserInput = getUserInput();
                 movedSuccesfully = m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
+                opponnentCol = ((i_UserInput.FigureTo.Col - i_UserInput.FigureFrom.Col) / 2) + i_UserInput.FigureFrom.Col;
+                opponnentRow = ((i_UserInput.FigureTo.Row - i_UserInput.FigureFrom.Row) / 2) + +i_UserInput.FigureFrom.Row;
             }
-
-            int opponnentCol = ((i_UserInput.FigureTo.Col - i_UserInput.FigureFrom.Col) / 2) + i_UserInput.FigureFrom.Col;
-            int opponnentRow = ((i_UserInput.FigureTo.Row - i_UserInput.FigureFrom.Row) / 2) + +i_UserInput.FigureFrom.Row;
 
             m_Board.updateBoard(opponnentRow, opponnentCol, Figure.e_SquareType.none);
             figureToDelete = new Figure(opponnentRow, opponnentCol);
@@ -358,7 +373,15 @@ namespace B18_Ex02
                     {
                         m_Board.PrintBoard();
                         Console.WriteLine(i_CurrentPlayer.Name + " has another turn");
-                        i_InputMove = getUserInput();
+                        if(i_CurrentPlayer.PlayerType == Figure.e_SquareType.playerPC)
+                        {
+                            i_InputMove = i_CurrentPlayer.RandomObligatoryMove;
+                        }
+                        else
+                        {
+                            i_InputMove = getUserInput();
+                        }
+                        
                     }
                 }
                 else
