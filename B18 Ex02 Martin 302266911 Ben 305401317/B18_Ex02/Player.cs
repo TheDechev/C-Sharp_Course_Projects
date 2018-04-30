@@ -9,6 +9,7 @@ namespace B18_Ex02
     public class Player
     {
 
+        private List<Move> m_ObligatoryMoves;
 
         private string m_Name;
 
@@ -18,13 +19,23 @@ namespace B18_Ex02
 
         private char m_Shape;
 
-        private List<Figure> m_Figures;
+        private bool hasAvailableMoves = true;
 
-        public Figure lastFigure
+        public bool hasAvailableMove
         {
             get
             {
-                return this.m_Figures.Last();
+                return hasAvailableMoves;
+            }
+        }
+
+        private List<Figure> m_Figures;
+
+        public int ObligatoryMovesCount
+        {
+            get
+            {
+                return this.m_ObligatoryMoves.Count;
             }
         }
 
@@ -134,7 +145,6 @@ namespace B18_Ex02
                 }
                 
                 m_figuresOnRowCounter++;
-                Console.WriteLine("Row:" + m_currentRow + " Col:" + m_currentCol);
                 this.m_Figures.Add(new Figure(m_currentRow, m_currentCol));
                 m_currentCol += 2;
             }
@@ -160,17 +170,15 @@ namespace B18_Ex02
             return null;  
         }
 
-        public List<Move> getObligatoryMoves(Board i_gameBoard)
+        public void UpdateObligatoryMoves(Board i_GameBoard)
         {
-            List<Move> obligatoryMoves = new List<Move>();
+            this.m_ObligatoryMoves = new List<Move>();
             
             foreach (Figure currFigure in m_Figures)
             {
-                // TODO: Move in boundries func in board
-                    obligatoryMoves.AddRange(i_gameBoard.EliminationAvailable(currFigure.Row, currFigure.Col, this.m_PlayerType));
+                this.m_ObligatoryMoves.AddRange(i_GameBoard.EliminationAvailable(currFigure, this.m_PlayerType));
             }
 
-            return obligatoryMoves;
         }
 
         public void deleteFigure(Figure i_FigureToDelete)
@@ -185,7 +193,7 @@ namespace B18_Ex02
             }
         }
 
-        public void UpdateFigure(Move i_PlayerMove)
+        public void UpdateFigure(Move i_PlayerMove, int i_BoardSize)
         {
             foreach(Figure currentFigure in m_Figures)
             {
@@ -193,9 +201,54 @@ namespace B18_Ex02
                 {
                     currentFigure.Col = i_PlayerMove.FigureTo.Col;
                     currentFigure.Row = i_PlayerMove.FigureTo.Row;
+                    if (PlayerType == Figure.e_SquareType.playerOne)
+                    {
+                        if (currentFigure.Row == 0)
+                        {
+                            currentFigure.IsKing = true;
+                        }
+                    }
+                    else
+                    {
+                        if (currentFigure.Row == i_BoardSize - 1)
+                        {
+                            currentFigure.IsKing = true;
+                        }
+                    }
                     break;
                 }
             }
+        }
+
+        public bool isMoveObligatory(Move i_UserInput)
+        {
+            foreach (Move optionaObligatorylMove in m_ObligatoryMoves)
+            {
+                if (optionaObligatorylMove.Equals(i_UserInput))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void UpdateAvailableMovesIndicator(Board i_GameBoard)
+        {
+            Figure leftFig,rightFig;
+
+            foreach(Figure currentFigure in m_Figures)
+            {
+                leftFig = i_GameBoard.GetSquareInDirection(currentFigure, PlayerType, Board.e_Direction.Left);
+                rightFig = i_GameBoard.GetSquareInDirection(currentFigure, PlayerType, Board.e_Direction.Right);
+                if (i_GameBoard.getSquareStatus(leftFig) == Figure.e_SquareType.none || i_GameBoard.getSquareStatus(rightFig) == Figure.e_SquareType.none)
+                {
+                    hasAvailableMoves = true;
+                    return;
+                }
+            }
+
+            hasAvailableMoves = false;
+
         }
 
     }

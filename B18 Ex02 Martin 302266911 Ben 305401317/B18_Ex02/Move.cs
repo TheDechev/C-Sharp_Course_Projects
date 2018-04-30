@@ -60,5 +60,7 @@ namespace B18_Ex02
             Move movObj = (Move)i_Move;
             return this == movObj;
         }
+
+        
     }
 }
