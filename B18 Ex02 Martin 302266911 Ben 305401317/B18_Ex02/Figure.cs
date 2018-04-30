@@ -21,6 +21,8 @@ namespace B18_Ex02
             playerOne,
             playerTwo,
             playerPC,
+            playerOneKing,
+            playerTwoKing
             
         }
 
@@ -101,5 +103,6 @@ namespace B18_Ex02
             Figure movObj = (Figure)i_Figure;
             return this == movObj;
         }
+
     }
 }

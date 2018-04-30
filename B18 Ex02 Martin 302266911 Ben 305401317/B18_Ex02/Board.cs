@@ -11,8 +11,10 @@ namespace B18_Ex02
 
         public enum e_Direction
         {
-            Left,
-            Right 
+            TopLeft,
+            TopRight,
+            BottomLeft,
+            BottomRight
         }
 
         private const int k_RequiredSpaceForFigure = 4;
@@ -67,9 +69,17 @@ namespace B18_Ex02
                         {
                             Console.Write("X ");
                         }
-                        else if (this.m_BoardGame[m_BoardRow, j] == (int)Figure.e_SquareType.playerTwo)
+                        else if (this.m_BoardGame[m_BoardRow, j] == (int)Figure.e_SquareType.playerTwo || this.m_BoardGame[m_BoardRow, j] == (int)Figure.e_SquareType.playerPC)
                         {
                             Console.Write("O ");
+                        }
+                        else if (this.m_BoardGame[m_BoardRow, j] == (int)Figure.e_SquareType.playerOneKing)
+                        {
+                            Console.Write("K ");
+                        }
+                        else if (this.m_BoardGame[m_BoardRow, j] == (int)Figure.e_SquareType.playerTwoKing)
+                        {
+                            Console.Write("U ");
                         }
                         else
                         {
@@ -121,16 +131,14 @@ namespace B18_Ex02
         {
             for (int i = 0; i < i_PlayerOne.figuresNum; i++)
             {
-                this.m_BoardGame[i_PlayerOne.getFigure(i).Row, i_PlayerOne.getFigure(i).Col] = (int)Figure.e_SquareType.playerOne;
+                this.m_BoardGame[i_PlayerOne.getFigure(i).Row, i_PlayerOne.getFigure(i).Col] = (int)i_PlayerOne.PlayerType;
             }
 
-            if(!(i_PlayerTwo == null))
-            {
-                for (int i = 0; i < i_PlayerTwo.figuresNum; i++)
-                {
-                    this.m_BoardGame[i_PlayerTwo.getFigure(i).Row, i_PlayerTwo.getFigure(i).Col] = (int)Figure.e_SquareType.playerTwo;
-                }
+            for (int i = 0; i < i_PlayerTwo.figuresNum; i++)
+            {    
+                    this.m_BoardGame[i_PlayerTwo.getFigure(i).Row, i_PlayerTwo.getFigure(i).Col] = (int)i_PlayerTwo.PlayerType;
             }
+            
         }
 
         public void InitBoard()
@@ -151,61 +159,46 @@ namespace B18_Ex02
             }
         }
 
-        public List<Move> EliminationAvailable(Figure i_FromFigure, Figure.e_SquareType i_currentPlayer)
+        public List<Move> EliminationAvailable(Figure i_FromFigure, Player i_CurrentPlayer)
         { 
             List<Move> eliminationList = new List<Move>();
-            Figure currentFigure;
             Figure.e_SquareType squareType;
-            
 
-            //check right pos
-            currentFigure = GetSquareInDirection(i_FromFigure, i_currentPlayer, e_Direction.Right);
-            squareType = getSquareStatus(currentFigure);
+            squareType = getSquareStatus(i_FromFigure);
 
-            if (squareType != Figure.e_SquareType.invalid && squareType != i_currentPlayer && squareType != Figure.e_SquareType.none)
+            if (squareType == Figure.e_SquareType.playerOneKing || squareType == Figure.e_SquareType.playerTwoKing)
             {
-                currentFigure = GetSquareInDirection(currentFigure, i_currentPlayer, e_Direction.Right);
-                squareType = getSquareStatus(currentFigure);
-
-                if (squareType != Figure.e_SquareType.invalid && squareType == Figure.e_SquareType.none)
-                {
-                    Move moveRight = new Move(i_FromFigure, currentFigure);
-                    eliminationList.Add(moveRight);
-                }
+                getEliminationInDirection(i_FromFigure, i_CurrentPlayer, e_Direction.TopRight, eliminationList);
+                getEliminationInDirection(i_FromFigure, i_CurrentPlayer, e_Direction.TopLeft, eliminationList);
+                getEliminationInDirection(i_FromFigure, i_CurrentPlayer, e_Direction.BottomRight, eliminationList);
+                getEliminationInDirection(i_FromFigure, i_CurrentPlayer, e_Direction.BottomLeft, eliminationList);
             }
-
-            //check left pos
-            currentFigure = GetSquareInDirection(i_FromFigure, i_currentPlayer, e_Direction.Left);
-            squareType = getSquareStatus(currentFigure);
-
-            if (squareType != Figure.e_SquareType.invalid && squareType != i_currentPlayer && squareType != Figure.e_SquareType.none)
+            else if(squareType == Figure.e_SquareType.playerOne)
             {
-                currentFigure = GetSquareInDirection(currentFigure, i_currentPlayer, e_Direction.Left);
-                squareType = getSquareStatus(currentFigure);
-
-                if (squareType != Figure.e_SquareType.invalid && squareType == Figure.e_SquareType.none)
-                {
-                    Move moveLeft = new Move(i_FromFigure, currentFigure);
-                    eliminationList.Add(moveLeft);
-                }
+                getEliminationInDirection(i_FromFigure, i_CurrentPlayer, e_Direction.TopRight, eliminationList);
+                getEliminationInDirection(i_FromFigure, i_CurrentPlayer, e_Direction.TopLeft, eliminationList);
+            }
+            else
+            {
+                getEliminationInDirection(i_FromFigure, i_CurrentPlayer, e_Direction.BottomRight, eliminationList);
+                getEliminationInDirection(i_FromFigure, i_CurrentPlayer, e_Direction.BottomLeft, eliminationList);
             }
 
             return eliminationList;
         }
 
-        public Figure GetSquareInDirection(Figure i_FromSquare, Figure.e_SquareType i_PlayerType, e_Direction i_PlayerDirection)
+        public Figure GetSquareInDirection(Figure i_FromSquare, e_Direction i_PlayerDirection)
         {
             int offsetCol = 1;  //X
             int offsetRow = -1;  //Y
             int addition = 1;
 
-            if (!(i_PlayerType == Figure.e_SquareType.playerOne))
+            if (i_PlayerDirection == e_Direction.BottomLeft || i_PlayerDirection == e_Direction.BottomRight)
             {
                 addition = -1;
             }
 
-            //check right pos
-            if (i_PlayerDirection == e_Direction.Left)
+            if (i_PlayerDirection == e_Direction.TopLeft || i_PlayerDirection == e_Direction.BottomLeft)
             {
                 offsetCol = -1;
                 offsetRow = -1;
@@ -227,6 +220,12 @@ namespace B18_Ex02
         public bool updateBoardAfterMove(Move i_UserMove, Player i_CurrentPlayer, bool needToEliminate)
         {
             int areaCheck = 1;
+            Figure.e_SquareType squareType = getSquareStatus(i_UserMove.FigureFrom);
+
+            if (i_CurrentPlayer.isMyKing(squareType))
+            {
+                squareType = i_CurrentPlayer.PlayerType;
+            }
 
             if (needToEliminate)
             {
@@ -237,11 +236,12 @@ namespace B18_Ex02
                 Math.Abs(i_UserMove.FigureFrom.Col - i_UserMove.FigureTo.Col) <= areaCheck)
             {
                 if (getSquareStatus(i_UserMove.FigureTo) == Figure.e_SquareType.none &&
-    getSquareStatus(i_UserMove.FigureFrom) == i_CurrentPlayer.PlayerType)
+                    squareType == i_CurrentPlayer.PlayerType)
                 {
+                    updateBoard(i_UserMove.FigureTo.Row, i_UserMove.FigureTo.Col, getSquareStatus(i_UserMove.FigureFrom));
                     updateBoard(i_UserMove.FigureFrom.Row, i_UserMove.FigureFrom.Col, Figure.e_SquareType.none);
-                    updateBoard(i_UserMove.FigureTo.Row, i_UserMove.FigureTo.Col, i_CurrentPlayer.PlayerType);
                     i_CurrentPlayer.UpdateFigure(i_UserMove, m_BoardSize);
+
                     return true;
                 }
             }
@@ -249,14 +249,45 @@ namespace B18_Ex02
             return false;
         }
 
-        public bool updateBoard(int i_Row, int i_Col, Figure.e_SquareType i_Value )
+        public bool updateBoard(int i_Row, int i_Col, Figure.e_SquareType i_PlayerType)
         {
+            bool updateRes = false;
+
             if (isPositionValid(i_Row, i_Col))
             {
-                this.m_BoardGame[i_Row, i_Col] = (int)i_Value;
-                return true;
+                if (i_PlayerType == Figure.e_SquareType.playerOne)
+                {
+                    if (i_Row == 0)
+                    {
+                        this.m_BoardGame[i_Row, i_Col] = (int)Figure.e_SquareType.playerOneKing;
+                        updateRes = true;
+                    } else
+                    {
+                        this.m_BoardGame[i_Row, i_Col] = (int)i_PlayerType;
+                        updateRes = true;
+                    }
+                }
+                else if (i_PlayerType == Figure.e_SquareType.playerTwo || i_PlayerType == Figure.e_SquareType.playerPC)
+                {
+                    if (i_Row == m_BoardSize - 1)
+                    {
+                        this.m_BoardGame[i_Row, i_Col] = (int)Figure.e_SquareType.playerTwoKing;
+                        updateRes = true;
+                    } else
+                    {
+                        this.m_BoardGame[i_Row, i_Col] = (int)i_PlayerType;
+                        updateRes = true;
+                    }
+                }
+                else
+                {
+                    this.m_BoardGame[i_Row, i_Col] = (int)i_PlayerType;
+                    updateRes = true;
+                }
             }
-            return false;
+            
+
+            return updateRes;
         }
 
         public bool isPositionValid(int i_Row, int i_Col)
@@ -270,6 +301,38 @@ namespace B18_Ex02
             return isPosValid;
         }
 
+        public void getEliminationInDirection(Figure i_FromFigure, Player i_CurrentPlayer, e_Direction i_Direction, 
+            List<Move> i_EliminationList)
+        {
+            Figure currentFigure;
+            Figure.e_SquareType squareType;
+            Move resMove = null;
+
+            currentFigure = GetSquareInDirection(i_FromFigure, i_Direction);
+            squareType = getSquareStatus(currentFigure);
+
+            if (i_CurrentPlayer.isMyKing(squareType))
+            {
+                squareType = i_CurrentPlayer.PlayerType;
+            }
+
+            //checks +1 place
+            if (squareType != Figure.e_SquareType.invalid && squareType != i_CurrentPlayer.PlayerType && squareType != Figure.e_SquareType.none)
+            {
+                currentFigure = GetSquareInDirection(currentFigure, i_Direction);
+                squareType = getSquareStatus(currentFigure);
+                //checks +2 place
+                if (squareType != Figure.e_SquareType.invalid && squareType == Figure.e_SquareType.none)
+                {
+                    resMove = new Move(i_FromFigure, currentFigure);
+                }
+            }
+
+            if (!object.ReferenceEquals(resMove, null))
+            {
+                i_EliminationList.Add(resMove);
+            }
+        }
 
     }
 

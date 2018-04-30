@@ -21,8 +21,9 @@ namespace B18_Ex02
             Console.WriteLine("Welcome to the game!" + Environment.NewLine);
             this.initGame();
             string playerChoice = string.Empty;
-            bool movedSuccesfully = true;
+            bool moveWasSuccessful = true;
             Player currentPlayer;
+            Figure.e_SquareType weakPlayer;
             Move inputMove = new Move();
 
             while (!inputMove.Equals(null))
@@ -35,29 +36,95 @@ namespace B18_Ex02
                 Console.Write(currentPlayer.Name + "'s turn:");
                 currentPlayer.UpdateObligatoryMoves(m_Board);
                 currentPlayer.UpdateAvailableMovesIndicator(m_Board);
-                inputMove = getUserInput();
-            
+                weakPlayer = getWeakPlayer();
+
+                if(currentPlayer.PlayerType != Figure.e_SquareType.playerPC)
+                {
+                    inputMove = getUserInput();
+                }
+                else
+                {
+                    inputMove = currentPlayer.ComputerMove(m_Board); 
+                    //TODO: Convert move to string for the printing
+                }
+                
+                while (object.ReferenceEquals(inputMove, null) && currentPlayer.PlayerType!=Figure.e_SquareType.playerPC)
+                {
+                    if(currentPlayer.PlayerType == weakPlayer)
+                    {
+                        if(!playAnotherRound()) // end game
+                        {
+                            return;
+                        }
+                        currentPlayer.UpdateObligatoryMoves(m_Board);
+                        currentPlayer.UpdateAvailableMovesIndicator(m_Board);
+                        printScore();
+                        Console.Write(currentPlayer.Name + "'s turn:");
+                        inputMove = getUserInput();
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("You are not the weak player, enter a valid move!");
+                        inputMove = getUserInput();
+                    }
+                }
+
                 if (currentPlayer.ObligatoryMovesCount > 0)
                 {
                     playObligatoryMove(currentPlayer, inputMove);
                 }
                 else if(currentPlayer.hasAvailableMove)
                 {
-                    movedSuccesfully = m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
-                    while (!movedSuccesfully)
+                    moveWasSuccessful = m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
+                    while (!moveWasSuccessful)
                     {
                         Console.WriteLine("Invalid move, try again . . .");
                         inputMove = getUserInput();
-                        movedSuccesfully = m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
+                        moveWasSuccessful = m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
                     }
 
-                } else
+                }
+                else
                 {
                     Console.WriteLine(currentPlayer.Name + " lost.");
                     return;
                 }
 
                 this.m_TurnCounter++;
+            }
+        }
+
+        public bool playAnotherRound()
+        {
+            string playerChoice;
+            Ex02.ConsoleUtils.Screen.Clear();
+            Console.WriteLine("Would you like to play another round? <Y/N>");
+            playerChoice = Console.ReadLine();
+            while (playerChoice != "Y" && playerChoice != "N")
+            {
+                Console.WriteLine("Invalid input, try again. . . ");
+                playerChoice = Console.ReadLine();
+            }
+            Console.WriteLine();
+
+            if (playerChoice == "Y")
+            {
+                m_Board = new Board(m_Board.Size);
+                m_Board.InitBoard();
+                this.m_PlayerTwo.figuresNum = this.m_Board.Size;
+                this.m_PlayerTwo.initFigures(this.m_Board.Size);
+
+                this.m_PlayerOne.figuresNum = this.m_Board.Size;
+                this.m_PlayerOne.initFigures(this.m_Board.Size);
+                this.m_Board.addPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);
+                m_Board.PrintBoard();
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Goodbye!");
+                return false;
             }
         }
 
@@ -88,7 +155,8 @@ namespace B18_Ex02
             this.getBoardSizeFromUser();
 
             this.m_PlayerOne.figuresNum = this.m_Board.Size;
-            this.m_PlayerOne.initFigures(Figure.e_SquareType.playerOne, this.m_Board.Size);
+            this.m_PlayerOne.initFigures(this.m_Board.Size);
+            this.m_PlayerOne.Score = m_PlayerOne.figuresNum;
 
             Console.WriteLine("Choose your opponent: ");
             Console.WriteLine("1. Another player ");
@@ -101,19 +169,21 @@ namespace B18_Ex02
                 playerChoice = Console.ReadLine();
             }
             Console.WriteLine();
+
             if (playerChoice == "1")
             {
                 this.AddNewPlayer(Figure.e_SquareType.playerTwo);
-                this.m_PlayerTwo.figuresNum = this.m_Board.Size;
-                this.m_PlayerTwo.initFigures(Figure.e_SquareType.playerTwo, this.m_Board.Size);
-                this.m_Board.addPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);
+
             }
             else
             {
-                //TODO: implement computer playing;
-                Console.WriteLine("The Computer is not ready to play againsnt you yet!");
-                return;
+                this.AddNewPlayer(Figure.e_SquareType.playerPC);
             }
+
+            this.m_PlayerTwo.figuresNum = this.m_Board.Size;
+            this.m_PlayerTwo.initFigures(this.m_Board.Size);
+            this.m_PlayerTwo.Score = m_PlayerTwo.figuresNum;
+            this.m_Board.addPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);
         }
 
         public void AddNewPlayer(Figure.e_SquareType playerType)
@@ -135,20 +205,24 @@ namespace B18_Ex02
             if (playerType == Figure.e_SquareType.playerOne)
             {
                 this.m_PlayerOne = new Player();
-                this.m_PlayerOne.Shape = 'X';
                 this.m_PlayerOne.Name = m_PlayerName;
                 this.m_PlayerOne.PlayerType = Figure.e_SquareType.playerOne;
             }
-            else if (playerType == Figure.e_SquareType.playerTwo)
+            else
             {
                 this.m_PlayerTwo = new Player();
-                this.m_PlayerTwo.Shape = 'O';
-                this.m_PlayerTwo.Name = m_PlayerName;
-                this.m_PlayerTwo.PlayerType = Figure.e_SquareType.playerTwo;
+                if(playerType == Figure.e_SquareType.playerTwo)
+                {
+                    this.m_PlayerTwo.Name = m_PlayerName;
+                }
+                else // pc
+                {
+                    this.m_PlayerTwo.Name = "Computer";
+                }
+
+                this.m_PlayerTwo.PlayerType = playerType;
             }
-            else
-            {//// TODO: PC implemantion 
-            }
+
         }
 
         public void getBoardSizeFromUser()
@@ -171,7 +245,7 @@ namespace B18_Ex02
         {
             string playerInput = Console.ReadLine();
             Move inputMove;
-
+            
             if(playerInput == "Q")
             {
                 return null;
@@ -186,6 +260,7 @@ namespace B18_Ex02
 
                 while (!isUserMoveValid(playerInput))
                 {
+                    Console.WriteLine("Invalid input, try again. . .");
                     playerInput = Console.ReadLine();
                     playerInput = playerInput.Replace(" ", string.Empty);
                 }
@@ -213,6 +288,7 @@ namespace B18_Ex02
 
         public void eliminateOpponent(Move i_UserInput, Player i_CurrentPlayer)
         {
+            Figure figureToDelete;
             bool movedSuccesfully;
             // TODO: Move to a function
             movedSuccesfully = m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
@@ -228,14 +304,35 @@ namespace B18_Ex02
             int opponnentRow = ((i_UserInput.FigureTo.Row - i_UserInput.FigureFrom.Row) / 2) + +i_UserInput.FigureFrom.Row;
 
             m_Board.updateBoard(opponnentRow, opponnentCol, Figure.e_SquareType.none);
+            figureToDelete = new Figure(opponnentRow, opponnentCol);
 
             if (i_CurrentPlayer.PlayerType == Figure.e_SquareType.playerOne)
             {
-                m_PlayerTwo.deleteFigure(new Figure(opponnentRow, opponnentCol));
+                if (m_Board.getSquareStatus(figureToDelete) == Figure.e_SquareType.playerOneKing)
+                {
+                    m_PlayerTwo.Score -= 4;
+                }
+                else
+                {
+                    m_PlayerTwo.Score -= 1;
+                }
+
+
+                m_PlayerTwo.deleteFigure(figureToDelete);
             }
             else
             {
-                m_PlayerOne.deleteFigure(new Figure(opponnentRow, opponnentCol));
+
+                if (m_Board.getSquareStatus(figureToDelete) == Figure.e_SquareType.playerTwoKing)
+                {
+                    m_PlayerOne.Score -= 4;
+                }
+                else
+                {
+                    m_PlayerOne.Score -= 1;
+                }
+
+                m_PlayerOne.deleteFigure(figureToDelete);
             }
 
 
@@ -245,15 +342,21 @@ namespace B18_Ex02
 
         public void playObligatoryMove(Player i_CurrentPlayer, Move i_InputMove)
         {
+            
             while (i_CurrentPlayer.ObligatoryMovesCount != 0)  // Player Must Kill the rival 
             {
+                if(i_CurrentPlayer.PlayerType == Figure.e_SquareType.playerPC)
+                {
+                    i_InputMove = i_CurrentPlayer.RandomObligatoryMove;
+                }
+
                 if (i_CurrentPlayer.isMoveObligatory(i_InputMove)) // Move was one of the obligatory options
                 {
                     eliminateOpponent(i_InputMove, i_CurrentPlayer);
-                    i_CurrentPlayer.Score++;
                     i_CurrentPlayer.UpdateObligatoryMoves(m_Board);
                     if (i_CurrentPlayer.ObligatoryMovesCount > 0)
                     {
+                        m_Board.PrintBoard();
                         Console.WriteLine(i_CurrentPlayer.Name + " has another turn");
                         i_InputMove = getUserInput();
                     }
@@ -274,5 +377,22 @@ namespace B18_Ex02
             Console.WriteLine(string.Concat(Enumerable.Repeat("==", m_Board.Size*2 + 2)) + Environment.NewLine + Environment.NewLine);
         }
 
+        public Figure.e_SquareType getWeakPlayer()
+        {
+            int weakIndicator = m_PlayerOne.Score - m_PlayerTwo.Score;
+            Figure.e_SquareType weakRes = Figure.e_SquareType.none; 
+
+            if (weakIndicator < 0)
+            {
+                weakRes = Figure.e_SquareType.playerOne;
+            }
+            else if (weakIndicator > 0)
+            {
+                weakRes = Figure.e_SquareType.playerTwo;
+            }
+
+            return weakRes;
+
+        }
     }
 }
