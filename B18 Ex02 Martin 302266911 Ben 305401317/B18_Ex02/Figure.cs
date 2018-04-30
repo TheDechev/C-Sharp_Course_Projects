@@ -14,6 +14,16 @@ namespace B18_Ex02
 
         private bool m_IsKing = false;
 
+        public enum e_SquareType
+        {
+            invalid = -1,
+            none,
+            playerOne,
+            playerTwo,
+            playerPC,
+            
+        }
+
         public Figure(int i_Row, int i_Col)
         {
             this.m_Row = i_Row;

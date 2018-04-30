@@ -20,6 +20,7 @@ namespace B18_Ex02
         {
             this.m_BoardSize = i_BoardSize;
             this.m_BoardGame = new int[i_BoardSize, i_BoardSize];
+            this.InitBoard();
         }
 
         public void PrintBoard()
@@ -55,11 +56,11 @@ namespace B18_Ex02
                         Console.Write("| ");
                         //// the figures logic
 
-                        if (this.m_BoardGame[m_BoardRow, j] == (int) Player.e_PlayerType.playerOne) 
+                        if (this.m_BoardGame[m_BoardRow, j] == (int) Figure.e_SquareType.playerOne) 
                         {
                             Console.Write("X ");
                         }
-                        else if (this.m_BoardGame[m_BoardRow, j] == (int)Player.e_PlayerType.playerTwo)
+                        else if (this.m_BoardGame[m_BoardRow, j] == (int)Figure.e_SquareType.playerTwo)
                         {
                             Console.Write("O ");
                         }
@@ -93,28 +94,46 @@ namespace B18_Ex02
             }
         }
 
-        public Player.e_PlayerType getSquareStatus(int i_Row, int i_Class)
+        public Figure.e_SquareType getSquareStatus(int i_Row, int i_Class)
         {
-            return (Player.e_PlayerType)m_BoardGame[i_Row, i_Class];
+            return (Figure.e_SquareType)m_BoardGame[i_Row, i_Class];
         }
 
-        public void initBoard(Player i_PlayerOne, Player i_PlayerTwo)
+        public void addPlayersToBoard(Player i_PlayerOne, Player i_PlayerTwo)
         {
             for (int i = 0; i < i_PlayerOne.figuresNum; i++)
             {
-                this.m_BoardGame[i_PlayerOne.getFigure(i).Row, i_PlayerOne.getFigure(i).Col] = (int)Player.e_PlayerType.playerOne;
+                this.m_BoardGame[i_PlayerOne.getFigure(i).Row, i_PlayerOne.getFigure(i).Col] = (int)Figure.e_SquareType.playerOne;
             }
 
             if(!(i_PlayerTwo == null))
             {
                 for (int i = 0; i < i_PlayerTwo.figuresNum; i++)
                 {
-                    this.m_BoardGame[i_PlayerTwo.getFigure(i).Row, i_PlayerTwo.getFigure(i).Col] = (int)Player.e_PlayerType.playerTwo;
+                    this.m_BoardGame[i_PlayerTwo.getFigure(i).Row, i_PlayerTwo.getFigure(i).Col] = (int)Figure.e_SquareType.playerTwo;
                 }
             }
         }
 
-        public List<Move> EliminationAvailable(int i_Row, int i_Col, Player.e_PlayerType i_currentPlayer)
+        public void InitBoard()
+        {
+            int currentCol = 0;
+            for (int currentRow=0; currentRow < m_BoardSize; currentRow++)
+            {
+                if(currentRow % 2 == 0)
+                {
+                    currentCol++;
+                }
+                while(currentCol < m_BoardSize)
+                {
+                    m_BoardGame[currentRow, currentCol] = (int)Figure.e_SquareType.invalid;
+                    currentCol += 2;
+                }
+                currentCol = 0;
+            }
+        }
+
+        public List<Move> EliminationAvailable(int i_Row, int i_Col, Figure.e_SquareType i_currentPlayer)
         {
             int offsetCol = 1;  //X
             int offsetRow = -1;  //Y
@@ -126,7 +145,7 @@ namespace B18_Ex02
 
             //check right pos
 
-            if (!(i_currentPlayer == Player.e_PlayerType.playerOne))
+            if (!(i_currentPlayer == Figure.e_SquareType.playerOne))
             {
                 addition = -1;
             }
@@ -135,13 +154,13 @@ namespace B18_Ex02
             if (isPosValid)
             {
                 currentPos = m_BoardGame[i_Row + offsetRow * addition, i_Col + offsetCol];
-                if (currentPos != (int)i_currentPlayer && currentPos != (int)Player.e_PlayerType.none)
+                if (currentPos != (int)i_currentPlayer && currentPos != (int)Figure.e_SquareType.none)
                 {
                     offsetCol++;
                     offsetRow--;
                     currentPos = m_BoardGame[i_Row + offsetRow*addition, i_Col + offsetCol];
 
-                    if (currentPos == (int)Player.e_PlayerType.none)
+                    if (currentPos == (int)Figure.e_SquareType.none)
                     {
                         Move moveRight = new Move(currentFigure, new Figure(i_Row + offsetRow * addition, i_Col + offsetCol));
                         eliminationList.Add(moveRight);
@@ -156,12 +175,12 @@ namespace B18_Ex02
             if (isPosValid)
             {
                 currentPos = m_BoardGame[i_Row + offsetRow * addition, i_Col + offsetCol];
-                if (currentPos != (int)i_currentPlayer && currentPos != (int)Player.e_PlayerType.none)
+                if (currentPos != (int)i_currentPlayer && currentPos != (int)Figure.e_SquareType.none)
                 {
                     offsetCol--;
                     offsetRow--;
                     currentPos = m_BoardGame[i_Row + offsetRow * addition, i_Col + offsetCol];
-                    if (currentPos == (int)Player.e_PlayerType.none)
+                    if (currentPos == (int)Figure.e_SquareType.none)
                     {
 
                         Move moveLeft = new Move(currentFigure, new Figure(i_Row + offsetRow * addition, i_Col + offsetCol));
@@ -173,7 +192,7 @@ namespace B18_Ex02
             return eliminationList;
         }
 
-        public bool updateBoardAfterMove(Move i_UserMove, Player.e_PlayerType i_WhichPlayer, bool needToEliminate)
+        public bool updateBoardAfterMove(Move i_UserMove, Figure.e_SquareType i_WhichPlayer, bool needToEliminate)
         {
             int areaCheck = 1;
 
@@ -185,10 +204,10 @@ namespace B18_Ex02
             if( Math.Abs(i_UserMove.FigureFrom.Row - i_UserMove.FigureTo.Row) <= areaCheck &&
                 Math.Abs(i_UserMove.FigureFrom.Col - i_UserMove.FigureTo.Col) <= areaCheck)
             {
-                if (getSquareStatus(i_UserMove.FigureTo.Row, i_UserMove.FigureTo.Col) == Player.e_PlayerType.none &&
+                if (getSquareStatus(i_UserMove.FigureTo.Row, i_UserMove.FigureTo.Col) == Figure.e_SquareType.none &&
     getSquareStatus(i_UserMove.FigureFrom.Row, i_UserMove.FigureFrom.Col) == i_WhichPlayer)
                 {
-                    updateBoard(i_UserMove.FigureFrom.Row, i_UserMove.FigureFrom.Col, Player.e_PlayerType.none);
+                    updateBoard(i_UserMove.FigureFrom.Row, i_UserMove.FigureFrom.Col, Figure.e_SquareType.none);
                     updateBoard(i_UserMove.FigureTo.Row, i_UserMove.FigureTo.Col, i_WhichPlayer);
                     return true;
                 }
@@ -197,7 +216,7 @@ namespace B18_Ex02
             return false;
         }
 
-        public bool updateBoard(int i_Row, int i_Col, Player.e_PlayerType i_Value )
+        public bool updateBoard(int i_Row, int i_Col, Figure.e_SquareType i_Value )
         {
             if (isPositionValid(i_Row, i_Col))
             {
@@ -212,11 +231,7 @@ namespace B18_Ex02
             //TODO: add the check for -1 (unavailble space)
             return (i_Row < m_BoardSize && i_Col < m_BoardSize && i_Row >= 0 && i_Col >= 0);
         }
-        
-        public bool isFreeSpace(int i_Row, int i_Col)
-        {
-            return m_BoardGame[i_Row, i_Col] == (int)Player.e_PlayerType.none;
-        }   
+          
     }
 
     

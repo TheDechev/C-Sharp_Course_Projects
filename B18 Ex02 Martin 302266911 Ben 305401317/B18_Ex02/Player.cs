@@ -8,17 +8,11 @@ namespace B18_Ex02
 {
     public class Player
     {
-        public enum e_PlayerType
-        {
-            none,
-            playerOne,
-            playerTwo,
-            playerPC
-        }
+
 
         private string m_Name;
 
-        private e_PlayerType m_PlayerType;
+        private Figure.e_SquareType m_PlayerType;
 
         private int m_Score;
 
@@ -67,7 +61,7 @@ namespace B18_Ex02
             }
         }
 
-        public e_PlayerType PlayerType
+        public Figure.e_SquareType PlayerType
         {
             get
             {
@@ -105,13 +99,13 @@ namespace B18_Ex02
             }
         }
 
-        public void initFigures(Player.e_PlayerType currentPlayer, int i_BoardSize)
+        public void initFigures(Figure.e_SquareType currentPlayer, int i_BoardSize)
         {
             int m_figuresOnRowCounter = 0;
             int m_currentCol;
             int m_currentRow;
 
-            if(currentPlayer == Player.e_PlayerType.playerOne)
+            if(currentPlayer == Figure.e_SquareType.playerOne)
             {
                 m_currentCol = 0;
                 m_currentRow = i_BoardSize / 2 + 1;
