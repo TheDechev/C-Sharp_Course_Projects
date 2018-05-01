@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-
 namespace B18_Ex02
 {
     public class Game
@@ -21,85 +20,81 @@ namespace B18_Ex02
             string playerChoice = string.Empty;
             bool moveWasSuccessful = true;
             Player currentPlayer;
-            Figure.e_SquareType weakPlayer;
+            Square.e_SquareType weakPlayer;
             string previousMove = string.Empty;
             Move inputMove = new Move();
 
             ConsoleInterface.ClearScreen();
-            ConsoleInterface.PrintBoard(m_Board);
+            ConsoleInterface.PrintBoard(this.m_Board);
 
             while (!inputMove.Equals(null))
             {
-                
-                currentPlayer = whichTurn();
+                currentPlayer = this.whichTurn();
                 ConsoleInterface.PrintTurn(previousMove, currentPlayer.Name);
 
-                currentPlayer.UpdateObligatoryMoves(m_Board);
-                currentPlayer.UpdateAvailableMovesIndicator(m_Board);
-                weakPlayer = getWeakPlayer();
+                currentPlayer.UpdateObligatoryMoves(this.m_Board);
+                currentPlayer.UpdateAvailableMovesIndicator(this.m_Board);
+                weakPlayer = this.getWeakPlayer();
 
-                if (currentPlayer.PlayerType != Figure.e_SquareType.playerPC)
+                if (currentPlayer.PlayerType != Square.e_SquareType.playerPC)
                 {
-                    inputMove = ConsoleInterface.getUserMove(m_Board.Size);
+                    inputMove = ConsoleInterface.getUserMove(this.m_Board.Size);
                 }
                 else
                 {
                     Thread.Sleep(1200);
-                    inputMove = currentPlayer.ComputerMove(m_Board);
+                    inputMove = currentPlayer.ComputerMove(this.m_Board);
                 }
 
-                while (object.ReferenceEquals(inputMove, null) && currentPlayer.PlayerType != Figure.e_SquareType.playerPC)
+                while (object.ReferenceEquals(inputMove, null) && currentPlayer.PlayerType != Square.e_SquareType.playerPC)
                 {
                     if (currentPlayer.PlayerType == weakPlayer)
                     {
-
                         //TODO: add to function
-                        if (!playAnotherRound())
+                        if (!this.playAnotherRound())
                         {
-                            ConsoleInterface.printEndGame(m_PlayerOne, m_PlayerTwo);
+                            ConsoleInterface.printEndGame(this.m_PlayerOne, this.m_PlayerTwo);
                             return;
                         }
+
                         ConsoleInterface.ClearScreen();
-                        currentPlayer.UpdateObligatoryMoves(m_Board);
-                        currentPlayer.UpdateAvailableMovesIndicator(m_Board);
+                        currentPlayer.UpdateObligatoryMoves(this.m_Board);
+                        currentPlayer.UpdateAvailableMovesIndicator(this.m_Board);
                         previousMove = string.Empty; // new game, not relevant
                         ConsoleInterface.PrintTurn(previousMove, currentPlayer.Name);
-                        inputMove = ConsoleInterface.getUserMove(m_Board.Size);
+                        inputMove = ConsoleInterface.getUserMove(this.m_Board.Size);
                         break;
                     }
                     else
                     {
-                        inputMove = ConsoleInterface.getMoveFromStrongPlayer(m_Board.Size);
+                        inputMove = ConsoleInterface.getMoveFromStrongPlayer(this.m_Board.Size);
                     }
                 }
-
-
 
                 if (currentPlayer.ObligatoryMovesCount > 0)
                 {
-                    playObligatoryMove(currentPlayer, ref inputMove);
+                    this.playObligatoryMove(currentPlayer, ref inputMove);
                 }
                 else if (currentPlayer.hasAvailableMove)
                 {
-                    moveWasSuccessful = m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
+                    moveWasSuccessful = this.m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
                     while (!moveWasSuccessful)
                     {
                         ConsoleInterface.printInvalidMsg();
-                        inputMove = ConsoleInterface.getUserMove(m_Board.Size);
-                        moveWasSuccessful = m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
+                        inputMove = ConsoleInterface.getUserMove(this.m_Board.Size);
+                        moveWasSuccessful = this.m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
                     }
-
                 }
 
                 ConsoleInterface.ClearScreen();
-                ConsoleInterface.PrintBoard(m_Board);
+                ConsoleInterface.PrintBoard(this.m_Board);
 
-                if (!isRoundOver())
+                if (!this.isRoundOver())
                 {
                     break;
                 }
-                previousMove = currentPlayer.Name + "'s move was: " + inputMove.ToString();
 
+                previousMove = currentPlayer.Name + "'s move was: " + inputMove.ToString();
                 this.m_TurnCounter++;
             }
         }
@@ -108,30 +103,28 @@ namespace B18_Ex02
         {
             bool isOver = true;
 
-            isOver = ConsoleInterface.printEndGame(m_PlayerOne, m_PlayerTwo);
+            isOver = ConsoleInterface.printEndGame(this.m_PlayerOne, this.m_PlayerTwo);
 
             return isOver;
         }
 
         public bool playAnotherRound()
         {
-
             if (ConsoleInterface.playerWantsAnotherRound())
             {
-                m_Board = new Board(m_Board.Size);
-                m_Board.InitBoard();
-                this.m_PlayerTwo.figuresNum = this.m_Board.Size;
-                this.m_PlayerTwo.initFigures(this.m_Board.Size);
-
-                this.m_PlayerOne.figuresNum = this.m_Board.Size;
-                this.m_PlayerOne.initFigures(this.m_Board.Size);
+                this.m_Board = new Board(this.m_Board.Size);
+                this.m_Board.InitBoard();
+                this.m_PlayerTwo.squaresNum = this.m_Board.Size;
+                this.m_PlayerTwo.initSquares(this.m_Board.Size);
+                this.m_PlayerOne.squaresNum = this.m_Board.Size;
+                this.m_PlayerOne.initSquares(this.m_Board.Size);
                 this.m_Board.addPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);
-                ConsoleInterface.PrintBoard(m_Board);
+                ConsoleInterface.PrintBoard(this.m_Board);
                 return true;
             }
             else
             {
-                ConsoleInterface.printEndGame(m_PlayerOne,m_PlayerTwo);
+                ConsoleInterface.printEndGame(this.m_PlayerOne, this.m_PlayerTwo);
                 return false;
             }
         }
@@ -143,12 +136,12 @@ namespace B18_Ex02
             // first players turn
             if (this.m_TurnCounter % 2 == 0)
             {
-                whichPlayer = m_PlayerOne;
+                whichPlayer = this.m_PlayerOne;
             }
             // second players turn
             else
             {
-                whichPlayer = m_PlayerTwo;
+                whichPlayer = this.m_PlayerTwo;
             }
 
             return whichPlayer;
@@ -156,52 +149,47 @@ namespace B18_Ex02
 
         public void initGame()
         {
-
-            this.AddNewPlayer(Figure.e_SquareType.playerOne);
-
+            this.AddNewPlayer(Square.e_SquareType.playerOne);
             this.m_Board = new Board(ConsoleInterface.getBoardSizeFromUser());
-
-            this.m_PlayerOne.figuresNum = this.m_Board.Size;
-            this.m_PlayerOne.initFigures(this.m_Board.Size);
-            this.m_PlayerOne.Score = m_PlayerOne.figuresNum;
-
+            this.m_PlayerOne.squaresNum = this.m_Board.Size;
+            this.m_PlayerOne.initSquares(this.m_Board.Size);
+            this.m_PlayerOne.Score = this.m_PlayerOne.squaresNum;
             int playerChoice = ConsoleInterface.getOpponnetOptions();
 
             if (playerChoice == 1)
             {
-                this.AddNewPlayer(Figure.e_SquareType.playerTwo);
+                this.AddNewPlayer(Square.e_SquareType.playerTwo);
             }
             else
             {
-                this.AddNewPlayer(Figure.e_SquareType.playerPC);
+                this.AddNewPlayer(Square.e_SquareType.playerPC);
             }
 
-            this.m_PlayerTwo.figuresNum = this.m_Board.Size;
-            this.m_PlayerTwo.initFigures(this.m_Board.Size);
-            this.m_PlayerTwo.Score = m_PlayerTwo.figuresNum;
+            this.m_PlayerTwo.squaresNum = this.m_Board.Size;
+            this.m_PlayerTwo.initSquares(this.m_Board.Size);
+            this.m_PlayerTwo.Score = this.m_PlayerTwo.squaresNum;
             this.m_Board.addPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);
         }
 
-        public void AddNewPlayer(Figure.e_SquareType playerType)
+        public void AddNewPlayer(Square.e_SquareType playerType)
         {
-
             string playerName = string.Empty;
 
-            if (playerType != Figure.e_SquareType.playerPC)
+            if (playerType != Square.e_SquareType.playerPC)
             {
                 playerName = ConsoleInterface.getPlayerName();
             }
 
-            if (playerType == Figure.e_SquareType.playerOne)
+            if (playerType == Square.e_SquareType.playerOne)
             {
                 this.m_PlayerOne = new Player();
                 this.m_PlayerOne.Name = playerName;
-                this.m_PlayerOne.PlayerType = Figure.e_SquareType.playerOne;
+                this.m_PlayerOne.PlayerType = Square.e_SquareType.playerOne;
             }
             else
             {
                 this.m_PlayerTwo = new Player();
-                if(playerType == Figure.e_SquareType.playerTwo)
+                if(playerType == Square.e_SquareType.playerTwo)
                 {
                     this.m_PlayerTwo.Name = playerName;
                 }
@@ -212,128 +200,108 @@ namespace B18_Ex02
 
                 this.m_PlayerTwo.PlayerType = playerType;
             }
-
         }
 
         public void eliminateOpponent(Move i_UserInput, Player i_CurrentPlayer)
         {
-            Figure figureToDelete;
+            Square squareToDelete;
             bool movedSuccesfully;
+            int opponnentCol = ((i_UserInput.SquareTo.Col - i_UserInput.SquareFrom.Col) / 2) + i_UserInput.SquareFrom.Col;
+            int opponnentRow = ((i_UserInput.SquareTo.Row - i_UserInput.SquareFrom.Row) / 2) + +i_UserInput.SquareFrom.Row;
 
-            int opponnentCol = ((i_UserInput.FigureTo.Col - i_UserInput.FigureFrom.Col) / 2) + i_UserInput.FigureFrom.Col;
-            int opponnentRow = ((i_UserInput.FigureTo.Row - i_UserInput.FigureFrom.Row) / 2) + +i_UserInput.FigureFrom.Row;
-
-
-            movedSuccesfully = m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
-
+            movedSuccesfully = this.m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
 
             while (!movedSuccesfully)
             {
                 Console.WriteLine("Invalid move, try again . . .");
-                i_UserInput = ConsoleInterface.getUserMove(m_Board.Size);
-                movedSuccesfully = m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
-                opponnentCol = ((i_UserInput.FigureTo.Col - i_UserInput.FigureFrom.Col) / 2) + i_UserInput.FigureFrom.Col;
-                opponnentRow = ((i_UserInput.FigureTo.Row - i_UserInput.FigureFrom.Row) / 2) + +i_UserInput.FigureFrom.Row;
-
+                i_UserInput = ConsoleInterface.getUserMove(this.m_Board.Size);
+                movedSuccesfully = this.m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
+                opponnentCol = ((i_UserInput.SquareTo.Col - i_UserInput.SquareFrom.Col) / 2) + i_UserInput.SquareFrom.Col;
+                opponnentRow = ((i_UserInput.SquareTo.Row - i_UserInput.SquareFrom.Row) / 2) + +i_UserInput.SquareFrom.Row;
             }
 
+            this.m_Board.updateBoard(opponnentRow, opponnentCol, Square.e_SquareType.none);
+            squareToDelete = new Square(opponnentRow, opponnentCol);
 
-            m_Board.updateBoard(opponnentRow, opponnentCol, Figure.e_SquareType.none);
-            figureToDelete = new Figure(opponnentRow, opponnentCol);
-
-            if (i_CurrentPlayer.PlayerType == Figure.e_SquareType.playerOne)
+            if (i_CurrentPlayer.PlayerType == Square.e_SquareType.playerOne)
             {
-                if (m_Board.getSquareStatus(figureToDelete) == Figure.e_SquareType.playerOneKing)
+                if (this.m_Board.getSquareStatus(squareToDelete) == Square.e_SquareType.playerOneKing)
                 {
-                    m_PlayerTwo.Score -= 4;
+                    this.m_PlayerTwo.Score -= 4;
                 }
                 else
                 {
-                    m_PlayerTwo.Score -= 1;
+                    this.m_PlayerTwo.Score -= 1;
                 }
 
-
-                m_PlayerTwo.deleteFigure(figureToDelete);
+                this.m_PlayerTwo.deleteSquare(squareToDelete);
             }
             else
             {
-
-                if (m_Board.getSquareStatus(figureToDelete) == Figure.e_SquareType.playerTwoKing)
+                if (this.m_Board.getSquareStatus(squareToDelete) == Square.e_SquareType.playerTwoKing)
                 {
-                    m_PlayerOne.Score -= 4;
+                    this.m_PlayerOne.Score -= 4;
                 }
                 else
                 {
-                    m_PlayerOne.Score -= 1;
+                    this.m_PlayerOne.Score -= 1;
                 }
 
-                m_PlayerOne.deleteFigure(figureToDelete);
+                this.m_PlayerOne.deleteSquare(squareToDelete);
             }
-
-
-
-
         }
 
         public void playObligatoryMove(Player i_CurrentPlayer, ref Move io_InputMove)
         {
             while (i_CurrentPlayer.ObligatoryMovesCount != 0)  // Player Must Kill the rival 
             {
-                if(i_CurrentPlayer.PlayerType == Figure.e_SquareType.playerPC)
+                if(i_CurrentPlayer.PlayerType == Square.e_SquareType.playerPC)
                 {
                     io_InputMove = i_CurrentPlayer.RandomObligatoryMove();
                 }
 
                 if (i_CurrentPlayer.isMoveObligatory(io_InputMove)) // Move was one of the obligatory options
                 {
-                    eliminateOpponent(io_InputMove, i_CurrentPlayer);
-                    i_CurrentPlayer.UpdateObligatoryMoves(m_Board);
+                    this.eliminateOpponent(io_InputMove, i_CurrentPlayer);
+                    i_CurrentPlayer.UpdateObligatoryMoves(this.m_Board);
                     if (i_CurrentPlayer.ObligatoryMovesCount > 0)
                     {
-                        ConsoleInterface.printAnotherTurn(m_Board, i_CurrentPlayer.Name);
+                        ConsoleInterface.printAnotherTurn(this.m_Board, i_CurrentPlayer.Name);
 
-                        if(i_CurrentPlayer.PlayerType == Figure.e_SquareType.playerPC)
+                        if(i_CurrentPlayer.PlayerType == Square.e_SquareType.playerPC)
                         {
                             io_InputMove = i_CurrentPlayer.RandomObligatoryMove();
                         }
                         else
                         {
-                            io_InputMove = ConsoleInterface.getUserMove(m_Board.Size);
+                            io_InputMove = ConsoleInterface.getUserMove(this.m_Board.Size);
                         }
+
                         Thread.Sleep(1200);
                     }
                 }
                 else
                 {
-                    io_InputMove = ConsoleInterface.getObligatoryMove(m_Board.Size);
+                    io_InputMove = ConsoleInterface.getObligatoryMove(this.m_Board.Size);
                 }
             }
         }
 
-        //public void printScore()
-        //{
-        //    Console.WriteLine(string.Concat(Enumerable.Repeat("==", m_Board.Size * 2 + 2)) + Environment.NewLine);
-        //    Console.WriteLine(m_PlayerOne.Name + "'s Score is: " + m_PlayerOne.Score);
-        //    Console.WriteLine(m_PlayerTwo.Name + "'s Score is: " + m_PlayerTwo.Score + Environment.NewLine);
-        //    Console.WriteLine(string.Concat(Enumerable.Repeat("==", m_Board.Size*2 + 2)) + Environment.NewLine + Environment.NewLine);
-        //}
-
-        public Figure.e_SquareType getWeakPlayer()
+        public Square.e_SquareType getWeakPlayer()
         {
-            int weakIndicator = m_PlayerOne.Score - m_PlayerTwo.Score;
-            Figure.e_SquareType weakRes = Figure.e_SquareType.none; 
+            int weakIndicator = this.m_PlayerOne.Score - this.m_PlayerTwo.Score;
+            Square.e_SquareType weakRes = Square.e_SquareType.none; 
 
             if (weakIndicator < 0)
             {
-                weakRes = Figure.e_SquareType.playerOne;
+                weakRes = Square.e_SquareType.playerOne;
             }
             else if (weakIndicator > 0)
             {
-                weakRes = Figure.e_SquareType.playerTwo;
+                weakRes = Square.e_SquareType.playerTwo;
             }
 
             return weakRes;
-
         }
     }
 }

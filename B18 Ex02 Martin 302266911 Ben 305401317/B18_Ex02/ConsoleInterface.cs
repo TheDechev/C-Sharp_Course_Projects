@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace B18_Ex02
 {
-    class ConsoleInterface
+    public class ConsoleInterface
     {
         public static void printWelcomeMsg()
         {
@@ -15,7 +15,7 @@ namespace B18_Ex02
 
         public static void PrintBoard(Board i_Board)
         {
-            int requiredSpaceForFigure = 4;
+            int requiredSpaceForSquare = 4;
             char currentChar = 'A';
             int boardRow = 0;
 
@@ -29,11 +29,11 @@ namespace B18_Ex02
             Console.WriteLine();
             currentChar = 'a';
 
-            for (int i = 0; i < i_Board.Size * 2 + 1; i++)
+            for (int i = 0; i < (i_Board.Size * 2) + 1; i++)
             {
                 if (i % 2 == 0)
                 {
-                    for (int j = 0; j <= i_Board.Size * requiredSpaceForFigure + 1; j++)
+                    for (int j = 0; j <= (i_Board.Size * requiredSpaceForSquare) + 1; j++)
                     {
                         Console.Write("=");
                     }
@@ -45,21 +45,21 @@ namespace B18_Ex02
                     for (int j = 0; j < i_Board.Size; j++)
                     {
                         Console.Write("| ");
-                        //// the figures logic
+                        //// the squares logic
 
-                        if (i_Board.getSquareStatus(boardRow, j) == Figure.e_SquareType.playerOne)
+                        if (i_Board.getSquareStatus(boardRow, j) == Square.e_SquareType.playerOne)
                         {
                             Console.Write("X ");
                         }
-                        else if (i_Board.getSquareStatus(boardRow, j) == Figure.e_SquareType.playerTwo || i_Board.getSquareStatus(boardRow, j) == Figure.e_SquareType.playerPC)
+                        else if (i_Board.getSquareStatus(boardRow, j) == Square.e_SquareType.playerTwo || i_Board.getSquareStatus(boardRow, j) == Square.e_SquareType.playerPC)
                         {
                             Console.Write("O ");
                         }
-                        else if (i_Board.getSquareStatus(boardRow, j) == Figure.e_SquareType.playerOneKing)
+                        else if (i_Board.getSquareStatus(boardRow, j) == Square.e_SquareType.playerOneKing)
                         {
                             Console.Write("K ");
                         }
-                        else if (i_Board.getSquareStatus(boardRow, j) == Figure.e_SquareType.playerTwoKing)
+                        else if (i_Board.getSquareStatus(boardRow, j) == Square.e_SquareType.playerTwoKing)
                         {
                             Console.Write("U ");
                         }
@@ -91,6 +91,7 @@ namespace B18_Ex02
                 Console.WriteLine("Invalid board size, please enter the size again...");
                 playerChoice = Console.ReadLine();
             }
+
             Console.Write(Environment.NewLine);
 
             return int.Parse(playerChoice);
@@ -118,14 +119,10 @@ namespace B18_Ex02
             {
                 playerChoice = Console.ReadLine();
             }
+
             Console.WriteLine();
 
             return int.Parse(playerChoice);
-        }
-
-        public static void getCommandFromUser()
-        {
-
         }
 
         public static string getPlayerName()
@@ -150,6 +147,7 @@ namespace B18_Ex02
             {
                 Console.WriteLine(i_PreviousMove);
             }
+
             Console.Write(i_CurrentPlayerName + "'s turn:");
         }
 
@@ -164,11 +162,10 @@ namespace B18_Ex02
             }
             else
             {
-                Figure currentFigure = new Figure();
-                Figure nextMoveFigure = new Figure();
+                Square currentSquare = new Square();
+                Square nextMoveSquare = new Square();
 
                 playerInput = playerInput.Replace(" ", string.Empty);
-
 
                 while (!isUserInputMoveValid(playerInput, i_BoardSize))
                 {
@@ -177,10 +174,10 @@ namespace B18_Ex02
                     playerInput = playerInput.Replace(" ", string.Empty);
                 }
 
-                currentFigure.updateFigureWithString(playerInput.Substring(0, 2));
-                nextMoveFigure.updateFigureWithString(playerInput.Substring(3, 2));
+                currentSquare.updateSquareWithString(playerInput.Substring(0, 2));
+                nextMoveSquare.updateSquareWithString(playerInput.Substring(3, 2));
 
-                inputMove = new Move(currentFigure, nextMoveFigure);
+                inputMove = new Move(currentSquare, nextMoveSquare);
             }
 
             return inputMove;
@@ -206,7 +203,8 @@ namespace B18_Ex02
                 Console.WriteLine("Invalid input, try again. . . ");
                 playerChoice = Console.ReadLine();
             }
-            Console.WriteLine();
+
+            Console.Write(Environment.NewLine);
 
             if (playerChoice != "Y")
             {
@@ -236,7 +234,6 @@ namespace B18_Ex02
             }
 
             return isEnd;
-
         }
 
         public static Move getMoveFromStrongPlayer(int i_BoardSize)

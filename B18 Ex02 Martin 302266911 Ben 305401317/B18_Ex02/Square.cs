@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace B18_Ex02
 {
-    public class Figure
+    public class Square
     {
         private int m_Row;
         private int m_Col;
@@ -21,16 +21,25 @@ namespace B18_Ex02
             playerPC,
             playerOneKing,
             playerTwoKing
-            
         }
 
-        public Figure(int i_Row, int i_Col)
+        public static bool operator ==(Square i_SquareOne, Square i_SquareTwo)
+        {
+            return i_SquareOne.Row == i_SquareTwo.Row && i_SquareOne.Col == i_SquareTwo.Col;
+        }
+
+        public static bool operator !=(Square i_SquareOne, Square i_SquareTwo)
+        {
+            return i_SquareOne.Row != i_SquareTwo.Row || i_SquareOne.Col != i_SquareTwo.Col;
+        }
+
+        public Square(int i_Row, int i_Col)
         {
             this.m_Row = i_Row;
             this.m_Col = i_Col;
         }
 
-        public Figure()
+        public Square()
         {
             this.m_Row = -1;
             this.m_Col = -1;
@@ -38,13 +47,14 @@ namespace B18_Ex02
 
         public bool IsKing
         {
-            set
-            {
-                this.m_IsKing = value;
-            }
             get
             {
                 return this.m_IsKing;
+            }
+
+            set
+            {
+                this.m_IsKing = value;
             }
         }
 
@@ -74,33 +84,22 @@ namespace B18_Ex02
             }
         }
 
-        public void updateFigureWithString(string i_PlayerInput)
+        public void updateSquareWithString(string i_PlayerInput)
         {
             int i = 0;
             this.m_Col = i_PlayerInput[i++] - 'A';
             this.m_Row = i_PlayerInput[i] - 'a';      
         }
 
-        public static bool operator ==(Figure i_FigureOne, Figure i_FigureTwo)
+        public override bool Equals(object i_Square)
         {
-            return (i_FigureOne.Row == i_FigureTwo.Row && i_FigureOne.Col == i_FigureTwo.Col);
-        }
-
-        public static bool operator !=(Figure i_FigureOne, Figure i_FigureTwo)
-        {
-            return (i_FigureOne.Row != i_FigureTwo.Row || i_FigureOne.Col != i_FigureTwo.Col);
-        }
-
-        public override bool Equals(object i_Figure)
-        {
-            if (i_Figure == null || i_Figure.GetType() != GetType())
+            if (i_Square == null || i_Square.GetType() != GetType())
             {
                 return false;
             }
 
-            Figure movObj = (Figure)i_Figure;
+            Square movObj = (Square)i_Square;
             return this == movObj;
         }
-
     }
 }

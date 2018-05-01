@@ -7,45 +7,45 @@ namespace B18_Ex02
 {
     public class Move
     {
-        private Figure m_figureFrom;
-        private Figure m_figureTo;
+        private Square m_squareFrom;
+        private Square m_squareTo;
 
-        public Move(Figure from, Figure to)
+        public Move(Square from, Square to)
         {
-            this.m_figureFrom = from;
-            this.m_figureTo = to;
+            this.m_squareFrom = from;
+            this.m_squareTo = to;
         }
 
         public Move()
         {
-            m_figureFrom = null;
-            m_figureTo = null;
+            this.m_squareFrom = null;
+            this.m_squareTo = null;
         }
 
-        public Figure FigureFrom
+        public Square SquareFrom
         {
             get
             {
-                return m_figureFrom;
+                return this.m_squareFrom;
             }
         }
 
-        public Figure FigureTo
+        public Square SquareTo
         {
             get
             {
-                return m_figureTo;
+                return this.m_squareTo;
             }
         }
 
-        public static bool operator== (Move i_MoveOne, Move i_MoveTwo)
+        public static bool operator ==(Move i_MoveOne, Move i_MoveTwo)
         {
-            return (i_MoveOne.m_figureFrom == i_MoveTwo.m_figureFrom && i_MoveOne.m_figureTo == i_MoveTwo.m_figureTo);
+            return i_MoveOne.m_squareFrom == i_MoveTwo.m_squareFrom && i_MoveOne.m_squareTo == i_MoveTwo.m_squareTo;
         }
 
-        public static bool operator!= (Move i_MoveOne, Move i_MoveTwo)
+        public static bool operator !=(Move i_MoveOne, Move i_MoveTwo)
         {
-            return (i_MoveOne.m_figureFrom != i_MoveTwo.m_figureFrom || i_MoveOne.m_figureTo != i_MoveTwo.m_figureTo);
+            return i_MoveOne.m_squareFrom != i_MoveTwo.m_squareFrom || i_MoveOne.m_squareTo != i_MoveTwo.m_squareTo;
         }
 
         public override bool Equals(object i_Move)
@@ -63,12 +63,12 @@ namespace B18_Ex02
         {
             string moveString = string.Empty;
 
-            moveString += (char)(this.m_figureFrom.Col + 'A');
-            moveString += (char)(this.m_figureFrom.Row + 'a');
+            moveString += (char)(this.m_squareFrom.Col + 'A');
+            moveString += (char)(this.m_squareFrom.Row + 'a');
 
             moveString += ">";
-            moveString += (char)(this.m_figureTo.Col +'A');
-            moveString += (char)(this.m_figureTo.Row + 'a');
+            moveString += (char)(this.m_squareTo.Col + 'A');
+            moveString += (char)(this.m_squareTo.Row + 'a');
 
             return moveString;
         }

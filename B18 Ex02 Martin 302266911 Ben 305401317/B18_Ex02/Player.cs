@@ -8,19 +8,18 @@ namespace B18_Ex02
 {
     public class Player
     {
-
         private List<Move> m_ObligatoryMoves;
         private string m_Name;
-        private Figure.e_SquareType m_PlayerType;
+        private Square.e_SquareType m_PlayerType;
         private int m_Score;
         private bool hasAvailableMoves = true;
-        private List<Figure> m_Figures;
+        private List<Square> m_Squares;
 
         public bool hasAvailableMove
         {
             get
             {
-                return hasAvailableMoves;
+                return this.hasAvailableMoves;
             }
         }
 
@@ -38,37 +37,37 @@ namespace B18_Ex02
             {
                 return this.m_Score;
             }
+
             set
             {
                 this.m_Score = value;
             }
         }
 
-        public int figuresNum
+        public int squaresNum
         {
             get
             {
-                return this.m_Figures.Count;
+                return this.m_Squares.Count;
             }
 
             set
             {
-
-                int figuresCount = ((value - 2) / 2) * (value / 2);
-                this.m_Figures = new List<Figure>(figuresCount);
+                int squaresCount = ((value - 2) / 2) * (value / 2);
+                this.m_Squares = new List<Square>(squaresCount);
              }
-            
         }
 
-        public Figure.e_SquareType PlayerType
+        public Square.e_SquareType PlayerType
         {
             get
             {
                 return this.m_PlayerType;
             }
+
             set
             {
-                m_PlayerType = value;
+                this.m_PlayerType = value;
             }
         }
 
@@ -85,15 +84,15 @@ namespace B18_Ex02
             }
         }
 
-        public void initFigures(int i_BoardSize)
+        public void initSquares(int i_BoardSize)
         {
-            int m_figuresOnRowCounter = 0;
+            int m_squaresOnRowCounter = 0;
             int m_currentCol = 0;
             int m_currentRow;
 
-            if(m_PlayerType == Figure.e_SquareType.playerOne)
+            if(this.m_PlayerType == Square.e_SquareType.playerOne)
             {
-                m_currentRow = i_BoardSize / 2 + 1;
+                m_currentRow = (i_BoardSize / 2) + 1;
 
                 if ((i_BoardSize / 2) % 2 != 0)
                 {
@@ -106,11 +105,11 @@ namespace B18_Ex02
                 m_currentRow = 0;
             }
 
-            for (int i = 0; i < this.m_Figures.Capacity; i++)
+            for (int i = 0; i < this.m_Squares.Capacity; i++)
             {
-                if(m_figuresOnRowCounter == i_BoardSize / 2)
+                if(m_squaresOnRowCounter == i_BoardSize / 2)
                 {
-                    m_figuresOnRowCounter = 0;
+                    m_squaresOnRowCounter = 0;
                     m_currentRow++;
                     
                     if(m_currentCol == i_BoardSize)
@@ -123,24 +122,24 @@ namespace B18_Ex02
                     }
                 }
                 
-                m_figuresOnRowCounter++;
-                this.m_Figures.Add(new Figure(m_currentRow, m_currentCol));
+                m_squaresOnRowCounter++;
+                this.m_Squares.Add(new Square(m_currentRow, m_currentCol));
                 m_currentCol += 2;
             }
         }
 
-        public Figure getFigure(int i_Index)
+        public Square getSquare(int i_Index)
         {
-            return this.m_Figures[i_Index];
+            return this.m_Squares[i_Index];
         }
 
-        public Figure checkExistance(int i_CurrentRow, int i_CurrentCol)
+        public Square checkExistance(int i_CurrentRow, int i_CurrentCol)
         {
-            Figure checkFigure = new Figure(i_CurrentRow, i_CurrentCol);
+            Square checkSquare = new Square(i_CurrentRow, i_CurrentCol);
             
-            foreach(Figure currentFig in this.m_Figures)
+            foreach(Square currentFig in this.m_Squares)
             {
-                if (currentFig.Equals(checkFigure))
+                if (currentFig.Equals(checkSquare))
                 {
                     return currentFig;
                 }
@@ -153,33 +152,32 @@ namespace B18_Ex02
         {
             this.m_ObligatoryMoves = new List<Move>();
             
-            foreach (Figure currFigure in m_Figures)
+            foreach (Square currSquare in this.m_Squares)
             {
-                this.m_ObligatoryMoves.AddRange(i_GameBoard.EliminationAvailable(currFigure, this));
+                this.m_ObligatoryMoves.AddRange(i_GameBoard.EliminationAvailable(currSquare, this));
             }
-
         }
 
-        public void deleteFigure(Figure i_FigureToDelete)
+        public void deleteSquare(Square i_SquareToDelete)
         {
-            foreach (Figure currFigure in m_Figures)
+            foreach (Square currSquare in this.m_Squares)
             {
-                if (i_FigureToDelete == currFigure)
+                if (i_SquareToDelete == currSquare)
                 { 
-                    m_Figures.Remove(currFigure);
+                    this.m_Squares.Remove(currSquare);
                     break;
                 }
             }
         }
 
-        public void UpdateFigure(Move i_PlayerMove, int i_BoardSize)
+        public void UpdateSquare(Move i_PlayerMove, int i_BoardSize)
         {
-            foreach(Figure currentFigure in m_Figures)
+            foreach(Square currentSquare in this.m_Squares)
             {
-                if(currentFigure.Equals(i_PlayerMove.FigureFrom))
+                if(currentSquare.Equals(i_PlayerMove.SquareFrom))
                 {
-                    currentFigure.Col = i_PlayerMove.FigureTo.Col;
-                    currentFigure.Row = i_PlayerMove.FigureTo.Row;
+                    currentSquare.Col = i_PlayerMove.SquareTo.Col;
+                    currentSquare.Row = i_PlayerMove.SquareTo.Row;
                     break;
                 }
             }
@@ -187,41 +185,42 @@ namespace B18_Ex02
 
         public bool isMoveObligatory(Move i_UserInput)
         {
-            foreach (Move optionaObligatorylMove in m_ObligatoryMoves)
+            foreach (Move optionaObligatorylMove in this.m_ObligatoryMoves)
             {
                 if (optionaObligatorylMove.Equals(i_UserInput))
                 {
                     return true;
                 }
             }
+
             return false;
         }
 
         public void UpdateAvailableMovesIndicator(Board i_GameBoard)
         {
-            Figure availableFigure;
+            Square availableSquare;
 
-            foreach(Figure currentFigure in m_Figures)
+            foreach(Square currentSquare in this.m_Squares)
             {
-                availableFigure = AvailableMove(currentFigure, i_GameBoard);
-                if (!object.ReferenceEquals(availableFigure, null))
+                availableSquare = this.AvailableMove(currentSquare, i_GameBoard);
+                if (!object.ReferenceEquals(availableSquare, null))
                 {
-                    hasAvailableMoves = true;
+                    this.hasAvailableMoves = true;
                     return;
                 }    
             }
 
-            hasAvailableMoves = false;
+            this.hasAvailableMoves = false;
         }
 
-        public bool isMyKing(Figure.e_SquareType i_SquareType)
+        public bool isMyKing(Square.e_SquareType i_SquareType)
         {
             bool isMyKingRes = false; 
-            if (i_SquareType == Figure.e_SquareType.playerOneKing && m_PlayerType == Figure.e_SquareType.playerOne)
+            if (i_SquareType == Square.e_SquareType.playerOneKing && this.m_PlayerType == Square.e_SquareType.playerOne)
             {
                 isMyKingRes = true;
             }
-            else if (i_SquareType == Figure.e_SquareType.playerTwoKing && (m_PlayerType == Figure.e_SquareType.playerTwo || m_PlayerType == Figure.e_SquareType.playerPC) )
+            else if (i_SquareType == Square.e_SquareType.playerTwoKing && (this.m_PlayerType == Square.e_SquareType.playerTwo || this.m_PlayerType == Square.e_SquareType.playerPC) )
             {
                 isMyKingRes = true;
             }
@@ -229,39 +228,38 @@ namespace B18_Ex02
             return isMyKingRes;
         }
 
-        public Figure AvailableMove(Figure i_CurrentFigure, Board i_GameBoard)
+        public Square AvailableMove(Square i_CurrentSquare, Board i_GameBoard)
         {
-            Figure leftFig, rightFig;
-            Figure.e_SquareType squareType;
-            squareType = i_GameBoard.getSquareStatus(i_CurrentFigure);
+            Square leftFig, rightFig;
+            Square.e_SquareType squareType;
+            squareType = i_GameBoard.getSquareStatus(i_CurrentSquare);
 
-            if (squareType == Figure.e_SquareType.playerOneKing || squareType == Figure.e_SquareType.playerTwoKing)
+            if (squareType == Square.e_SquareType.playerOneKing || squareType == Square.e_SquareType.playerTwoKing)
             {
-                leftFig = i_GameBoard.GetSquareInDirection(i_CurrentFigure, Board.e_Direction.TopLeft);
-                rightFig = i_GameBoard.GetSquareInDirection(i_CurrentFigure, Board.e_Direction.TopRight);
-                if (i_GameBoard.getSquareStatus(leftFig) != Figure.e_SquareType.none && i_GameBoard.getSquareStatus(rightFig) != Figure.e_SquareType.none)
+                leftFig = i_GameBoard.GetSquareInDirection(i_CurrentSquare, Board.e_Direction.TopLeft);
+                rightFig = i_GameBoard.GetSquareInDirection(i_CurrentSquare, Board.e_Direction.TopRight);
+                if (i_GameBoard.getSquareStatus(leftFig) != Square.e_SquareType.none && i_GameBoard.getSquareStatus(rightFig) != Square.e_SquareType.none)
                 {
-                    leftFig = i_GameBoard.GetSquareInDirection(i_CurrentFigure, Board.e_Direction.BottomLeft);
-                    rightFig = i_GameBoard.GetSquareInDirection(i_CurrentFigure, Board.e_Direction.BottomRight);
+                    leftFig = i_GameBoard.GetSquareInDirection(i_CurrentSquare, Board.e_Direction.BottomLeft);
+                    rightFig = i_GameBoard.GetSquareInDirection(i_CurrentSquare, Board.e_Direction.BottomRight);
                 }
-
             }
-            else if (squareType == Figure.e_SquareType.playerOne)
+            else if (squareType == Square.e_SquareType.playerOne)
             {
-                leftFig = i_GameBoard.GetSquareInDirection(i_CurrentFigure, Board.e_Direction.TopLeft);
-                rightFig = i_GameBoard.GetSquareInDirection(i_CurrentFigure, Board.e_Direction.TopRight);
+                leftFig = i_GameBoard.GetSquareInDirection(i_CurrentSquare, Board.e_Direction.TopLeft);
+                rightFig = i_GameBoard.GetSquareInDirection(i_CurrentSquare, Board.e_Direction.TopRight);
             }
             else
             {
-                leftFig = i_GameBoard.GetSquareInDirection(i_CurrentFigure, Board.e_Direction.BottomLeft);
-                rightFig = i_GameBoard.GetSquareInDirection(i_CurrentFigure, Board.e_Direction.BottomRight);
+                leftFig = i_GameBoard.GetSquareInDirection(i_CurrentSquare, Board.e_Direction.BottomLeft);
+                rightFig = i_GameBoard.GetSquareInDirection(i_CurrentSquare, Board.e_Direction.BottomRight);
             }
 
-            if (i_GameBoard.getSquareStatus(leftFig) == Figure.e_SquareType.none)
+            if (i_GameBoard.getSquareStatus(leftFig) == Square.e_SquareType.none)
             {
                 return leftFig;
             }
-            else if (i_GameBoard.getSquareStatus(rightFig) == Figure.e_SquareType.none)
+            else if (i_GameBoard.getSquareStatus(rightFig) == Square.e_SquareType.none)
             {
                 return rightFig;
             }
@@ -274,40 +272,40 @@ namespace B18_Ex02
         public Move ComputerMove(Board i_GameBoard)
         {
             Random rand = new Random();
-            int randIndx = rand.Next(m_Figures.Count); // a num between 0 - figureCount - 1
-            Figure nextFigure = AvailableMove(this.m_Figures[randIndx], i_GameBoard);
+            int randIndx = rand.Next(this.m_Squares.Count); // a num between 0 - squareCount - 1
+            Square nextSquare = this.AvailableMove(this.m_Squares[randIndx], i_GameBoard);
             Move computerMove = null;
-            Figure fromFigure;
+            Square fromSquare;
 
             if (this.hasAvailableMove)
             {
-                while (object.ReferenceEquals(nextFigure, null))
+                while (object.ReferenceEquals(nextSquare, null))
                 {
                     randIndx++;
-                    if (randIndx >= m_Figures.Count)
+                    if (randIndx >= this.m_Squares.Count)
                     {
                         randIndx = 0;
                     }
-                    nextFigure = AvailableMove(this.m_Figures[randIndx], i_GameBoard);
+
+                    nextSquare = this.AvailableMove(this.m_Squares[randIndx], i_GameBoard);
                 }
-                fromFigure = new Figure(this.m_Figures[randIndx].Row, this.m_Figures[randIndx].Col);
-                computerMove = new Move(fromFigure, nextFigure);
+
+                fromSquare = new Square(this.m_Squares[randIndx].Row, this.m_Squares[randIndx].Col);
+                computerMove = new Move(fromSquare, nextSquare);
             }
 
-            return computerMove;
-            
+            return computerMove;  
         }
 
         public Move RandomObligatoryMove()
         {
             Random pcRandomObligatoryMove = new Random();
-            int randomIndex = pcRandomObligatoryMove.Next(m_ObligatoryMoves.Count);
-            Figure figureFrom = new Figure(m_ObligatoryMoves[randomIndex].FigureFrom.Row, m_ObligatoryMoves[randomIndex].FigureFrom.Col);
-            Figure figureTo = new Figure(m_ObligatoryMoves[randomIndex].FigureTo.Row, m_ObligatoryMoves[randomIndex].FigureTo.Col);
-            Move randomObligatoryMove = new Move(figureFrom, figureTo);
+            int randomIndex = pcRandomObligatoryMove.Next(this.m_ObligatoryMoves.Count);
+            Square squareFrom = new Square(this.m_ObligatoryMoves[randomIndex].SquareFrom.Row, this.m_ObligatoryMoves[randomIndex].SquareFrom.Col);
+            Square squareTo = new Square(this.m_ObligatoryMoves[randomIndex].SquareTo.Row, this.m_ObligatoryMoves[randomIndex].SquareTo.Col);
+            Move randomObligatoryMove = new Move(squareFrom, squareTo);
 
             return randomObligatoryMove;
-
         }
     }
 }
