@@ -203,7 +203,6 @@ namespace B18_Ex02
 
             foreach(Figure currentFigure in m_Figures)
             {
-
                 availableFigure = AvailableMove(currentFigure, i_GameBoard);
                 if (!object.ReferenceEquals(availableFigure, null))
                 {

@@ -16,7 +16,7 @@ namespace B18_Ex02
 
         public void StartGame()
         {
-            Console.WriteLine("Welcome to the game!" + Environment.NewLine);
+            ConsoleInterface.printWelcomeMsg();
             this.initGame();
             string playerChoice = string.Empty;
             bool moveWasSuccessful = true;
@@ -25,26 +25,22 @@ namespace B18_Ex02
             string previousMove = string.Empty;
             Move inputMove = new Move();
 
-            Ex02.ConsoleUtils.Screen.Clear(); // clearing the screen for a new round
-            printScore();
-            this.m_Board.PrintBoard();
+            ConsoleInterface.ClearScreen();
+            ConsoleInterface.PrintBoard(m_Board);
 
             while (!inputMove.Equals(null))
             {
                 
                 currentPlayer = whichTurn();
-                if (!previousMove.Equals(string.Empty))
-                {
-                    Console.WriteLine(previousMove);
-                }
-                Console.Write(currentPlayer.Name + "'s turn:");
+                ConsoleInterface.PrintTurn(previousMove, currentPlayer.Name);
+
                 currentPlayer.UpdateObligatoryMoves(m_Board);
                 currentPlayer.UpdateAvailableMovesIndicator(m_Board);
                 weakPlayer = getWeakPlayer();
 
                 if (currentPlayer.PlayerType != Figure.e_SquareType.playerPC)
                 {
-                    inputMove = getUserInput();
+                    inputMove = ConsoleInterface.getUserMove(m_Board.Size);
                 }
                 else
                 {
@@ -56,23 +52,24 @@ namespace B18_Ex02
                 {
                     if (currentPlayer.PlayerType == weakPlayer)
                     {
-                        if (!playAnotherRound()) // end game
+
+                        //TODO: add to function
+                        if (!playAnotherRound())
                         {
-                            Console.WriteLine("Goodbye!");
+                            ConsoleInterface.printEndGame(m_PlayerOne, m_PlayerTwo);
                             return;
                         }
-                        Ex02.ConsoleUtils.Screen.Clear();
+                        ConsoleInterface.ClearScreen();
                         currentPlayer.UpdateObligatoryMoves(m_Board);
                         currentPlayer.UpdateAvailableMovesIndicator(m_Board);
-                        printScore();
-                        Console.Write(currentPlayer.Name + "'s turn:");
-                        inputMove = getUserInput();
+                        previousMove = string.Empty; // new game, not relevant
+                        ConsoleInterface.PrintTurn(previousMove, currentPlayer.Name);
+                        inputMove = ConsoleInterface.getUserMove(m_Board.Size);
                         break;
                     }
                     else
                     {
-                        Console.WriteLine("You are not the weak player, enter a valid move!");
-                        inputMove = getUserInput();
+                        inputMove = ConsoleInterface.getMoveFromStrongPlayer(m_Board.Size);
                     }
                 }
 
@@ -87,18 +84,17 @@ namespace B18_Ex02
                     moveWasSuccessful = m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
                     while (!moveWasSuccessful)
                     {
-                        Console.WriteLine("Invalid move, try again . . .");
-                        inputMove = getUserInput();
+                        ConsoleInterface.printInvalidMsg();
+                        inputMove = ConsoleInterface.getUserMove(m_Board.Size);
                         moveWasSuccessful = m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
                     }
 
                 }
 
-                Ex02.ConsoleUtils.Screen.Clear(); // clearing the screen for a new round
-                printScore();
-                this.m_Board.PrintBoard();
+                ConsoleInterface.ClearScreen();
+                ConsoleInterface.PrintBoard(m_Board);
 
-                if (!ToContinueGame())
+                if (!isRoundOver())
                 {
                     break;
                 }
@@ -108,43 +104,19 @@ namespace B18_Ex02
             }
         }
 
-        public bool ToContinueGame()
+        public bool isRoundOver()
         {
-            bool toContinue = true;
+            bool isOver = true;
 
-            if(m_PlayerOne.figuresNum == 0)
-            {
-                Console.WriteLine(m_PlayerTwo.Name + " won the game." + Environment.NewLine);
-                toContinue = false;
-            }
-            else if (m_PlayerTwo.figuresNum == 0)
-            {
-                Console.WriteLine(m_PlayerOne.Name + " won the game." + Environment.NewLine);
-                toContinue = false;
-            }
-            else if (!m_PlayerOne.hasAvailableMove && !m_PlayerTwo.hasAvailableMove)
-            {
-                Console.WriteLine("Its a tie!");
-                toContinue = false;
-            }
+            isOver = ConsoleInterface.printEndGame(m_PlayerOne, m_PlayerTwo);
 
-            return toContinue;
+            return isOver;
         }
 
         public bool playAnotherRound()
         {
-            string playerChoice;
-            Ex02.ConsoleUtils.Screen.Clear();
-            Console.WriteLine("Would you like to play another round? <Y/N>");
-            playerChoice = Console.ReadLine();
-            while (playerChoice != "Y" && playerChoice != "N")
-            {
-                Console.WriteLine("Invalid input, try again. . . ");
-                playerChoice = Console.ReadLine();
-            }
-            Console.WriteLine();
 
-            if (playerChoice == "Y")
+            if (ConsoleInterface.playerWantsAnotherRound())
             {
                 m_Board = new Board(m_Board.Size);
                 m_Board.InitBoard();
@@ -154,12 +126,12 @@ namespace B18_Ex02
                 this.m_PlayerOne.figuresNum = this.m_Board.Size;
                 this.m_PlayerOne.initFigures(this.m_Board.Size);
                 this.m_Board.addPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);
-                m_Board.PrintBoard();
+                ConsoleInterface.PrintBoard(m_Board);
                 return true;
             }
             else
             {
-                Console.WriteLine("Goodbye!");
+                ConsoleInterface.printEndGame(m_PlayerOne,m_PlayerTwo);
                 return false;
             }
         }
@@ -184,32 +156,20 @@ namespace B18_Ex02
 
         public void initGame()
         {
-            string playerChoice;
 
             this.AddNewPlayer(Figure.e_SquareType.playerOne);
 
-            this.getBoardSizeFromUser();
+            this.m_Board = new Board(ConsoleInterface.getBoardSizeFromUser());
 
             this.m_PlayerOne.figuresNum = this.m_Board.Size;
             this.m_PlayerOne.initFigures(this.m_Board.Size);
             this.m_PlayerOne.Score = m_PlayerOne.figuresNum;
 
-            Console.WriteLine("Choose your opponent: ");
-            Console.WriteLine("1. Another player ");
-            Console.WriteLine("2. The PC ");
+            int playerChoice = ConsoleInterface.getOpponnetOptions();
 
-            playerChoice = Console.ReadLine();
-
-            while (playerChoice != "1" && playerChoice != "2")
-            {
-                playerChoice = Console.ReadLine();
-            }
-            Console.WriteLine();
-
-            if (playerChoice == "1")
+            if (playerChoice == 1)
             {
                 this.AddNewPlayer(Figure.e_SquareType.playerTwo);
-
             }
             else
             {
@@ -224,24 +184,18 @@ namespace B18_Ex02
 
         public void AddNewPlayer(Figure.e_SquareType playerType)
         {
-            string m_PlayerName = string.Empty;
+
+            string playerName = string.Empty;
 
             if (playerType != Figure.e_SquareType.playerPC)
             {
-                Console.WriteLine("Please enter your name: ");
-                m_PlayerName = Console.ReadLine();
-
-                while (m_PlayerName.Length > 20 || m_PlayerName.Length == 0)
-                {
-                    Console.WriteLine("Invalid name size, please enter your name again...");
-                    m_PlayerName = Console.ReadLine();
-                }
+                playerName = ConsoleInterface.getPlayerName();
             }
-            Console.WriteLine();
+
             if (playerType == Figure.e_SquareType.playerOne)
             {
                 this.m_PlayerOne = new Player();
-                this.m_PlayerOne.Name = m_PlayerName;
+                this.m_PlayerOne.Name = playerName;
                 this.m_PlayerOne.PlayerType = Figure.e_SquareType.playerOne;
             }
             else
@@ -249,76 +203,15 @@ namespace B18_Ex02
                 this.m_PlayerTwo = new Player();
                 if(playerType == Figure.e_SquareType.playerTwo)
                 {
-                    this.m_PlayerTwo.Name = m_PlayerName;
+                    this.m_PlayerTwo.Name = playerName;
                 }
-                else // pc
+                else 
                 {
                     this.m_PlayerTwo.Name = "Computer";
                 }
 
                 this.m_PlayerTwo.PlayerType = playerType;
             }
-
-        }
-
-        public void getBoardSizeFromUser()
-        {
-            string playerChoice;
-
-            Console.WriteLine("Enter the board size: (6/8/10) ");
-            playerChoice = Console.ReadLine();
-            while (playerChoice != "6" && playerChoice != "8" && playerChoice != "10")
-            {
-                Console.WriteLine("Invalid board size, please enter the size again...");
-                playerChoice = Console.ReadLine();
-            }
-            Console.WriteLine();
-
-            this.m_Board = new Board(int.Parse(playerChoice));
-        }
-
-        public Move getUserInput()
-        {
-            string playerInput = Console.ReadLine();
-            Move inputMove;
-            
-            if(playerInput == "Q")
-            {
-                return null;
-            }
-            else
-            {
-                Figure currentFigure = new Figure();
-                Figure nextMoveFigure = new Figure();
-
-                playerInput = playerInput.Replace(" ", string.Empty);
-
-
-                while (!isUserMoveValid(playerInput))
-                {
-                    Console.WriteLine("Invalid input, try again. . .");
-                    playerInput = Console.ReadLine();
-                    playerInput = playerInput.Replace(" ", string.Empty);
-                }
-
-                currentFigure.updateFigureWithString(playerInput.Substring(0, 2));
-                nextMoveFigure.updateFigureWithString(playerInput.Substring(3, 2));
-
-                inputMove =  new Move(currentFigure, nextMoveFigure);
-            }
-
-            return inputMove;
-        }
-
-        public bool isUserMoveValid(string i_playerMov)
-        {
-
-
-            return i_playerMov.Length == 5 && char.IsUpper(i_playerMov[0]) && i_playerMov[0] < ('A' + m_Board.Size) &&
-                    char.IsLower(i_playerMov[1]) && i_playerMov[0] < ('a' + m_Board.Size) && i_playerMov[2] == '>' &&
-                    char.IsUpper(i_playerMov[3]) && i_playerMov[3] < ('A' + m_Board.Size) &&
-                    char.IsLower(i_playerMov[4]) && i_playerMov[4] < ('a' + m_Board.Size);
-
 
         }
 
@@ -337,7 +230,7 @@ namespace B18_Ex02
             while (!movedSuccesfully)
             {
                 Console.WriteLine("Invalid move, try again . . .");
-                i_UserInput = getUserInput();
+                i_UserInput = ConsoleInterface.getUserMove(m_Board.Size);
                 movedSuccesfully = m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
                 opponnentCol = ((i_UserInput.FigureTo.Col - i_UserInput.FigureFrom.Col) / 2) + i_UserInput.FigureFrom.Col;
                 opponnentRow = ((i_UserInput.FigureTo.Row - i_UserInput.FigureFrom.Row) / 2) + +i_UserInput.FigureFrom.Row;
@@ -384,7 +277,6 @@ namespace B18_Ex02
 
         public void playObligatoryMove(Player i_CurrentPlayer, ref Move io_InputMove)
         {
-            
             while (i_CurrentPlayer.ObligatoryMovesCount != 0)  // Player Must Kill the rival 
             {
                 if(i_CurrentPlayer.PlayerType == Figure.e_SquareType.playerPC)
@@ -398,36 +290,33 @@ namespace B18_Ex02
                     i_CurrentPlayer.UpdateObligatoryMoves(m_Board);
                     if (i_CurrentPlayer.ObligatoryMovesCount > 0)
                     {
-                        Ex02.ConsoleUtils.Screen.Clear();
-                        m_Board.PrintBoard();
-                        Console.WriteLine(i_CurrentPlayer.Name + " has another turn");
+                        ConsoleInterface.printAnotherTurn(m_Board, i_CurrentPlayer.Name);
+
                         if(i_CurrentPlayer.PlayerType == Figure.e_SquareType.playerPC)
                         {
                             io_InputMove = i_CurrentPlayer.RandomObligatoryMove();
                         }
                         else
                         {
-                            io_InputMove = getUserInput();
+                            io_InputMove = ConsoleInterface.getUserMove(m_Board.Size);
                         }
                         Thread.Sleep(1200);
-
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Invalid move, you must eliminate your opponnent!");
-                    io_InputMove = getUserInput();
+                    io_InputMove = ConsoleInterface.getObligatoryMove(m_Board.Size);
                 }
             }
         }
 
-        public void printScore()
-        {
-            Console.WriteLine(string.Concat(Enumerable.Repeat("==", m_Board.Size * 2 + 2)) + Environment.NewLine);
-            Console.WriteLine(m_PlayerOne.Name + "'s Score is: " + m_PlayerOne.Score);
-            Console.WriteLine(m_PlayerTwo.Name + "'s Score is: " + m_PlayerTwo.Score + Environment.NewLine);
-            Console.WriteLine(string.Concat(Enumerable.Repeat("==", m_Board.Size*2 + 2)) + Environment.NewLine + Environment.NewLine);
-        }
+        //public void printScore()
+        //{
+        //    Console.WriteLine(string.Concat(Enumerable.Repeat("==", m_Board.Size * 2 + 2)) + Environment.NewLine);
+        //    Console.WriteLine(m_PlayerOne.Name + "'s Score is: " + m_PlayerOne.Score);
+        //    Console.WriteLine(m_PlayerTwo.Name + "'s Score is: " + m_PlayerTwo.Score + Environment.NewLine);
+        //    Console.WriteLine(string.Concat(Enumerable.Repeat("==", m_Board.Size*2 + 2)) + Environment.NewLine + Environment.NewLine);
+        //}
 
         public Figure.e_SquareType getWeakPlayer()
         {

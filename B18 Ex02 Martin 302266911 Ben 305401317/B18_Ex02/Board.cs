@@ -8,7 +8,6 @@ namespace B18_Ex02
 {
     public class Board
     {
-        private const int k_RequiredSpaceForFigure = 4;
         private const int k_DefaultBoardSize = 8;
         private int m_BoardSize = k_DefaultBoardSize;
         private int[,] m_BoardGame;
@@ -30,68 +29,7 @@ namespace B18_Ex02
 
         public void PrintBoard()
         {
-            char currentChar = 'A';
-            int m_BoardRow = 0;
-
-            Console.Write(" ");
-
-            for (int j = 0; j < this.m_BoardSize; j++)
-            {
-                Console.Write("  " +currentChar+++" ");
-            }
-
-            Console.WriteLine();
-            currentChar = 'a';
-
-            for (int i = 0; i < this.m_BoardSize * 2 + 1; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    for (int j = 0; j <= this.m_BoardSize * k_RequiredSpaceForFigure + 1; j++)
-                    {
-                        Console.Write("=");
-                    }
-                }
-                else
-                {
-                    Console.Write(currentChar++);
-
-                    for (int j = 0; j < this.m_BoardSize; j++)
-                    {
-                        Console.Write("| ");
-                        //// the figures logic
-
-                        if (this.m_BoardGame[m_BoardRow, j] == (int) Figure.e_SquareType.playerOne) 
-                        {
-                            Console.Write("X ");
-                        }
-                        else if (this.m_BoardGame[m_BoardRow, j] == (int)Figure.e_SquareType.playerTwo || this.m_BoardGame[m_BoardRow, j] == (int)Figure.e_SquareType.playerPC)
-                        {
-                            Console.Write("O ");
-                        }
-                        else if (this.m_BoardGame[m_BoardRow, j] == (int)Figure.e_SquareType.playerOneKing)
-                        {
-                            Console.Write("K ");
-                        }
-                        else if (this.m_BoardGame[m_BoardRow, j] == (int)Figure.e_SquareType.playerTwoKing)
-                        {
-                            Console.Write("U ");
-                        }
-                        else
-                        {
-                            Console.Write("  ");
-                        }
-                    }
-
-                    Console.Write("|");
-                    m_BoardRow++;
-                }
-
-                Console.WriteLine();
-            }
-
-            currentChar = 'a';
-            Console.WriteLine();
+            ConsoleInterface.PrintBoard(this);
         }
 
         public int Size
@@ -119,6 +57,18 @@ namespace B18_Ex02
                 }
             }
             
+
+            return resStatus;
+        }
+
+        public Figure.e_SquareType getSquareStatus(int i_Row, int i_Col)
+        {
+            Figure.e_SquareType resStatus = Figure.e_SquareType.invalid;
+
+            if (isPositionValid(i_Row, i_Col))
+            {
+                resStatus = (Figure.e_SquareType)m_BoardGame[i_Row, i_Col];
+            }
 
             return resStatus;
         }
