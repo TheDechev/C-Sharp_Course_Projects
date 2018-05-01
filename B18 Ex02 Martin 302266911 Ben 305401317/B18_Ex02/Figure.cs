@@ -9,9 +9,7 @@ namespace B18_Ex02
     public class Figure
     {
         private int m_Row;
-
         private int m_Col;
-
         private bool m_IsKing = false;
 
         public enum e_SquareType

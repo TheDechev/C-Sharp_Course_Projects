@@ -8,6 +8,10 @@ namespace B18_Ex02
 {
     public class Board
     {
+        private const int k_RequiredSpaceForFigure = 4;
+        private const int k_DefaultBoardSize = 8;
+        private int m_BoardSize = k_DefaultBoardSize;
+        private int[,] m_BoardGame;
 
         public enum e_Direction
         {
@@ -16,14 +20,6 @@ namespace B18_Ex02
             BottomLeft,
             BottomRight
         }
-
-        private const int k_RequiredSpaceForFigure = 4;
-
-        private const int k_DefaultBoardSize = 8;
-
-        private int m_BoardSize = k_DefaultBoardSize;
-
-        private int[,] m_BoardGame;
 
         public Board (int i_BoardSize)
         {

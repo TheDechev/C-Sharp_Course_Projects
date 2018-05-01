@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+
 
 namespace B18_Ex02
 {
     public class Game
     {
         private Player m_PlayerOne;
-
         private Player m_PlayerTwo;
-
         private Board m_Board;
-
         private int m_TurnCounter = 0;
 
         public void StartGame()
@@ -24,38 +22,46 @@ namespace B18_Ex02
             bool moveWasSuccessful = true;
             Player currentPlayer;
             Figure.e_SquareType weakPlayer;
+            string previousMove = string.Empty;
             Move inputMove = new Move();
+
+            Ex02.ConsoleUtils.Screen.Clear(); // clearing the screen for a new round
+            printScore();
+            this.m_Board.PrintBoard();
 
             while (!inputMove.Equals(null))
             {
-                Ex02.ConsoleUtils.Screen.Clear(); // clearing the screen for a new round
-                printScore();
-                this.m_Board.PrintBoard();
+                
                 currentPlayer = whichTurn();
-
+                if (!previousMove.Equals(string.Empty))
+                {
+                    Console.WriteLine(previousMove);
+                }
                 Console.Write(currentPlayer.Name + "'s turn:");
                 currentPlayer.UpdateObligatoryMoves(m_Board);
                 currentPlayer.UpdateAvailableMovesIndicator(m_Board);
                 weakPlayer = getWeakPlayer();
 
-                if(currentPlayer.PlayerType != Figure.e_SquareType.playerPC)
+                if (currentPlayer.PlayerType != Figure.e_SquareType.playerPC)
                 {
                     inputMove = getUserInput();
                 }
                 else
                 {
-                    inputMove = currentPlayer.ComputerMove(m_Board); 
-                    //TODO: Convert move to string for the printing
+                    Thread.Sleep(1200);
+                    inputMove = currentPlayer.ComputerMove(m_Board);
                 }
-                
-                while (object.ReferenceEquals(inputMove, null) && currentPlayer.PlayerType!=Figure.e_SquareType.playerPC)
+
+                while (object.ReferenceEquals(inputMove, null) && currentPlayer.PlayerType != Figure.e_SquareType.playerPC)
                 {
-                    if(currentPlayer.PlayerType == weakPlayer)
+                    if (currentPlayer.PlayerType == weakPlayer)
                     {
-                        if(!playAnotherRound()) // end game
+                        if (!playAnotherRound()) // end game
                         {
+                            Console.WriteLine("Goodbye!");
                             return;
                         }
+                        Ex02.ConsoleUtils.Screen.Clear();
                         currentPlayer.UpdateObligatoryMoves(m_Board);
                         currentPlayer.UpdateAvailableMovesIndicator(m_Board);
                         printScore();
@@ -70,11 +76,13 @@ namespace B18_Ex02
                     }
                 }
 
+
+
                 if (currentPlayer.ObligatoryMovesCount > 0)
                 {
-                    playObligatoryMove(currentPlayer, inputMove);
+                    playObligatoryMove(currentPlayer, ref inputMove);
                 }
-                else if(currentPlayer.hasAvailableMove)
+                else if (currentPlayer.hasAvailableMove)
                 {
                     moveWasSuccessful = m_Board.updateBoardAfterMove(inputMove, currentPlayer, false);
                     while (!moveWasSuccessful)
@@ -85,26 +93,42 @@ namespace B18_Ex02
                     }
 
                 }
-                else
-                {
-                    Console.WriteLine(currentPlayer.Name + " lost.");
-                    return;
-                }
 
+                Ex02.ConsoleUtils.Screen.Clear(); // clearing the screen for a new round
+                printScore();
+                this.m_Board.PrintBoard();
 
-                if(m_PlayerOne.figuresNum == 0)
+                if (!ToContinueGame())
                 {
-                    Console.WriteLine(m_PlayerTwo.Name + " lost.");
-                    return;
-                } 
-                else if(m_PlayerTwo.figuresNum == 0)
-                {
-                    Console.WriteLine(m_PlayerOne.Name + " lost.");
-                    return;
+                    break;
                 }
+                previousMove = currentPlayer.Name + "'s move was: " + inputMove.ToString();
 
                 this.m_TurnCounter++;
             }
+        }
+
+        public bool ToContinueGame()
+        {
+            bool toContinue = true;
+
+            if(m_PlayerOne.figuresNum == 0)
+            {
+                Console.WriteLine(m_PlayerTwo.Name + " won the game." + Environment.NewLine);
+                toContinue = false;
+            }
+            else if (m_PlayerTwo.figuresNum == 0)
+            {
+                Console.WriteLine(m_PlayerOne.Name + " won the game." + Environment.NewLine);
+                toContinue = false;
+            }
+            else if (!m_PlayerOne.hasAvailableMove && !m_PlayerTwo.hasAvailableMove)
+            {
+                Console.WriteLine("Its a tie!");
+                toContinue = false;
+            }
+
+            return toContinue;
         }
 
         public bool playAnotherRound()
@@ -302,12 +326,13 @@ namespace B18_Ex02
         {
             Figure figureToDelete;
             bool movedSuccesfully;
-            // TODO: Move to a function
 
             int opponnentCol = ((i_UserInput.FigureTo.Col - i_UserInput.FigureFrom.Col) / 2) + i_UserInput.FigureFrom.Col;
             int opponnentRow = ((i_UserInput.FigureTo.Row - i_UserInput.FigureFrom.Row) / 2) + +i_UserInput.FigureFrom.Row;
 
+
             movedSuccesfully = m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
+
 
             while (!movedSuccesfully)
             {
@@ -316,7 +341,9 @@ namespace B18_Ex02
                 movedSuccesfully = m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true);
                 opponnentCol = ((i_UserInput.FigureTo.Col - i_UserInput.FigureFrom.Col) / 2) + i_UserInput.FigureFrom.Col;
                 opponnentRow = ((i_UserInput.FigureTo.Row - i_UserInput.FigureFrom.Row) / 2) + +i_UserInput.FigureFrom.Row;
+
             }
+
 
             m_Board.updateBoard(opponnentRow, opponnentCol, Figure.e_SquareType.none);
             figureToDelete = new Figure(opponnentRow, opponnentCol);
@@ -355,39 +382,41 @@ namespace B18_Ex02
 
         }
 
-        public void playObligatoryMove(Player i_CurrentPlayer, Move i_InputMove)
+        public void playObligatoryMove(Player i_CurrentPlayer, ref Move io_InputMove)
         {
             
             while (i_CurrentPlayer.ObligatoryMovesCount != 0)  // Player Must Kill the rival 
             {
                 if(i_CurrentPlayer.PlayerType == Figure.e_SquareType.playerPC)
                 {
-                    i_InputMove = i_CurrentPlayer.RandomObligatoryMove;
+                    io_InputMove = i_CurrentPlayer.RandomObligatoryMove();
                 }
 
-                if (i_CurrentPlayer.isMoveObligatory(i_InputMove)) // Move was one of the obligatory options
+                if (i_CurrentPlayer.isMoveObligatory(io_InputMove)) // Move was one of the obligatory options
                 {
-                    eliminateOpponent(i_InputMove, i_CurrentPlayer);
+                    eliminateOpponent(io_InputMove, i_CurrentPlayer);
                     i_CurrentPlayer.UpdateObligatoryMoves(m_Board);
                     if (i_CurrentPlayer.ObligatoryMovesCount > 0)
                     {
+                        Ex02.ConsoleUtils.Screen.Clear();
                         m_Board.PrintBoard();
                         Console.WriteLine(i_CurrentPlayer.Name + " has another turn");
                         if(i_CurrentPlayer.PlayerType == Figure.e_SquareType.playerPC)
                         {
-                            i_InputMove = i_CurrentPlayer.RandomObligatoryMove;
+                            io_InputMove = i_CurrentPlayer.RandomObligatoryMove();
                         }
                         else
                         {
-                            i_InputMove = getUserInput();
+                            io_InputMove = getUserInput();
                         }
-                        
+                        Thread.Sleep(1200);
+
                     }
                 }
                 else
                 {
                     Console.WriteLine("Invalid move, you must eliminate your opponnent!");
-                    i_InputMove = getUserInput();
+                    io_InputMove = getUserInput();
                 }
             }
         }

@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace B18_Ex02
 {
     public class Move
     {
         private Figure m_figureFrom;
-
         private Figure m_figureTo;
 
         public Move(Figure from, Figure to)
@@ -61,6 +59,18 @@ namespace B18_Ex02
             return this == movObj;
         }
 
-        
+        public override string ToString()
+        {
+            string moveString = string.Empty;
+
+            moveString += (char)(this.m_figureFrom.Col + 'A');
+            moveString += (char)(this.m_figureFrom.Row + 'a');
+
+            moveString += ">";
+            moveString += (char)(this.m_figureTo.Col +'A');
+            moveString += (char)(this.m_figureTo.Row + 'a');
+
+            return moveString;
+        }
     }
 }

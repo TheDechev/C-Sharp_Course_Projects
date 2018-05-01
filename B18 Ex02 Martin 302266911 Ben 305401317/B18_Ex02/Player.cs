@@ -10,23 +10,11 @@ namespace B18_Ex02
     {
 
         private List<Move> m_ObligatoryMoves;
-
         private string m_Name;
-        
-        public Move RandomObligatoryMove
-        {
-            get
-            {
-                Random pcRandomObligatoryMove = new Random();
-                return m_ObligatoryMoves[pcRandomObligatoryMove.Next(m_ObligatoryMoves.Count)];
-            }
-        }
-
         private Figure.e_SquareType m_PlayerType;
-
         private int m_Score;
-
         private bool hasAvailableMoves = true;
+        private List<Figure> m_Figures;
 
         public bool hasAvailableMove
         {
@@ -35,8 +23,6 @@ namespace B18_Ex02
                 return hasAvailableMoves;
             }
         }
-
-        private List<Figure> m_Figures;
 
         public int ObligatoryMovesCount
         {
@@ -236,7 +222,7 @@ namespace B18_Ex02
             {
                 isMyKingRes = true;
             }
-            else if (i_SquareType == Figure.e_SquareType.playerTwoKing && m_PlayerType == Figure.e_SquareType.playerTwo)
+            else if (i_SquareType == Figure.e_SquareType.playerTwoKing && (m_PlayerType == Figure.e_SquareType.playerTwo || m_PlayerType == Figure.e_SquareType.playerPC) )
             {
                 isMyKingRes = true;
             }
@@ -292,6 +278,7 @@ namespace B18_Ex02
             int randIndx = rand.Next(m_Figures.Count); // a num between 0 - figureCount - 1
             Figure nextFigure = AvailableMove(this.m_Figures[randIndx], i_GameBoard);
             Move computerMove = null;
+            Figure fromFigure;
 
             if (this.hasAvailableMove)
             {
@@ -304,11 +291,24 @@ namespace B18_Ex02
                     }
                     nextFigure = AvailableMove(this.m_Figures[randIndx], i_GameBoard);
                 }
-                computerMove = new Move(this.m_Figures[randIndx], nextFigure);
+                fromFigure = new Figure(this.m_Figures[randIndx].Row, this.m_Figures[randIndx].Col);
+                computerMove = new Move(fromFigure, nextFigure);
             }
 
             return computerMove;
             
+        }
+
+        public Move RandomObligatoryMove()
+        {
+            Random pcRandomObligatoryMove = new Random();
+            int randomIndex = pcRandomObligatoryMove.Next(m_ObligatoryMoves.Count);
+            Figure figureFrom = new Figure(m_ObligatoryMoves[randomIndex].FigureFrom.Row, m_ObligatoryMoves[randomIndex].FigureFrom.Col);
+            Figure figureTo = new Figure(m_ObligatoryMoves[randomIndex].FigureTo.Row, m_ObligatoryMoves[randomIndex].FigureTo.Col);
+            Move randomObligatoryMove = new Move(figureFrom, figureTo);
+
+            return randomObligatoryMove;
+
         }
     }
 }
