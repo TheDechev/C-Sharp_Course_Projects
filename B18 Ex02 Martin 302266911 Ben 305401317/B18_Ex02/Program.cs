@@ -9,7 +9,7 @@ namespace B18_Ex02
     {
         public static void Main()
         {
-            Game newGame = new Game();
+            CheckersGame newGame = new CheckersGame();
             newGame.StartGame();
         }
     }

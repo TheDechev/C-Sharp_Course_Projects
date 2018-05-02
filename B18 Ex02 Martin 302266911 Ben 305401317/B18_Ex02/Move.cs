@@ -72,5 +72,25 @@ namespace B18_Ex02
 
             return moveString;
         }
+
+        public static Move Parse(string i_Move)
+        {
+
+            Move parseMove = null;
+
+            if (i_Move != string.Empty)
+            {
+                Square currentSquare = new Square();
+                Square nextMoveSquare = new Square();
+
+                currentSquare.updateSquareWithString(i_Move.Substring(0, 2));
+                nextMoveSquare.updateSquareWithString(i_Move.Substring(3, 2));
+
+                parseMove = new Move(currentSquare, nextMoveSquare);
+            }
+
+            return parseMove;
+            
+        }
     }
 }

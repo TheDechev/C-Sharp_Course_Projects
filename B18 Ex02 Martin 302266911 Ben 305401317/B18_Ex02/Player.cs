@@ -14,6 +14,18 @@ namespace B18_Ex02
         private int m_Score;
         private bool hasAvailableMoves = true;
         private List<Square> m_Squares;
+        private int m_BonusScore = 0;
+
+        public int BonusScore{
+            get
+            {
+                return m_BonusScore;
+            }
+            set
+            {
+                m_BonusScore += value;
+            }
+        }
 
         public bool hasAvailableMove
         {
@@ -306,6 +318,13 @@ namespace B18_Ex02
             Move randomObligatoryMove = new Move(squareFrom, squareTo);
 
             return randomObligatoryMove;
+        }
+
+        public void initPlayer(int i_BoardSize)
+        {
+            this.squaresNum = i_BoardSize;
+            this.initSquares(i_BoardSize);
+            this.Score = this.squaresNum + this.m_BonusScore;
         }
     }
 }

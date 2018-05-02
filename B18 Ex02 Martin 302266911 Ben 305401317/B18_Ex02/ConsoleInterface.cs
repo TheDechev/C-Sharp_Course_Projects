@@ -8,12 +8,109 @@ namespace B18_Ex02
 {
     public class ConsoleInterface
     {
-        public static void printWelcomeMsg()
+        public void createNewGame()
+        {
+            string firstPlayerName, secondPlayerName;
+            int boardSize;
+            int opponentChoice;
+            CheckersGame newGame = new CheckersGame();
+
+            printWelcomeMsg();
+            firstPlayerName = getPlayerName(); //get player one name
+            newGame.AddNewPlayer(firstPlayerName, Square.e_SquareType.playerOne); 
+            boardSize = getBoardSizeFromUser();
+            opponentChoice = getOpponnetOptions();
+
+            if(opponentChoice == 1)
+            {
+                secondPlayerName = getPlayerName();
+                newGame.AddNewPlayer(secondPlayerName, Square.e_SquareType.playerTwo);
+            }
+            else
+            {
+                secondPlayerName = "Computer";
+                newGame.AddNewPlayer(string.Empty,Square.e_SquareType.playerPC);
+            }
+
+            newGame.createGameBoard(boardSize);
+            runGame(newGame, boardSize);
+        }
+
+        public void runGame(CheckersGame i_Game,int i_BoardSize)
+        {
+            string playerChoice = string.Empty;
+            string currentPlayName = i_Game.PlayerOne.Name, previousPlayerName = i_Game.PlayerTwo.Name;
+            string previousMove = string.Empty;
+            string userMove = string.Empty;
+            CheckersGame.e_RoundOptions currentRound = CheckersGame.e_RoundOptions.passRound;
+
+            while (currentRound != CheckersGame.e_RoundOptions.gameOver)
+            {
+                ClearScreen();
+                PrintBoard(i_Game.Board);
+                userMove = getUserMove(i_BoardSize);
+                PrintTurn(previousMove, previousPlayerName);
+
+                currentRound = i_Game.newRound(userMove);
+
+                if(currentRound == CheckersGame.e_RoundOptions.weakPlayerQuits)
+                {
+                    if (!playerWantsAnotherRound())
+                    {
+                        printEndGame(null, null); //TODO: fix input parameters
+                        break;
+                    }
+                    else // player wants to have another game
+                    {
+                        ClearScreen();
+                        i_Game.createGameBoard(i_BoardSize);
+                        PrintBoard(i_Game.Board);
+                        PrintTurn(previousMove, previousPlayerName);
+                        userMove = getUserMove(i_BoardSize);
+                    }
+                }
+                else if (currentRound == CheckersGame.e_RoundOptions.strongPlayerWantsToQuit) // another round
+                {
+                    userMove = getMoveFromStrongPlayer(i_BoardSize);
+                }
+                else if (currentRound == CheckersGame.e_RoundOptions.playerDidntEnterObligatoryMove) // another round
+                {
+                    userMove = getObligatoryMove(i_BoardSize);
+                }
+                else if (currentRound == CheckersGame.e_RoundOptions.currentPlayerHasAnotherRound) // another round
+                {
+                    userMove = getAnotherMoveFromCurrentPlayer(i_BoardSize,currentPlayName);
+                }
+                else if (currentRound == CheckersGame.e_RoundOptions.playerOneWon)
+                {
+                    printEndGame(i_Game.PlayerOne);
+                    currentRound = CheckersGame.e_RoundOptions.gameOver;// TODO: Split to 2 enums
+                }
+                else if (currentRound == CheckersGame.e_RoundOptions.playerTwoWon)
+                {
+                    printEndGame(i_Game.PlayerTwo);
+                    currentRound = CheckersGame.e_RoundOptions.gameOver;// TODO: Split to 2 enums
+                }
+                else if (currentRound == CheckersGame.e_RoundOptions.gameIsATie)
+                {
+                    printEndGame(null);
+                    currentRound = CheckersGame.e_RoundOptions.gameOver;// TODO: Split to 2 enums
+                }
+
+                
+                    
+                
+
+
+            }
+        }
+
+        public  void printWelcomeMsg()
         {
             Console.WriteLine("Welcome to the game!" + Environment.NewLine);
         }
 
-        public static void PrintBoard(Board i_Board)
+        public  void PrintBoard(Board i_Board)
         {
             int requiredSpaceForSquare = 4;
             char currentChar = 'A';
@@ -80,7 +177,7 @@ namespace B18_Ex02
             Console.WriteLine();
         }
 
-        public static int getBoardSizeFromUser()
+        public  int getBoardSizeFromUser()
         {
             string playerChoice;
 
@@ -97,17 +194,17 @@ namespace B18_Ex02
             return int.Parse(playerChoice);
         }
 
-        public static void PrintScore(Player i_WinningPlayer)
+        public  void PrintScore(Player i_WinningPlayer)
         {
             Console.Write(i_WinningPlayer.Name + "won the game with a score of: " + i_WinningPlayer.Score);
         }
 
-        public static void ClearScreen()
+        public  void ClearScreen()
         {
             Ex02.ConsoleUtils.Screen.Clear();
         }
 
-        public static int getOpponnetOptions()
+        public  int getOpponnetOptions()
         {
             Console.WriteLine("Choose your opponent: ");
             Console.WriteLine("1. Another player ");
@@ -125,7 +222,7 @@ namespace B18_Ex02
             return int.Parse(playerChoice);
         }
 
-        public static string getPlayerName()
+        public  string getPlayerName()
         {   
             Console.WriteLine("Please enter your name: ");
             string playerName = Console.ReadLine();
@@ -141,7 +238,7 @@ namespace B18_Ex02
             return playerName;
         }
 
-        public static void PrintTurn(string i_PreviousMove, string i_CurrentPlayerName)
+        public  void PrintTurn(string i_PreviousMove, string i_CurrentPlayerName)
         {
             if (!i_PreviousMove.Equals(string.Empty))
             {
@@ -151,20 +248,12 @@ namespace B18_Ex02
             Console.Write(i_CurrentPlayerName + "'s turn:");
         }
 
-        public static Move getUserMove(int i_BoardSize)
+        public string getUserMove(int i_BoardSize)
         {
             string playerInput = Console.ReadLine();
-            Move inputMove;
 
-            if (playerInput == "Q")
+            if (playerInput != "Q")
             {
-                return null;
-            }
-            else
-            {
-                Square currentSquare = new Square();
-                Square nextMoveSquare = new Square();
-
                 playerInput = playerInput.Replace(" ", string.Empty);
 
                 while (!isUserInputMoveValid(playerInput, i_BoardSize))
@@ -173,17 +262,12 @@ namespace B18_Ex02
                     playerInput = Console.ReadLine();
                     playerInput = playerInput.Replace(" ", string.Empty);
                 }
-
-                currentSquare.updateSquareWithString(playerInput.Substring(0, 2));
-                nextMoveSquare.updateSquareWithString(playerInput.Substring(3, 2));
-
-                inputMove = new Move(currentSquare, nextMoveSquare);
             }
 
-            return inputMove;
+            return playerInput;
         }
 
-        private static bool isUserInputMoveValid(string i_PlayerMove, int i_BoardSize)
+        private  bool isUserInputMoveValid(string i_PlayerMove, int i_BoardSize)
         {
             return i_PlayerMove.Length == 5 && char.IsUpper(i_PlayerMove[0]) && i_PlayerMove[0] < ('A' + i_BoardSize) &&
                     char.IsLower(i_PlayerMove[1]) && i_PlayerMove[0] < ('a' + i_BoardSize) && i_PlayerMove[2] == '>' &&
@@ -191,7 +275,7 @@ namespace B18_Ex02
                     char.IsLower(i_PlayerMove[4]) && i_PlayerMove[4] < ('a' + i_BoardSize);
         }
 
-        public static bool playerWantsAnotherRound()
+        public  bool playerWantsAnotherRound()
         {
             string playerChoice;
             bool anotherRound = false;
@@ -214,42 +298,52 @@ namespace B18_Ex02
             return anotherRound;     
         }
 
-        public static bool printEndGame(Player i_PlayerOne, Player i_PlayerTwo)
+        public static bool printEndGame(Player i_winningPlayer)
         {
-            bool isEnd = false;
-            if(i_PlayerOne.Score > i_PlayerTwo.Score)
+
+            if (i_winningPlayer != null)
             {
-                PrintScore(i_PlayerOne);
-                isEnd = true;
+                Console.Write(i_winningPlayer.Name + "won the game with a score of: " + i_winningPlayer.Score);
             }
-            else if (i_PlayerOne.Score < i_PlayerTwo.Score)
-            { 
-                PrintScore(i_PlayerTwo);
-                isEnd = true;
-            } 
-            else if (!i_PlayerOne.hasAvailableMove && !i_PlayerTwo.hasAvailableMove)
+            else
             {
                 Console.WriteLine("Its a tie!");
-                isEnd = true;
             }
+
+
+            //bool isEnd = false;
+            //if(i_PlayerOne.Score > i_PlayerTwo.Score)
+            //{
+            //    PrintScore(i_PlayerOne);
+            //    isEnd = true;
+            //}
+            //else if (i_PlayerOne.Score < i_PlayerTwo.Score)
+            //{ 
+            //    PrintScore(i_PlayerTwo);
+            //    isEnd = true;
+            //} 
+            //else if (!i_PlayerOne.hasAvailableMove && !i_PlayerTwo.hasAvailableMove)
+            //{
+            //    Console.WriteLine("Its a tie!");
+            //    isEnd = true;
+            //}
 
             return isEnd;
         }
 
-        public static Move getMoveFromStrongPlayer(int i_BoardSize)
+        public string getMoveFromStrongPlayer(int i_BoardSize)
         {
             Console.WriteLine("You are not the weak player! Enter a valid move. . .");
             return getUserMove(i_BoardSize);
         }
 
-        public static void printAnotherTurn(Board i_Board, string i_PlayerName)
+        public string getAnotherMoveFromCurrentPlayer(int i_BoardSize, string i_PlayerName)
         {
-            Ex02.ConsoleUtils.Screen.Clear();
-            PrintBoard(i_Board);
             Console.WriteLine(i_PlayerName + " has another turn");
+            return getUserMove(i_BoardSize);
         }
 
-        public static Move getObligatoryMove(int i_BoardSize)
+        public string getObligatoryMove(int i_BoardSize)
         {
             Console.WriteLine("Invalid move, you must eliminate your opponnent!");
             return getUserMove(i_BoardSize); 
