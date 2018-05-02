@@ -9,8 +9,8 @@ namespace B18_Ex02
     {
         public static void Main()
         {
-            CheckersGame newGame = new CheckersGame();
-            newGame.StartGame();
+            ConsoleInterface checkersGame = new ConsoleInterface();
+            checkersGame.createNewGame();
         }
     }
 }

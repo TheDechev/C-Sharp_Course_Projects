@@ -27,11 +27,6 @@ namespace B18_Ex02
             this.InitBoard();
         }
 
-        public void PrintBoard()
-        {
-            ConsoleInterface.PrintBoard(this);
-        }
-
         public int Size
         {
             get

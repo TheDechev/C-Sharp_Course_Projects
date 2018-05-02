@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 
 namespace B18_Ex02
 {
@@ -60,7 +59,7 @@ namespace B18_Ex02
             bool moveWasSuccessful;
             e_RoundOptions roundStatus = e_RoundOptions.passRound;
 
-            currentPlayer = this.whichTurn();
+            currentPlayer = this.getCurrentPlayer();
             currentPlayer.UpdateObligatoryMoves(this.m_Board);
             currentPlayer.UpdateAvailableMovesIndicator(this.m_Board);
             weakPlayer = this.getWeakPlayer();
@@ -71,7 +70,6 @@ namespace B18_Ex02
             }
             else
             {
-                Thread.Sleep(1200);
                 inputMove = currentPlayer.ComputerMove(this.m_Board);
             }
 
@@ -128,28 +126,28 @@ namespace B18_Ex02
             }
         }
 
-        public bool playAnotherRound()
-        {
-            if (ConsoleInterface.playerWantsAnotherRound())
-            {
-                this.m_Board = new Board(this.m_Board.Size);
-                this.m_Board.InitBoard();
-                this.m_PlayerTwo.squaresNum = this.m_Board.Size;
-                this.m_PlayerTwo.initSquares(this.m_Board.Size);
-                this.m_PlayerOne.squaresNum = this.m_Board.Size;
-                this.m_PlayerOne.initSquares(this.m_Board.Size);
-                this.m_Board.addPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);
-                ConsoleInterface.PrintBoard(this.m_Board);
-                return true;
-            }
-            else
-            {
-                ConsoleInterface.printEndGame(this.m_PlayerOne, this.m_PlayerTwo);
-                return false;
-            }
-        }
+        //public bool playAnotherRound()
+        //{
+        //    if (ConsoleInterface.playerWantsAnotherRound())
+        //    {
+        //        this.m_Board = new Board(this.m_Board.Size);
+        //        this.m_Board.InitBoard();
+        //        this.m_PlayerTwo.squaresNum = this.m_Board.Size;
+        //        this.m_PlayerTwo.initSquares(this.m_Board.Size);
+        //        this.m_PlayerOne.squaresNum = this.m_Board.Size;
+        //        this.m_PlayerOne.initSquares(this.m_Board.Size);
+        //        this.m_Board.addPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);
+        //        ConsoleInterface.PrintBoard(this.m_Board);
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        ConsoleInterface.printEndGame(this.m_PlayerOne, this.m_PlayerTwo);
+        //        return false;
+        //    }
+        //}
 
-        public Player whichTurn()
+        public Player getCurrentPlayer()
         {
             Player whichPlayer;
 
@@ -316,5 +314,6 @@ namespace B18_Ex02
 
             return gameStatus;
         }
+
     }
 }
