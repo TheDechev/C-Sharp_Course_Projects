@@ -63,10 +63,10 @@ namespace B18_Ex02
             currentPlayer.UpdateObligatoryMoves(this.m_Board);
             currentPlayer.UpdateAvailableMovesIndicator(this.m_Board);
             weakPlayer = this.getWeakPlayer();
+
             inputMove = Move.Parse(i_UserMove);
 
-            //player enters 'Q'
-            if (object.ReferenceEquals(inputMove, null) && currentPlayer.PlayerType != Square.e_SquareType.playerPC)
+            if (i_UserMove == "Q" || i_UserMove == "q")
             {
                 if (currentPlayer.PlayerType == weakPlayer)
                 {
@@ -78,7 +78,7 @@ namespace B18_Ex02
                     m_TurnCounter--;
                     roundStatus = e_RoundOptions.strongPlayerWantsToQuit;
                 }
-            }
+            } 
             else if (currentPlayer.ObligatoryMovesCount > 0)
             {
                 roundStatus = this.playObligatoryMove(currentPlayer, ref inputMove);
@@ -170,7 +170,7 @@ namespace B18_Ex02
 
             if(this.m_Board.updateBoardAfterMove(i_UserInput, i_CurrentPlayer, true))
             {
-                this.m_Board.updateBoard(opponnentRow, opponnentCol, Square.e_SquareType.none);
+                this.m_Board.updateBoard(opponnentRow, opponnentCol, Square.e_SquareType.none,null);
                 squareToDelete = new Square(opponnentRow, opponnentCol);
 
                 if (i_CurrentPlayer.PlayerType == Square.e_SquareType.playerOne)

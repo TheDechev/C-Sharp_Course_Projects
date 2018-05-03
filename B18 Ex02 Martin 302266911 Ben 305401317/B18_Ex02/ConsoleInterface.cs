@@ -296,7 +296,7 @@ namespace B18_Ex02
         {
             string playerInput = Console.ReadLine();
 
-            if (playerInput != "Q")
+            if (playerInput != "Q" && playerInput != "q")
             {
                 playerInput = playerInput.Replace(" ", string.Empty);
 
@@ -326,7 +326,7 @@ namespace B18_Ex02
             Ex02.ConsoleUtils.Screen.Clear();
             Console.WriteLine("Would you like to play another round? <Y/N>");
             playerChoice = Console.ReadLine();
-            while (playerChoice != "Y" && playerChoice != "N")
+            while (playerChoice != "Y" && playerChoice != "N" && playerChoice != "y" && playerChoice != "n")
             {
                 Console.WriteLine("Invalid input, try again. . . ");
                 playerChoice = Console.ReadLine();
@@ -334,7 +334,7 @@ namespace B18_Ex02
 
             Console.Write(Environment.NewLine);
 
-            if (playerChoice != "Y")
+            if (playerChoice != "q" && playerChoice !="Q")
             {
                 anotherRound = true;
             }
@@ -347,7 +347,7 @@ namespace B18_Ex02
 
             if (!object.ReferenceEquals(i_winningPlayer,null))
             {
-                Console.Write(i_winningPlayer.Name + "won the game with a score of: " + i_winningPlayer.Score);
+                Console.Write(Environment.NewLine + i_winningPlayer.Name + "won the game with a score of: " + i_winningPlayer.Score);
             }
             else
             {

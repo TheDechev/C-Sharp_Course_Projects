@@ -78,7 +78,7 @@ namespace B18_Ex02
 
             Move parseMove = null;
 
-            if (i_Move != string.Empty)
+            if (i_Move != string.Empty && i_Move.Length == 5)
             {
                 Square currentSquare = new Square();
                 Square nextMoveSquare = new Square();

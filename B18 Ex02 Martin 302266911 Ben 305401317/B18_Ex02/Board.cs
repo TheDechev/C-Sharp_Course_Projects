@@ -178,8 +178,8 @@ namespace B18_Ex02
                 if (this.getSquareStatus(i_UserMove.SquareTo) == Square.e_SquareType.none &&
                     squareType == i_CurrentPlayer.PlayerType)
                 {
-                    this.updateBoard(i_UserMove.SquareTo.Row, i_UserMove.SquareTo.Col, this.getSquareStatus(i_UserMove.SquareFrom));
-                    this.updateBoard(i_UserMove.SquareFrom.Row, i_UserMove.SquareFrom.Col, Square.e_SquareType.none);
+                    this.updateBoard(i_UserMove.SquareTo.Row, i_UserMove.SquareTo.Col, this.getSquareStatus(i_UserMove.SquareFrom),i_CurrentPlayer);
+                    this.updateBoard(i_UserMove.SquareFrom.Row, i_UserMove.SquareFrom.Col, Square.e_SquareType.none, i_CurrentPlayer);
                     i_CurrentPlayer.UpdateSquare(i_UserMove, this.m_BoardSize);
 
                     return true;
@@ -189,41 +189,43 @@ namespace B18_Ex02
             return false;
         }
 
-        public bool updateBoard(int i_Row, int i_Col, Square.e_SquareType i_PlayerType)
+        public bool updateBoard(int i_Row, int i_Col, Square.e_SquareType i_UpdateSquare, Player i_CurrentPlayer)
         {
             bool updateRes = false;
 
             if (this.isPositionValid(i_Row, i_Col))
             {
-                if (i_PlayerType == Square.e_SquareType.playerOne)
+                if (i_UpdateSquare == Square.e_SquareType.playerOne)
                 {
                     if (i_Row == 0)
                     {
+                        i_CurrentPlayer.Score += 4;
                         this.m_BoardGame[i_Row, i_Col] = (int)Square.e_SquareType.playerOneKing;
                         updateRes = true;
                     }
                     else
                     {
-                        this.m_BoardGame[i_Row, i_Col] = (int)i_PlayerType;
+                        this.m_BoardGame[i_Row, i_Col] = (int)i_UpdateSquare;
                         updateRes = true;
                     }
                 }
-                else if (i_PlayerType == Square.e_SquareType.playerTwo || i_PlayerType == Square.e_SquareType.playerPC)
+                else if (i_UpdateSquare == Square.e_SquareType.playerTwo || i_UpdateSquare == Square.e_SquareType.playerPC)
                 {
                     if (i_Row == this.m_BoardSize - 1)
                     {
+                        i_CurrentPlayer.Score += 4;
                         this.m_BoardGame[i_Row, i_Col] = (int)Square.e_SquareType.playerTwoKing;
                         updateRes = true;
                     }
                     else
                     {
-                        this.m_BoardGame[i_Row, i_Col] = (int)i_PlayerType;
+                        this.m_BoardGame[i_Row, i_Col] = (int)i_UpdateSquare;
                         updateRes = true;
                     }
                 }
                 else
                 {
-                    this.m_BoardGame[i_Row, i_Col] = (int)i_PlayerType;
+                    this.m_BoardGame[i_Row, i_Col] = (int)i_UpdateSquare;
                     updateRes = true;
                 }
             }
