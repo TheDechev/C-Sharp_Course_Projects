@@ -276,5 +276,29 @@ namespace B18_Ex02
                 i_EliminationList.Add(resMove);
             }
         }
+
+        public string squareToString(Square.e_SquareType i_CurrentSquare)
+        {
+            string resString = "   ";
+
+            if (i_CurrentSquare == Square.e_SquareType.playerOne)
+            {
+                resString = " X ";
+            }
+            else if (i_CurrentSquare == Square.e_SquareType.playerTwo || i_CurrentSquare == Square.e_SquareType.playerPC)
+            {
+                resString = " O ";
+            }
+            else if (i_CurrentSquare == Square.e_SquareType.playerOneKing)
+            {
+                resString = " U ";
+            }
+            else if (i_CurrentSquare == Square.e_SquareType.playerTwoKing)
+            {
+                resString = " K ";
+            }
+
+            return resString;
+        }
     }
 }

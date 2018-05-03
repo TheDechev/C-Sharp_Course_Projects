@@ -15,15 +15,6 @@ namespace B18_Ex02
         private bool hasAvailableMoves = true;
         private List<Square> m_Squares;
         private int m_BonusScore = 0;
-        private char m_Shape;
-
-        public char Shape
-        {
-            get
-            {
-                return m_Shape;
-            }
-        }
 
         public int BonusScore{
             get
@@ -88,14 +79,6 @@ namespace B18_Ex02
 
             set
             {
-                if (value == Square.e_SquareType.playerOne)
-                {
-                    m_Shape = 'X';
-                }
-                else
-                {
-                    m_Shape = 'O';
-                }
                 this.m_PlayerType = value;
             }
         }

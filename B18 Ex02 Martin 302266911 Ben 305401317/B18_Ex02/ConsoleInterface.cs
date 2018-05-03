@@ -145,7 +145,8 @@ namespace B18_Ex02
             }
             else
             {
-                io_PreviousMove = i_CurrentPlayer.Name + "'s move was (" + i_CurrentPlayer.Shape + "): " + io_UserMove;
+                string shape = i_Game.Board.squareToString(i_Game.Board.getSquareStatus(Move.Parse(io_UserMove).SquareTo));
+                io_PreviousMove = i_CurrentPlayer.Name + "'s move was (" + shape + "): " + io_UserMove;
             }
         }
 
@@ -185,29 +186,10 @@ namespace B18_Ex02
 
                     for (int j = 0; j < i_Board.Size; j++)
                     {
-                        Console.Write("| ");
-                        //// the squares logic
+                        Console.Write("|");
 
-                        if (i_Board.getSquareStatus(boardRow, j) == Square.e_SquareType.playerOne)
-                        {
-                            Console.Write("X ");
-                        }
-                        else if (i_Board.getSquareStatus(boardRow, j) == Square.e_SquareType.playerTwo || i_Board.getSquareStatus(boardRow, j) == Square.e_SquareType.playerPC)
-                        {
-                            Console.Write("O ");
-                        }
-                        else if (i_Board.getSquareStatus(boardRow, j) == Square.e_SquareType.playerOneKing)
-                        {
-                            Console.Write("K ");
-                        }
-                        else if (i_Board.getSquareStatus(boardRow, j) == Square.e_SquareType.playerTwoKing)
-                        {
-                            Console.Write("U ");
-                        }
-                        else
-                        {
-                            Console.Write("  ");
-                        }
+                        string shape = i_Board.squareToString(i_Board.getSquareStatus(boardRow,j));
+                        Console.Write(shape);
                     }
 
                     Console.Write("|");

@@ -101,5 +101,7 @@ namespace B18_Ex02
             Square movObj = (Square)i_Square;
             return this == movObj;
         }
+
+
     }
 }
