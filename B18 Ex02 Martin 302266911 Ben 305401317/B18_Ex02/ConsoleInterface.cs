@@ -114,7 +114,7 @@ namespace B18_Ex02
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.currentPlayerHasAnotherRound) // another round
             {
-                Console.WriteLine(Environment.NewLine + i_CurrentPlayer.Name + " has another turn");
+                Console.WriteLine("{0} {1} has another turn", Environment.NewLine, i_CurrentPlayer.Name);
                 Thread.Sleep(800);
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerOneWon)
@@ -152,7 +152,7 @@ namespace B18_Ex02
 
         private void printWelcomeMsg()
         {
-            Console.WriteLine("Welcome to the game!" + Environment.NewLine);
+            Console.WriteLine("Welcome to the game! {0}", Environment.NewLine);
         }
 
         private void PrintBoard(Board i_Board)
