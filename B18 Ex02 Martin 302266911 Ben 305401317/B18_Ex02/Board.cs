@@ -291,11 +291,11 @@ namespace B18_Ex02
             }
             else if (i_CurrentSquare == Square.e_SquareType.playerOneKing)
             {
-                resString = " U ";
+                resString = " K ";
             }
             else if (i_CurrentSquare == Square.e_SquareType.playerTwoKing)
             {
-                resString = " K ";
+                resString = " U ";
             }
 
             return resString;

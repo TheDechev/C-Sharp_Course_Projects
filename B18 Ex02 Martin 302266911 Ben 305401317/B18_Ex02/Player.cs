@@ -332,7 +332,8 @@ namespace B18_Ex02
         {
             this.squaresNum = i_BoardSize;
             this.initSquares(i_BoardSize);
-            this.Score = this.squaresNum + this.m_BonusScore;
+            this.Score = this.squaresNum;
         }
+
     }
 }

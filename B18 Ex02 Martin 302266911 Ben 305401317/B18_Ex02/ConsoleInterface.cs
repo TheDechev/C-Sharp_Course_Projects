@@ -83,24 +83,7 @@ namespace B18_Ex02
         {
             if (io_CurrentRound == CheckersGame.e_RoundOptions.weakPlayerQuits)
             {
-                if (!playerWantsAnotherRound())
-                {
-                    if (i_CurrentPlayer.PlayerType == Square.e_SquareType.playerOne)
-                    {
-                        printEndGame(i_Game, Square.e_SquareType.playerOne);
-                    }
-                    else
-                    {
-                        printEndGame(i_Game, Square.e_SquareType.playerTwo);
-
-                    }
-                    io_CurrentRound = CheckersGame.e_RoundOptions.gameOver;
-                }
-                else // player wants to have another game
-                {
-                    i_Game.createGameBoard(i_Game.Board.Size);
-                    io_PreviousMove = string.Empty;
-                }
+                endOfRoundScreen(i_Game, i_CurrentPlayer.PlayerType, false, ref io_CurrentRound,ref io_PreviousMove);
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.strongPlayerWantsToQuit) // another round
             {
@@ -119,24 +102,15 @@ namespace B18_Ex02
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerOneWon)
             {
-                ClearScreen();
-                PrintBoard(i_Game.Board);
-                printEndGame(i_Game, Square.e_SquareType.playerOne);
-                io_CurrentRound = CheckersGame.e_RoundOptions.gameOver;
+                endOfRoundScreen(i_Game, Square.e_SquareType.playerOne, true, ref io_CurrentRound, ref io_PreviousMove);
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerTwoWon)
             {
-                ClearScreen();
-                PrintBoard(i_Game.Board);
-                printEndGame(i_Game, Square.e_SquareType.playerTwo);
-                io_CurrentRound = CheckersGame.e_RoundOptions.gameOver;
+                endOfRoundScreen(i_Game, Square.e_SquareType.playerTwo, true, ref io_CurrentRound, ref io_PreviousMove);
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.gameIsATie)
             {
-                ClearScreen();
-                PrintBoard(i_Game.Board);
-                printEndGame(i_Game, Square.e_SquareType.none);
-                io_CurrentRound = CheckersGame.e_RoundOptions.gameOver;
+                endOfRoundScreen(i_Game, Square.e_SquareType.none, false, ref io_CurrentRound, ref io_PreviousMove);
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerEnteredInvalidMove)
             {
@@ -301,12 +275,12 @@ namespace B18_Ex02
                     char.IsLower(i_PlayerMove[4]) && i_PlayerMove[4] < ('a' + i_BoardSize);
         }
 
-        private bool playerWantsAnotherRound()
+        private bool playerWantsAnotherRound(CheckersGame i_Game, Square.e_SquareType i_Player)
         {
             string playerChoice;
             bool anotherRound = false;
-            Ex02.ConsoleUtils.Screen.Clear();
-            Console.WriteLine("Would you like to play another round? <Y/N>");
+
+            Console.WriteLine(Environment.NewLine + "Would you like to play another round? <Y/N>");
             playerChoice = Console.ReadLine();
             while (playerChoice != "Y" && playerChoice != "N" && playerChoice != "y" && playerChoice != "n")
             {
@@ -324,17 +298,33 @@ namespace B18_Ex02
             return anotherRound;     
         }
 
-        private void printEndGame(CheckersGame i_Game, Square.e_SquareType i_Winner)
+        private void printEndGame(CheckersGame i_Game, Square.e_SquareType i_PlayerType, bool i_WinningPlayer)
         {
 
-            if(i_Winner == Square.e_SquareType.playerOne)
+            if(i_PlayerType != Square.e_SquareType.none)
             {
-                Console.Write(Environment.NewLine + i_Game.PlayerOne.Name + " won the game!");
-
-            }
-            else if (i_Winner == Square.e_SquareType.playerTwo)
-            {
-                Console.Write(Environment.NewLine + i_Game.PlayerTwo.Name + " won the game!");
+                if (i_WinningPlayer)
+                {
+                    if (i_PlayerType == Square.e_SquareType.playerOne)
+                    {
+                        Console.Write(Environment.NewLine + i_Game.PlayerOne.Name + " won the game!");
+                    }
+                    else
+                    {
+                        Console.Write(Environment.NewLine + i_Game.PlayerTwo.Name + " won the game!");
+                    }
+                }
+                else
+                {
+                    if (i_PlayerType == Square.e_SquareType.playerOne)
+                    {
+                        Console.Write(Environment.NewLine + i_Game.PlayerTwo.Name + " won the game!");
+                    }
+                    else
+                    {
+                        Console.Write(Environment.NewLine + i_Game.PlayerOne.Name + " won the game!");
+                    }
+                }
             }
             else
             {
@@ -343,7 +333,7 @@ namespace B18_Ex02
 
             Console.Write(Environment.NewLine);
             Console.WriteLine(i_Game.PlayerOne.Name + "'s score is: " + i_Game.PlayerOne.Score);
-            Console.WriteLine(i_Game.PlayerTwo.Name + "'s score is: " + i_Game.PlayerOne.Score);
+            Console.WriteLine(i_Game.PlayerTwo.Name + "'s score is: " + i_Game.PlayerTwo.Score);
 
 
         }
@@ -357,6 +347,23 @@ namespace B18_Ex02
         private static void printInvalidMsg()
         {
             Console.WriteLine("Invalid move, try again . . .");
+        }
+
+        private void endOfRoundScreen(CheckersGame i_Game, Square.e_SquareType i_PlayerType, bool i_WinningPlayer,ref CheckersGame.e_RoundOptions io_CurrentRound, ref string io_PreviousMove)
+        {
+            ClearScreen();
+            printEndGame(i_Game, i_PlayerType, i_WinningPlayer);
+
+            if (!playerWantsAnotherRound(i_Game, i_PlayerType))
+            {
+                Console.WriteLine("Goodbye! :)");
+                io_CurrentRound = CheckersGame.e_RoundOptions.gameOver;
+            }
+            else // player wants to have another game
+            {
+                i_Game.createGameBoard(i_Game.Board.Size);
+                io_PreviousMove = string.Empty;
+            }
         }
     }
 }

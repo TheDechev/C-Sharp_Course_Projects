@@ -70,7 +70,7 @@ namespace B18_Ex02
             {
                 if (currentPlayer.PlayerType == weakPlayer)
                 {
-                    updateScore(currentPlayer.PlayerType);
+                    endRoundScoreUpdate(currentPlayer.PlayerType);
                     roundStatus = e_RoundOptions.weakPlayerQuits;
                 }
                 else
@@ -106,15 +106,19 @@ namespace B18_Ex02
             return roundStatus;
     }
 
-        private void updateScore(Square.e_SquareType i_WinningPlayer)
+        private void endRoundScoreUpdate(Square.e_SquareType i_LosingpPlayer)
         {
-            if(i_WinningPlayer == Square.e_SquareType.playerOne)
+            if(i_LosingpPlayer == Square.e_SquareType.playerOne)
             {
-                m_PlayerOne.BonusScore += m_PlayerOne.Score;
-
-            } else
+                m_PlayerTwo.Score += m_PlayerTwo.BonusScore;
+                m_PlayerTwo.BonusScore = m_PlayerTwo.Score;
+                m_PlayerOne.Score = m_PlayerOne.BonusScore;
+            }
+            else
             {
-                m_PlayerTwo.BonusScore += m_PlayerTwo.Score;
+                m_PlayerOne.Score += m_PlayerOne.BonusScore;
+                m_PlayerOne.BonusScore = m_PlayerOne.Score;
+                m_PlayerTwo.Score = m_PlayerTwo.BonusScore;
             }
         }
 
