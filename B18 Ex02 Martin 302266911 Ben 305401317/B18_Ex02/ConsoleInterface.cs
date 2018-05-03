@@ -55,15 +55,17 @@ namespace B18_Ex02
                 if (currentPlayer.PlayerType != Square.e_SquareType.playerPC)
                 {
                     userMove = getUserMove(i_BoardSize);
-                } else
+                }
+                else
                 {
-
                     Thread.Sleep(1200);
                 }
 
                 currentRound = i_Game.newRound(userMove);
-                currentPlayer = i_Game.getCurrentPlayer();
+
                 handleRound(ref previousMove,ref userMove, ref currentRound, currentPlayer, i_Game);
+
+                currentPlayer = i_Game.getCurrentPlayer();
 
             }
         }
@@ -93,15 +95,19 @@ namespace B18_Ex02
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.strongPlayerWantsToQuit) // another round
             {
-                io_UserMove = getMoveFromStrongPlayer(i_Game.Board.Size);
+                Console.WriteLine("You are not the weak player! Enter a valid move. . .");
+                Thread.Sleep(800);
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerDidntEnterObligatoryMove) // another round
             {
-                io_UserMove = getObligatoryMove(i_Game.Board.Size);
+                Console.WriteLine("Invalid move, you must eliminate your opponnent!");
+                Thread.Sleep(800);
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.currentPlayerHasAnotherRound) // another round
             {
-                io_UserMove = getAnotherMoveFromCurrentPlayer(i_Game.Board.Size, i_CurrentPlayer.Name);
+                Console.WriteLine(i_CurrentPlayer.Name + " has another turn");
+                Thread.Sleep(800);
+
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerOneWon)
             {
@@ -121,7 +127,7 @@ namespace B18_Ex02
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerEnteredInvalidMove)
             {
                 printInvalidMsg();
-                Thread.Sleep(600);
+                Thread.Sleep(800);
             }
             else
             {
@@ -245,7 +251,7 @@ namespace B18_Ex02
 
             return int.Parse(playerChoice);
         }
-
+        
         private string getPlayerName()
         {   
             Console.WriteLine("Please enter your name: ");
@@ -336,22 +342,11 @@ namespace B18_Ex02
 
         }
 
-        private string getMoveFromStrongPlayer(int i_BoardSize)
-        {
-            Console.WriteLine("You are not the weak player! Enter a valid move. . .");
-            return getUserMove(i_BoardSize);
-        }
 
         private string getAnotherMoveFromCurrentPlayer(int i_BoardSize, string i_PlayerName)
         {
-            Console.WriteLine(i_PlayerName + " has another turn");
-            return getUserMove(i_BoardSize);
-        }
 
-        private string getObligatoryMove(int i_BoardSize)
-        {
-            Console.WriteLine("Invalid move, you must eliminate your opponnent!");
-            return getUserMove(i_BoardSize); 
+            return getUserMove(i_BoardSize);
         }
 
         private static void printInvalidMsg()

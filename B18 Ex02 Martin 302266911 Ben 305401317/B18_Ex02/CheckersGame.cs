@@ -126,27 +126,6 @@ namespace B18_Ex02
             }
         }
 
-        //public bool playAnotherRound()
-        //{
-        //    if (ConsoleInterface.playerWantsAnotherRound())
-        //    {
-        //        this.m_Board = new Board(this.m_Board.Size);
-        //        this.m_Board.InitBoard();
-        //        this.m_PlayerTwo.squaresNum = this.m_Board.Size;
-        //        this.m_PlayerTwo.initSquares(this.m_Board.Size);
-        //        this.m_PlayerOne.squaresNum = this.m_Board.Size;
-        //        this.m_PlayerOne.initSquares(this.m_Board.Size);
-        //        this.m_Board.addPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);
-        //        ConsoleInterface.PrintBoard(this.m_Board);
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        ConsoleInterface.printEndGame(this.m_PlayerOne, this.m_PlayerTwo);
-        //        return false;
-        //    }
-        //}
-
         public Player getCurrentPlayer()
         {
             Player whichPlayer;
