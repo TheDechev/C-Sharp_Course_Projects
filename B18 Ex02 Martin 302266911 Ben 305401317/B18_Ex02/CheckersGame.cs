@@ -63,15 +63,7 @@ namespace B18_Ex02
             currentPlayer.UpdateObligatoryMoves(this.m_Board);
             currentPlayer.UpdateAvailableMovesIndicator(this.m_Board);
             weakPlayer = this.getWeakPlayer();
-
-            if (currentPlayer.PlayerType != Square.e_SquareType.playerPC)
-            {
-                inputMove = Move.Parse(i_UserMove);
-            }
-            else
-            {
-                inputMove = currentPlayer.ComputerMove(this.m_Board);
-            }
+            inputMove = Move.Parse(i_UserMove);
 
             //player enters 'Q'
             if (object.ReferenceEquals(inputMove, null) && currentPlayer.PlayerType != Square.e_SquareType.playerPC)
@@ -106,7 +98,7 @@ namespace B18_Ex02
 
             } else
             {
-                roundStatus = checkGameStatus();
+                roundStatus = e_RoundOptions.passRound;
             }
 
             this.m_TurnCounter++;
@@ -219,11 +211,6 @@ namespace B18_Ex02
         {
             e_RoundOptions obligitoryMoveRes = e_RoundOptions.passRound;
 
-            if(i_CurrentPlayer.PlayerType == Square.e_SquareType.playerPC)
-            {
-                io_InputMove = i_CurrentPlayer.RandomObligatoryMove();
-            }
-
             if (i_CurrentPlayer.isMoveObligatory(io_InputMove)) // Move was one of the obligatory options
             {
                 if(this.eliminateOpponent(io_InputMove, i_CurrentPlayer))
@@ -277,18 +264,17 @@ namespace B18_Ex02
         public e_RoundOptions checkGameStatus()
         {
             e_RoundOptions gameStatus = e_RoundOptions.passRound;
-
-            if (m_PlayerOne.squaresNum == 0) 
+            if(!m_PlayerOne.hasAvailableMove && !m_PlayerTwo.hasAvailableMove)
+            {
+                gameStatus = e_RoundOptions.gameIsATie;
+            }
+            if (m_PlayerOne.squaresNum == 0 || !m_PlayerOne.hasAvailableMove) 
             {
                 gameStatus = e_RoundOptions.playerTwoWon;
             }
-            else if (m_PlayerTwo.squaresNum == 0) 
+            else if (m_PlayerTwo.squaresNum == 0 || !m_PlayerTwo.hasAvailableMove) 
             {
                 gameStatus = e_RoundOptions.playerOneWon;
-            }
-            else if (!m_PlayerOne.hasAvailableMove && ! m_PlayerTwo.hasAvailableMove)
-            {
-                gameStatus = e_RoundOptions.gameIsATie;
             }
 
             return gameStatus;

@@ -298,29 +298,37 @@ namespace B18_Ex02
             }
         }
 
-        public Move ComputerMove(Board i_GameBoard)
+        public string ComputerMove(Board i_GameBoard)
         {
             Random rand = new Random();
-            int randIndx = rand.Next(this.m_Squares.Count); // a num between 0 - squareCount - 1
+            int randIndx = rand.Next(this.m_Squares.Count); 
             Square nextSquare = this.AvailableMove(this.m_Squares[randIndx], i_GameBoard);
-            Move computerMove = null;
+            string computerMove = string.Empty;
             Square fromSquare;
 
             if (this.hasAvailableMove)
             {
-                while (object.ReferenceEquals(nextSquare, null))
+                this.UpdateObligatoryMoves(i_GameBoard);
+                if(this.ObligatoryMovesCount > 0)
                 {
-                    randIndx++;
-                    if (randIndx >= this.m_Squares.Count)
+                    computerMove = RandomObligatoryMove().ToString();
+                }
+                else
+                {
+                    while (object.ReferenceEquals(nextSquare, null))
                     {
-                        randIndx = 0;
+                        randIndx++;
+                        if (randIndx >= this.m_Squares.Count)
+                        {
+                            randIndx = 0;
+                        }
+
+                        nextSquare = this.AvailableMove(this.m_Squares[randIndx], i_GameBoard);
                     }
 
-                    nextSquare = this.AvailableMove(this.m_Squares[randIndx], i_GameBoard);
-                }
-
-                fromSquare = new Square(this.m_Squares[randIndx].Row, this.m_Squares[randIndx].Col);
-                computerMove = new Move(fromSquare, nextSquare);
+                    fromSquare = new Square(this.m_Squares[randIndx].Row, this.m_Squares[randIndx].Col);
+                    computerMove = new Move(fromSquare, nextSquare).ToString();
+                }   
             }
 
             return computerMove;  

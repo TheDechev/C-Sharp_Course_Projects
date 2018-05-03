@@ -43,7 +43,8 @@ namespace B18_Ex02
             Player currentPlayer = i_Game.PlayerOne;
             string previousMove = string.Empty;
             string userMove = string.Empty;
-            
+
+            CheckersGame.e_RoundOptions gameStatus;
             CheckersGame.e_RoundOptions currentRound = CheckersGame.e_RoundOptions.passRound;
 
             while (currentRound != CheckersGame.e_RoundOptions.gameOver)
@@ -58,10 +59,18 @@ namespace B18_Ex02
                 }
                 else
                 {
+                    userMove = currentPlayer.ComputerMove(i_Game.Board);
                     Thread.Sleep(1200);
                 }
 
                 currentRound = i_Game.newRound(userMove);
+ 
+                gameStatus = i_Game.checkGameStatus();
+
+                if (gameStatus != CheckersGame.e_RoundOptions.passRound)
+                {
+                    currentRound = gameStatus;
+                }
 
                 handleRound(ref previousMove,ref userMove, ref currentRound, currentPlayer, i_Game);
 
@@ -107,20 +116,25 @@ namespace B18_Ex02
             {
                 Console.WriteLine(i_CurrentPlayer.Name + " has another turn");
                 Thread.Sleep(800);
-
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerOneWon)
             {
+                ClearScreen();
+                PrintBoard(i_Game.Board);
                 printEndGame(i_Game.PlayerOne);
-                io_CurrentRound = CheckersGame.e_RoundOptions.gameOver;// TODO: Split to 2 enums
+                io_CurrentRound = CheckersGame.e_RoundOptions.gameOver;
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerTwoWon)
             {
+                ClearScreen();
+                PrintBoard(i_Game.Board);
                 printEndGame(i_Game.PlayerTwo);
                 io_CurrentRound = CheckersGame.e_RoundOptions.gameOver;
             }
             else if (io_CurrentRound == CheckersGame.e_RoundOptions.gameIsATie)
             {
+                ClearScreen();
+                PrintBoard(i_Game.Board);
                 printEndGame(null);
                 io_CurrentRound = CheckersGame.e_RoundOptions.gameOver;
             }
@@ -341,7 +355,6 @@ namespace B18_Ex02
             }
 
         }
-
 
         private string getAnotherMoveFromCurrentPlayer(int i_BoardSize, string i_PlayerName)
         {
