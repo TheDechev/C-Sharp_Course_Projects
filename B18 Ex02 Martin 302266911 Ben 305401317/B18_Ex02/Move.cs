@@ -7,8 +7,28 @@ namespace B18_Ex02
 {
     public class Move
     {
+        public const int k_ZeroObligatoryMoves = 0;
+
         private Square m_squareFrom;
         private Square m_squareTo;
+
+        public static Move Parse(string i_Move)
+        {
+            Move parseMove = null;
+
+            if (i_Move != string.Empty && i_Move.Length == 5)
+            {
+                Square currentSquare = new Square();
+                Square nextMoveSquare = new Square();
+
+                currentSquare.updateSquareWithString(i_Move.Substring(0, 2));
+                nextMoveSquare.updateSquareWithString(i_Move.Substring(3, 2));
+
+                parseMove = new Move(currentSquare, nextMoveSquare);
+            }
+
+            return parseMove;
+        }
 
         public Move(Square from, Square to)
         {
@@ -71,26 +91,6 @@ namespace B18_Ex02
             moveString += (char)(this.m_squareTo.Row + 'a');
 
             return moveString;
-        }
-
-        public static Move Parse(string i_Move)
-        {
-
-            Move parseMove = null;
-
-            if (i_Move != string.Empty && i_Move.Length == 5)
-            {
-                Square currentSquare = new Square();
-                Square nextMoveSquare = new Square();
-
-                currentSquare.updateSquareWithString(i_Move.Substring(0, 2));
-                nextMoveSquare.updateSquareWithString(i_Move.Substring(3, 2));
-
-                parseMove = new Move(currentSquare, nextMoveSquare);
-            }
-
-            return parseMove;
-            
         }
     }
 }

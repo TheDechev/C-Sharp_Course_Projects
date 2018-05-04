@@ -12,12 +12,19 @@ namespace B18_Ex02
         private int m_BoardSize = k_DefaultBoardSize;
         private int[,] m_BoardGame;
 
-        public enum e_Direction
+        public enum eDirection
         {
             TopLeft,
             TopRight,
             BottomLeft,
             BottomRight
+        }
+
+        public enum eBoardSize
+        {
+            Small = 6,
+            Medium = 8,
+            Large = 10,
         }
 
         public Board(int i_BoardSize)
@@ -40,43 +47,43 @@ namespace B18_Ex02
             }
         }
 
-        public Square.e_SquareType getSquareStatus(Square i_Square)
+        public Square.eSquareType GetSquareStatus(Square i_Square)
         {
-            Square.e_SquareType resStatus = Square.e_SquareType.invalid;
+            Square.eSquareType resStatus = Square.eSquareType.invalid;
 
             if(!object.ReferenceEquals(i_Square, null))
             {
-                if (this.isPositionValid(i_Square.Row, i_Square.Col))
+                if (this.IsPositionValid(i_Square.Row, i_Square.Col))
                 { 
-                   resStatus = (Square.e_SquareType)this.m_BoardGame[i_Square.Row, i_Square.Col];
+                   resStatus = (Square.eSquareType)this.m_BoardGame[i_Square.Row, i_Square.Col];
                 }
             }
 
             return resStatus;
         }
 
-        public Square.e_SquareType getSquareStatus(int i_Row, int i_Col)
+        public Square.eSquareType GetSquareStatus(int i_Row, int i_Col)
         {
-            Square.e_SquareType resStatus = Square.e_SquareType.invalid;
+            Square.eSquareType resStatus = Square.eSquareType.invalid;
 
-            if (this.isPositionValid(i_Row, i_Col))
+            if (this.IsPositionValid(i_Row, i_Col))
             {
-                resStatus = (Square.e_SquareType)this.m_BoardGame[i_Row, i_Col];
+                resStatus = (Square.eSquareType)this.m_BoardGame[i_Row, i_Col];
             }
 
             return resStatus;
         }
 
-        public void addPlayersToBoard(Player i_PlayerOne, Player i_PlayerTwo)
+        public void AddPlayersToBoard(Player i_PlayerOne, Player i_PlayerTwo)
         {
-            for (int i = 0; i < i_PlayerOne.squaresNum; i++)
+            for (int i = 0; i < i_PlayerOne.SquaresNum; i++)
             {
-                this.m_BoardGame[i_PlayerOne.getSquare(i).Row, i_PlayerOne.getSquare(i).Col] = (int)i_PlayerOne.PlayerType;
+                this.m_BoardGame[i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col] = (int)i_PlayerOne.PlayerType;
             }
 
-            for (int i = 0; i < i_PlayerTwo.squaresNum; i++)
+            for (int i = 0; i < i_PlayerTwo.SquaresNum; i++)
             {    
-                    this.m_BoardGame[i_PlayerTwo.getSquare(i).Row, i_PlayerTwo.getSquare(i).Col] = (int)i_PlayerTwo.PlayerType;
+                    this.m_BoardGame[i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col] = (int)i_PlayerTwo.PlayerType;
             }
         }
 
@@ -92,7 +99,7 @@ namespace B18_Ex02
 
                 while(currentCol < this.m_BoardSize)
                 {
-                    this.m_BoardGame[currentRow, currentCol] = (int)Square.e_SquareType.invalid;
+                    this.m_BoardGame[currentRow, currentCol] = (int)Square.eSquareType.invalid;
                     currentCol += 2;
                 }
 
@@ -103,43 +110,43 @@ namespace B18_Ex02
         public List<Move> EliminationAvailable(Square i_FromSquare, Player i_CurrentPlayer)
         { 
             List<Move> eliminationList = new List<Move>();
-            Square.e_SquareType squareType;
+            Square.eSquareType squareType;
 
-            squareType = this.getSquareStatus(i_FromSquare);
+            squareType = this.GetSquareStatus(i_FromSquare);
 
-            if (squareType == Square.e_SquareType.playerOneKing || squareType == Square.e_SquareType.playerTwoKing)
+            if (squareType == Square.eSquareType.playerOneKing || squareType == Square.eSquareType.playerTwoKing)
             {
-               this.getEliminationInDirection(i_FromSquare, i_CurrentPlayer, e_Direction.TopRight, eliminationList);
-               this.getEliminationInDirection(i_FromSquare, i_CurrentPlayer, e_Direction.TopLeft, eliminationList);
-               this.getEliminationInDirection(i_FromSquare, i_CurrentPlayer, e_Direction.BottomRight, eliminationList);
-               this.getEliminationInDirection(i_FromSquare, i_CurrentPlayer, e_Direction.BottomLeft, eliminationList);
+               this.GetEliminationInDirection(i_FromSquare, i_CurrentPlayer, eDirection.TopRight, eliminationList);
+               this.GetEliminationInDirection(i_FromSquare, i_CurrentPlayer, eDirection.TopLeft, eliminationList);
+               this.GetEliminationInDirection(i_FromSquare, i_CurrentPlayer, eDirection.BottomRight, eliminationList);
+               this.GetEliminationInDirection(i_FromSquare, i_CurrentPlayer, eDirection.BottomLeft, eliminationList);
             }
-            else if(squareType == Square.e_SquareType.playerOne)
+            else if(squareType == Square.eSquareType.playerOne)
             {
-                this.getEliminationInDirection(i_FromSquare, i_CurrentPlayer, e_Direction.TopRight, eliminationList);
-                this.getEliminationInDirection(i_FromSquare, i_CurrentPlayer, e_Direction.TopLeft, eliminationList);
+                this.GetEliminationInDirection(i_FromSquare, i_CurrentPlayer, eDirection.TopRight, eliminationList);
+                this.GetEliminationInDirection(i_FromSquare, i_CurrentPlayer, eDirection.TopLeft, eliminationList);
             }
             else
             {
-                this.getEliminationInDirection(i_FromSquare, i_CurrentPlayer, e_Direction.BottomRight, eliminationList);
-                this.getEliminationInDirection(i_FromSquare, i_CurrentPlayer, e_Direction.BottomLeft, eliminationList);
+                this.GetEliminationInDirection(i_FromSquare, i_CurrentPlayer, eDirection.BottomRight, eliminationList);
+                this.GetEliminationInDirection(i_FromSquare, i_CurrentPlayer, eDirection.BottomLeft, eliminationList);
             }
 
             return eliminationList;
         }
 
-        public Square GetSquareInDirection(Square i_FromSquare, e_Direction i_PlayerDirection)
+        public Square GetSquareInDirection(Square i_FromSquare, eDirection i_PlayerDirection)
         {
             int offsetCol = 1;
             int offsetRow = -1; 
             int addition = 1;
 
-            if (i_PlayerDirection == e_Direction.BottomLeft || i_PlayerDirection == e_Direction.BottomRight)
+            if (i_PlayerDirection == eDirection.BottomLeft || i_PlayerDirection == eDirection.BottomRight)
             {
                 addition = -1;
             }
 
-            if (i_PlayerDirection == e_Direction.TopLeft || i_PlayerDirection == e_Direction.BottomLeft)
+            if (i_PlayerDirection == eDirection.TopLeft || i_PlayerDirection == eDirection.BottomLeft)
             {
                 offsetCol = -1;
                 offsetRow = -1;
@@ -147,7 +154,7 @@ namespace B18_Ex02
 
             Square resSquare = new Square(i_FromSquare.Row + (offsetRow * addition), i_FromSquare.Col + offsetCol);
 
-            if(this.getSquareStatus(resSquare) != Square.e_SquareType.invalid)
+            if(this.GetSquareStatus(resSquare) != Square.eSquareType.invalid)
             {
                 return resSquare;
             }
@@ -157,17 +164,18 @@ namespace B18_Ex02
             }
         }
 
-        public bool updateBoardAfterMove(Move i_UserMove, Player i_CurrentPlayer, bool needToEliminate)
+        public bool UpdateBoardAfterMove(Move i_UserMove, Player i_CurrentPlayer, bool i_NeedToEliminate)
         {
             int areaCheck = 1;
-            Square.e_SquareType squareType = this.getSquareStatus(i_UserMove.SquareFrom);
+            bool isUpdate = false;
+            Square.eSquareType squareType = this.GetSquareStatus(i_UserMove.SquareFrom);
 
-            if (i_CurrentPlayer.isMyKing(squareType))
+            if (i_CurrentPlayer.IsMyKing(squareType))
             {
                 squareType = i_CurrentPlayer.PlayerType;
             }
 
-            if (needToEliminate)
+            if (i_NeedToEliminate)
             {
                 areaCheck++;
             }
@@ -175,32 +183,31 @@ namespace B18_Ex02
             if(Math.Abs(i_UserMove.SquareFrom.Row - i_UserMove.SquareTo.Row) <= areaCheck &&
                Math.Abs(i_UserMove.SquareFrom.Col - i_UserMove.SquareTo.Col) <= areaCheck)
             {
-                if (this.getSquareStatus(i_UserMove.SquareTo) == Square.e_SquareType.none &&
-                    squareType == i_CurrentPlayer.PlayerType)
+                if (this.GetSquareStatus(i_UserMove.SquareTo) == Square.eSquareType.none && squareType == i_CurrentPlayer.PlayerType)
                 {
-                    this.updateBoard(i_UserMove.SquareTo.Row, i_UserMove.SquareTo.Col, this.getSquareStatus(i_UserMove.SquareFrom),i_CurrentPlayer);
-                    this.updateBoard(i_UserMove.SquareFrom.Row, i_UserMove.SquareFrom.Col, Square.e_SquareType.none, i_CurrentPlayer);
+                    this.UpdateBoard(i_UserMove.SquareTo.Row, i_UserMove.SquareTo.Col, this.GetSquareStatus(i_UserMove.SquareFrom), i_CurrentPlayer);
+                    this.UpdateBoard(i_UserMove.SquareFrom.Row, i_UserMove.SquareFrom.Col, Square.eSquareType.none, i_CurrentPlayer);
                     i_CurrentPlayer.UpdateSquare(i_UserMove, this.m_BoardSize);
 
-                    return true;
+                    isUpdate = true;
                 }
             }
 
-            return false;
+            return isUpdate;
         }
 
-        public bool updateBoard(int i_Row, int i_Col, Square.e_SquareType i_UpdateSquare, Player i_CurrentPlayer)
+        public bool UpdateBoard(int i_Row, int i_Col, Square.eSquareType i_UpdateSquare, Player i_CurrentPlayer)
         {
             bool updateRes = false;
 
-            if (this.isPositionValid(i_Row, i_Col))
+            if (this.IsPositionValid(i_Row, i_Col))
             {
-                if (i_UpdateSquare == Square.e_SquareType.playerOne)
+                if (i_UpdateSquare == Square.eSquareType.playerOne)
                 {
                     if (i_Row == 0)
                     {
                         i_CurrentPlayer.Score += 4;
-                        this.m_BoardGame[i_Row, i_Col] = (int)Square.e_SquareType.playerOneKing;
+                        this.m_BoardGame[i_Row, i_Col] = (int)Square.eSquareType.playerOneKing;
                         updateRes = true;
                     }
                     else
@@ -209,12 +216,12 @@ namespace B18_Ex02
                         updateRes = true;
                     }
                 }
-                else if (i_UpdateSquare == Square.e_SquareType.playerTwo || i_UpdateSquare == Square.e_SquareType.playerPC)
+                else if (i_UpdateSquare == Square.eSquareType.playerTwo || i_UpdateSquare == Square.eSquareType.playerPC)
                 {
                     if (i_Row == this.m_BoardSize - 1)
                     {
                         i_CurrentPlayer.Score += 4;
-                        this.m_BoardGame[i_Row, i_Col] = (int)Square.e_SquareType.playerTwoKing;
+                        this.m_BoardGame[i_Row, i_Col] = (int)Square.eSquareType.playerTwoKing;
                         updateRes = true;
                     }
                     else
@@ -233,40 +240,41 @@ namespace B18_Ex02
             return updateRes;
         }
 
-        public bool isPositionValid(int i_Row, int i_Col)
+        public bool IsPositionValid(int i_Row, int i_Col)
         {
             bool isPosValid = false;
-            //inside board 
+
             if (i_Row < this.m_BoardSize && i_Col < this.m_BoardSize && i_Row >= 0 && i_Col >= 0)
             {
-                isPosValid = this.m_BoardGame[i_Row, i_Col ] != (int)Square.e_SquareType.invalid;
+                isPosValid = this.m_BoardGame[i_Row, i_Col] != (int)Square.eSquareType.invalid;
             }
 
             return isPosValid;
         }
 
-        public void getEliminationInDirection(Square i_FromSquare, Player i_CurrentPlayer, e_Direction i_Direction, List<Move> i_EliminationList)
+        public void GetEliminationInDirection(Square i_FromSquare, Player i_CurrentPlayer, eDirection i_Direction, List<Move> i_EliminationList)
         {
             Square currentSquare;
-            Square.e_SquareType squareType;
+            Square.eSquareType squareType;
             Move resMove = null;
 
             currentSquare = this.GetSquareInDirection(i_FromSquare, i_Direction);
-            squareType = this.getSquareStatus(currentSquare);
+            squareType = this.GetSquareStatus(currentSquare);
 
-            if (i_CurrentPlayer.isMyKing(squareType))
+            if (i_CurrentPlayer.IsMyKing(squareType))
             {
                 squareType = i_CurrentPlayer.PlayerType;
             }
 
-            //checks +1 place
-            if (squareType != Square.e_SquareType.invalid && squareType != i_CurrentPlayer.PlayerType && squareType != Square.e_SquareType.none)
-            {
+            if (squareType != Square.eSquareType.invalid && squareType != i_CurrentPlayer.PlayerType && squareType != Square.eSquareType.none)
+            {   
+                // Checks 1 square raduis
                 currentSquare = this.GetSquareInDirection(currentSquare, i_Direction);
-                squareType = this.getSquareStatus(currentSquare);
-                //checks +2 place
-                if (squareType != Square.e_SquareType.invalid && squareType == Square.e_SquareType.none)
-                {
+                squareType = this.GetSquareStatus(currentSquare);
+                
+                if (squareType != Square.eSquareType.invalid && squareType == Square.eSquareType.none)
+                {   
+                    // Checks 2 square raduis
                     resMove = new Move(i_FromSquare, currentSquare);
                 }
             }
@@ -277,23 +285,23 @@ namespace B18_Ex02
             }
         }
 
-        public string squareToString(Square.e_SquareType i_CurrentSquare)
+        public string SquareToString(Square.eSquareType i_CurrentSquare)
         {
             string resString = "   ";
 
-            if (i_CurrentSquare == Square.e_SquareType.playerOne)
+            if (i_CurrentSquare == Square.eSquareType.playerOne)
             {
                 resString = " X ";
             }
-            else if (i_CurrentSquare == Square.e_SquareType.playerTwo || i_CurrentSquare == Square.e_SquareType.playerPC)
+            else if (i_CurrentSquare == Square.eSquareType.playerTwo || i_CurrentSquare == Square.eSquareType.playerPC)
             {
                 resString = " O ";
             }
-            else if (i_CurrentSquare == Square.e_SquareType.playerOneKing)
+            else if (i_CurrentSquare == Square.eSquareType.playerOneKing)
             {
                 resString = " K ";
             }
-            else if (i_CurrentSquare == Square.e_SquareType.playerTwoKing)
+            else if (i_CurrentSquare == Square.eSquareType.playerTwoKing)
             {
                 resString = " U ";
             }

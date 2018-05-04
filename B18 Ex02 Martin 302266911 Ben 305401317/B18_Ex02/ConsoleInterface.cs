@@ -9,53 +9,62 @@ namespace B18_Ex02
 {
     public class ConsoleInterface
     {
-        public void createNewGame()
+        private const string k_AgainstAnothePlayerChar = "1";
+        private const string k_AgainstPcChar = "2";
+        private const string k_YesChar = "Y";
+        private const string k_NoChar = "N";
+        private const string k_ComputerNameString = "Computer";
+        private const int k_MaxPlayerNameLength = 20; 
+        private const int k_MinPlayerNameLength = 1;
+        private const int k_MoveLength = 5;
+
+        public void CreateNewGame()
         {
             string firstPlayerName, secondPlayerName;
             int boardSize;
             int opponentChoice;
             CheckersGame newGame = new CheckersGame();
 
-            printWelcomeMsg();
-            firstPlayerName = getPlayerName(); //get player one name
-            newGame.AddNewPlayer(firstPlayerName, Square.e_SquareType.playerOne); 
-            boardSize = getBoardSizeFromUser();
-            opponentChoice = getOpponnetOptions();
+            this.printWelcomeMsg();
+            firstPlayerName = this.getPlayerName();
+            newGame.AddNewPlayer(firstPlayerName, Square.eSquareType.playerOne); 
+            boardSize = this.getBoardSizeFromUser();
+            opponentChoice = this.getOpponnetOptions();
 
-            if(opponentChoice == 1)
+            if (opponentChoice == int.Parse(k_AgainstAnothePlayerChar)) 
             {
-                secondPlayerName = getPlayerName();
-                newGame.AddNewPlayer(secondPlayerName, Square.e_SquareType.playerTwo);
+                secondPlayerName = this.getPlayerName();
+                newGame.AddNewPlayer(secondPlayerName, Square.eSquareType.playerTwo);
             }
             else
             {
-                secondPlayerName = "Computer";
-                newGame.AddNewPlayer(string.Empty,Square.e_SquareType.playerPC);
+                secondPlayerName = k_ComputerNameString;
+                newGame.AddNewPlayer(string.Empty, Square.eSquareType.playerPC);
             }
 
-            newGame.createGameBoard(boardSize);
-            runGame(newGame, boardSize);
+            newGame.CreateGameBoard(boardSize);
+            this.runGame(newGame, boardSize);
         }
 
-        private void runGame(CheckersGame i_Game,int i_BoardSize)
+        private void runGame(CheckersGame i_Game, int i_BoardSize)
         {
             string playerChoice = string.Empty;
             Player currentPlayer = i_Game.PlayerOne;
             string previousMove = string.Empty;
             string userMove = string.Empty;
 
-            CheckersGame.e_RoundOptions gameStatus;
-            CheckersGame.e_RoundOptions currentRound = CheckersGame.e_RoundOptions.passRound;
+            CheckersGame.eRoundOptions gameStatus;
+            CheckersGame.eRoundOptions currentRound = CheckersGame.eRoundOptions.passRound;
 
-            while (currentRound != CheckersGame.e_RoundOptions.gameOver)
+            while (currentRound != CheckersGame.eRoundOptions.gameOver)
             {
-                ClearScreen();
-                PrintBoard(i_Game.Board);
-                PrintTurn(previousMove, currentPlayer);
+                this.clearScreen();
+                this.printBoard(i_Game.Board);
+                this.printTurne(previousMove, currentPlayer);
 
-                if (currentPlayer.PlayerType != Square.e_SquareType.playerPC)
+                if (currentPlayer.PlayerType != Square.eSquareType.playerPC)
                 {
-                    userMove = getUserMove(i_BoardSize);
+                    userMove = this.getUserMove(i_BoardSize);
                 }
                 else
                 {
@@ -63,63 +72,70 @@ namespace B18_Ex02
                     Thread.Sleep(1200);
                 }
 
-                currentRound = i_Game.newRound(userMove);
+                currentRound = i_Game.NewRound(userMove);
  
-                gameStatus = i_Game.checkGameStatus();
+                gameStatus = i_Game.CheckGameStatus();
 
-                if (gameStatus != CheckersGame.e_RoundOptions.passRound)
+                if (gameStatus != CheckersGame.eRoundOptions.passRound)
                 {
                     currentRound = gameStatus;
                 }
 
-                handleRound(ref previousMove,ref userMove, ref currentRound, currentPlayer, i_Game);
-
-                currentPlayer = i_Game.getCurrentPlayer();
-
+                this.handleRound(ref previousMove, ref userMove, ref currentRound, currentPlayer, i_Game);
+                currentPlayer = i_Game.GetCurrentPlayer();
             }
         }
 
-        private void handleRound(ref string io_PreviousMove, ref string io_UserMove, ref CheckersGame.e_RoundOptions io_CurrentRound, Player i_CurrentPlayer, CheckersGame i_Game)
+        private void handleRound(ref string io_PreviousMove, ref string io_UserMove, ref CheckersGame.eRoundOptions io_CurrentRound, Player i_CurrentPlayer, CheckersGame i_Game)
         {
-            if (io_CurrentRound == CheckersGame.e_RoundOptions.weakPlayerQuits)
+            bool iswinnigPlayer = false;
+
+            if (io_CurrentRound == CheckersGame.eRoundOptions.weakPlayerQuits)
             {
-                endOfRoundScreen(i_Game, i_CurrentPlayer.PlayerType, false, ref io_CurrentRound,ref io_PreviousMove);
+                this.endOfRoundScreen(i_Game, i_CurrentPlayer.PlayerType, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
             }
-            else if (io_CurrentRound == CheckersGame.e_RoundOptions.strongPlayerWantsToQuit) // another round
+            else if (io_CurrentRound == CheckersGame.eRoundOptions.strongPlayerWantsToQuit) 
             {
+                // another round - Quit
                 Console.WriteLine("You are not the weak player! Enter a valid move. . .");
                 Thread.Sleep(800);
             }
-            else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerDidntEnterObligatoryMove) // another round
+            else if (io_CurrentRound == CheckersGame.eRoundOptions.playerDidntEnterObligatoryMove) 
             {
+                // another round - Wrong move
                 Console.WriteLine("Invalid move, you must eliminate your opponnent!");
                 Thread.Sleep(800);
             }
-            else if (io_CurrentRound == CheckersGame.e_RoundOptions.currentPlayerHasAnotherRound) // another round
+            else if (io_CurrentRound == CheckersGame.eRoundOptions.currentPlayerHasAnotherRound) 
             {
+                // another round 
                 Console.WriteLine("{0} {1} has another turn", Environment.NewLine, i_CurrentPlayer.Name);
                 Thread.Sleep(800);
             }
-            else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerOneWon)
+            else if (io_CurrentRound == CheckersGame.eRoundOptions.playerOneWon)
             {
-                endOfRoundScreen(i_Game, Square.e_SquareType.playerOne, true, ref io_CurrentRound, ref io_PreviousMove);
+                iswinnigPlayer = true;
+                i_Game.endRoundScoreUpdate(Square.eSquareType.playerTwo);
+                this.endOfRoundScreen(i_Game, Square.eSquareType.playerOne, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
             }
-            else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerTwoWon)
+            else if (io_CurrentRound == CheckersGame.eRoundOptions.playerTwoWon)
             {
-                endOfRoundScreen(i_Game, Square.e_SquareType.playerTwo, true, ref io_CurrentRound, ref io_PreviousMove);
+                iswinnigPlayer = true;
+                i_Game.endRoundScoreUpdate(Square.eSquareType.playerOne);
+                this.endOfRoundScreen(i_Game, Square.eSquareType.playerTwo, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
             }
-            else if (io_CurrentRound == CheckersGame.e_RoundOptions.gameIsATie)
+            else if (io_CurrentRound == CheckersGame.eRoundOptions.gameIsATie)
             {
-                endOfRoundScreen(i_Game, Square.e_SquareType.none, false, ref io_CurrentRound, ref io_PreviousMove);
+                this.endOfRoundScreen(i_Game, Square.eSquareType.none, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
             }
-            else if (io_CurrentRound == CheckersGame.e_RoundOptions.playerEnteredInvalidMove)
+            else if (io_CurrentRound == CheckersGame.eRoundOptions.playerEnteredInvalidMove)
             {
-                printInvalidMsg();
+                this.printInvalidMsg();
                 Thread.Sleep(800);
             }
             else
             {
-                string shape = i_Game.Board.squareToString(i_Game.Board.getSquareStatus(Move.Parse(io_UserMove).SquareTo));
+                string shape = i_Game.Board.SquareToString(i_Game.Board.GetSquareStatus(Move.Parse(io_UserMove).SquareTo));
                 io_PreviousMove = i_CurrentPlayer.Name + "'s move was (" + shape + "): " + io_UserMove;
             }
         }
@@ -129,7 +145,7 @@ namespace B18_Ex02
             Console.WriteLine("Welcome to the game! {0}", Environment.NewLine);
         }
 
-        private void PrintBoard(Board i_Board)
+        private void printBoard(Board i_Board)
         {
             int requiredSpaceForSquare = 4;
             char currentChar = 'A';
@@ -139,7 +155,7 @@ namespace B18_Ex02
 
             for (int j = 0; j < i_Board.Size; j++)
             {
-                Console.Write("  " + currentChar++ + " ");
+                Console.Write("  {0} ", currentChar++);
             }
 
             Console.WriteLine();
@@ -162,7 +178,7 @@ namespace B18_Ex02
                     {
                         Console.Write("|");
 
-                        string shape = i_Board.squareToString(i_Board.getSquareStatus(boardRow,j));
+                        string shape = i_Board.SquareToString(i_Board.GetSquareStatus(boardRow, j));
                         Console.Write(shape);
                     }
 
@@ -183,6 +199,8 @@ namespace B18_Ex02
 
             Console.WriteLine("Enter the board size: < 6 / 8 / 10 > ");
             playerChoice = Console.ReadLine();
+            playerChoice = playerChoice.Trim();
+
             while (playerChoice != "6" && playerChoice != "8" && playerChoice != "10")
             {
                 Console.WriteLine("Invalid board size, please enter the size again...");
@@ -194,12 +212,7 @@ namespace B18_Ex02
             return int.Parse(playerChoice);
         }
 
-        private void PrintScore(Player i_WinningPlayer)
-        {
-            Console.Write(i_WinningPlayer.Name + "won the game with a score of: " + i_WinningPlayer.Score);
-        }
-
-        private void ClearScreen()
+        private void clearScreen()
         {
             Ex02.ConsoleUtils.Screen.Clear();
         }
@@ -211,8 +224,9 @@ namespace B18_Ex02
             Console.WriteLine("2. The PC ");
 
             string playerChoice = Console.ReadLine();
+            playerChoice = playerChoice.Trim();
 
-            while (playerChoice != "1" && playerChoice != "2")
+            while (playerChoice != k_AgainstAnothePlayerChar && playerChoice != k_AgainstPcChar)
             {
                 playerChoice = Console.ReadLine();
             }
@@ -227,7 +241,7 @@ namespace B18_Ex02
             Console.WriteLine("Please enter your name: ");
             string playerName = Console.ReadLine();
 
-            while (playerName.Length > 20 || playerName.Length == 0)
+            while (playerName.Length > k_MaxPlayerNameLength || playerName.Length < k_MinPlayerNameLength)
             {
                 Console.WriteLine("Invalid name size, please enter your name again...");
                 playerName = Console.ReadLine();
@@ -238,25 +252,24 @@ namespace B18_Ex02
             return playerName;
         }
 
-        private void PrintTurn(string i_PreviousMove, Player i_CurrentPlayerName)
+        private void printTurne(string i_PreviousMove, Player i_CurrentPlayerName)
         {
             if (!i_PreviousMove.Equals(string.Empty))
             {
                 Console.WriteLine(i_PreviousMove);
             }
 
-            Console.Write(i_CurrentPlayerName.Name + "'s turn:");
+            Console.Write("{0}'s turn:", i_CurrentPlayerName.Name);
         }
 
         private string getUserMove(int i_BoardSize)
         {
             string playerInput = Console.ReadLine();
+            playerInput = playerInput.Replace(" ", string.Empty);
 
-            if (playerInput != "Q" && playerInput != "q")
+            if (playerInput.ToUpper() != CheckersGame.k_QuitGameChar)
             {
-                playerInput = playerInput.Replace(" ", string.Empty);
-
-                while (!isUserInputMoveValid(playerInput, i_BoardSize))
+                while (!this.isUserInputMoveValid(playerInput, i_BoardSize))
                 {
                     Console.WriteLine("Invalid input, try again. . .");
                     playerInput = Console.ReadLine();
@@ -269,20 +282,21 @@ namespace B18_Ex02
 
         private bool isUserInputMoveValid(string i_PlayerMove, int i_BoardSize)
         {
-            return i_PlayerMove.Length == 5 && char.IsUpper(i_PlayerMove[0]) && i_PlayerMove[0] < ('A' + i_BoardSize) &&
+            return i_PlayerMove.Length == k_MoveLength && char.IsUpper(i_PlayerMove[0]) && i_PlayerMove[0] < ('A' + i_BoardSize) &&
                     char.IsLower(i_PlayerMove[1]) && i_PlayerMove[0] < ('a' + i_BoardSize) && i_PlayerMove[2] == '>' &&
                     char.IsUpper(i_PlayerMove[3]) && i_PlayerMove[3] < ('A' + i_BoardSize) &&
                     char.IsLower(i_PlayerMove[4]) && i_PlayerMove[4] < ('a' + i_BoardSize);
         }
 
-        private bool playerWantsAnotherRound(CheckersGame i_Game, Square.e_SquareType i_Player)
+        private bool playerWantsAnotherRound(CheckersGame i_Game, Square.eSquareType i_Player)
         {
             string playerChoice;
             bool anotherRound = false;
 
-            Console.WriteLine(Environment.NewLine + "Would you like to play another round? <Y/N>");
-            playerChoice = Console.ReadLine();
-            while (playerChoice != "Y" && playerChoice != "N" && playerChoice != "y" && playerChoice != "n")
+            Console.WriteLine("{0}Would you like to play another round? <Y/N>", Environment.NewLine);
+            playerChoice = Console.ReadLine().ToUpper();
+
+            while (playerChoice != k_YesChar && playerChoice != k_NoChar)
             {
                 Console.WriteLine("Invalid input, try again. . . ");
                 playerChoice = Console.ReadLine();
@@ -290,7 +304,7 @@ namespace B18_Ex02
 
             Console.Write(Environment.NewLine);
 
-            if (playerChoice != "n" && playerChoice !="N")
+            if (playerChoice != k_NoChar)
             {
                 anotherRound = true;
             }
@@ -298,31 +312,30 @@ namespace B18_Ex02
             return anotherRound;     
         }
 
-        private void printEndGame(CheckersGame i_Game, Square.e_SquareType i_PlayerType, bool i_WinningPlayer)
+        private void printEndGame(CheckersGame i_Game, Square.eSquareType i_PlayerType, bool i_WinningPlayer)
         {
-
-            if(i_PlayerType != Square.e_SquareType.none)
+            if(i_PlayerType != Square.eSquareType.none)
             {
                 if (i_WinningPlayer)
                 {
-                    if (i_PlayerType == Square.e_SquareType.playerOne)
+                    if (i_PlayerType == Square.eSquareType.playerOne)
                     {
-                        Console.Write(Environment.NewLine + i_Game.PlayerOne.Name + " won the game!");
+                        Console.Write("{0}{1} won the game!", Environment.NewLine, i_Game.PlayerOne.Name);
                     }
                     else
                     {
-                        Console.Write(Environment.NewLine + i_Game.PlayerTwo.Name + " won the game!");
+                        Console.Write("{0}{1} won the game!", Environment.NewLine, i_Game.PlayerTwo.Name);
                     }
                 }
                 else
                 {
-                    if (i_PlayerType == Square.e_SquareType.playerOne)
+                    if (i_PlayerType == Square.eSquareType.playerOne)
                     {
-                        Console.Write(Environment.NewLine + i_Game.PlayerTwo.Name + " won the game!");
+                        Console.Write("{0}{1} won the game!", Environment.NewLine, i_Game.PlayerTwo.Name);
                     }
                     else
                     {
-                        Console.Write(Environment.NewLine + i_Game.PlayerOne.Name + " won the game!");
+                        Console.Write("{0}{1} won the game!", Environment.NewLine, i_Game.PlayerOne.Name);
                     }
                 }
             }
@@ -332,36 +345,34 @@ namespace B18_Ex02
             }
 
             Console.Write(Environment.NewLine);
-            Console.WriteLine(i_Game.PlayerOne.Name + "'s score is: " + i_Game.PlayerOne.Score);
-            Console.WriteLine(i_Game.PlayerTwo.Name + "'s score is: " + i_Game.PlayerTwo.Score);
-
-
+            Console.WriteLine("{0}'s score is: {1}", i_Game.PlayerOne.Name, i_Game.PlayerOne.Score);
+            Console.WriteLine("{0}'s score is: {1}", i_Game.PlayerTwo.Name, i_Game.PlayerTwo.Score);
         }
 
         private string getAnotherMoveFromCurrentPlayer(int i_BoardSize, string i_PlayerName)
         {
-
-            return getUserMove(i_BoardSize);
+            return this.getUserMove(i_BoardSize);
         }
 
-        private static void printInvalidMsg()
+        private void printInvalidMsg()
         {
             Console.WriteLine("Invalid move, try again . . .");
         }
 
-        private void endOfRoundScreen(CheckersGame i_Game, Square.e_SquareType i_PlayerType, bool i_WinningPlayer,ref CheckersGame.e_RoundOptions io_CurrentRound, ref string io_PreviousMove)
+        private void endOfRoundScreen(CheckersGame i_Game, Square.eSquareType i_PlayerType, bool i_WinningPlayer, ref CheckersGame.eRoundOptions io_CurrentRound, ref string io_PreviousMove)
         {
-            ClearScreen();
-            printEndGame(i_Game, i_PlayerType, i_WinningPlayer);
+            this.clearScreen();
+            this.printEndGame(i_Game, i_PlayerType, i_WinningPlayer);
 
-            if (!playerWantsAnotherRound(i_Game, i_PlayerType))
+            if (!this.playerWantsAnotherRound(i_Game, i_PlayerType))
             {
                 Console.WriteLine("Goodbye! :)");
-                io_CurrentRound = CheckersGame.e_RoundOptions.gameOver;
+                io_CurrentRound = CheckersGame.eRoundOptions.gameOver;
             }
-            else // player wants to have another game
+            else 
             {
-                i_Game.createGameBoard(i_Game.Board.Size);
+                // player wants to play another game
+                i_Game.CreateGameBoard(i_Game.Board.Size);
                 io_PreviousMove = string.Empty;
             }
         }

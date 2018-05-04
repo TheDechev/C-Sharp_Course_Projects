@@ -12,7 +12,7 @@ namespace B18_Ex02
         private int m_Col;
         private bool m_IsKing = false;
 
-        public enum e_SquareType
+        public enum eSquareType
         {
             invalid = -1,
             none,
@@ -101,7 +101,5 @@ namespace B18_Ex02
             Square movObj = (Square)i_Square;
             return this == movObj;
         }
-
-
     }
 }

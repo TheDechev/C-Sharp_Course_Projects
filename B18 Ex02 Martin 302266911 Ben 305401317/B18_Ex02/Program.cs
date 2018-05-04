@@ -10,7 +10,7 @@ namespace B18_Ex02
         public static void Main()
         {
             ConsoleInterface checkersGame = new ConsoleInterface();
-            checkersGame.createNewGame();
+            checkersGame.CreateNewGame();
         }
     }
 }
