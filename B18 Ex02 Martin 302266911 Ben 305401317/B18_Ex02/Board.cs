@@ -206,7 +206,7 @@ namespace B18_Ex02
                 {
                     if (i_Row == 0)
                     {
-                        i_CurrentPlayer.Score += 4;
+                        i_CurrentPlayer.Score += 3; // King score addition
                         this.m_BoardGame[i_Row, i_Col] = (int)Square.eSquareType.playerOneKing;
                         updateRes = true;
                     }
@@ -220,7 +220,7 @@ namespace B18_Ex02
                 {
                     if (i_Row == this.m_BoardSize - 1)
                     {
-                        i_CurrentPlayer.Score += 4;
+                        i_CurrentPlayer.Score += 3; // King score addition
                         this.m_BoardGame[i_Row, i_Col] = (int)Square.eSquareType.playerTwoKing;
                         updateRes = true;
                     }
