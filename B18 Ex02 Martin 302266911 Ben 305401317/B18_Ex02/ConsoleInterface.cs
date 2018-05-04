@@ -60,7 +60,7 @@ namespace B18_Ex02
             {
                 this.clearScreen();
                 this.printBoard(i_Game.Board);
-                this.printTurne(previousMove, currentPlayer);
+                this.printTurn(previousMove, currentPlayer);
 
                 if (currentPlayer.PlayerType != Square.eSquareType.playerPC)
                 {
@@ -130,7 +130,7 @@ namespace B18_Ex02
             }
             else if (io_CurrentRound == CheckersGame.eRoundOptions.playerEnteredInvalidMove)
             {
-                this.printInvalidMsg();
+                Console.WriteLine("Invalid move, try again . . .");
                 Thread.Sleep(800);
             }
             else
@@ -252,7 +252,7 @@ namespace B18_Ex02
             return playerName;
         }
 
-        private void printTurne(string i_PreviousMove, Player i_CurrentPlayerName)
+        private void printTurn(string i_PreviousMove, Player i_CurrentPlayerName)
         {
             if (!i_PreviousMove.Equals(string.Empty))
             {
@@ -352,11 +352,6 @@ namespace B18_Ex02
         private string getAnotherMoveFromCurrentPlayer(int i_BoardSize, string i_PlayerName)
         {
             return this.getUserMove(i_BoardSize);
-        }
-
-        private void printInvalidMsg()
-        {
-            Console.WriteLine("Invalid move, try again . . .");
         }
 
         private void endOfRoundScreen(CheckersGame i_Game, Square.eSquareType i_PlayerType, bool i_WinningPlayer, ref CheckersGame.eRoundOptions io_CurrentRound, ref string io_PreviousMove)
