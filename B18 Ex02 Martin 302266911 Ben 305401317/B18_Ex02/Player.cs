@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
 
 namespace B18_Ex02
 {
     public class Player
     {
-        private List<Move> m_ObligatoryMoves;
-        private string m_Name;
         private Square.eSquareType m_PlayerType;
+        private string m_Name;
         private int m_Score;
-        private bool m_HasAvailableMoves = true;
-        private List<Square> m_Squares;
         private int m_BonusScore;
-
+        private List<Square> m_Squares;
+        private List<Move> m_ObligatoryMoves;
+        private bool m_HasAvailableMoves = true;
+        
         public int BonusScore
         {
             get

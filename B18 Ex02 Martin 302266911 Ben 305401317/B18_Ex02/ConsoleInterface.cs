@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace B18_Ex02
 {
@@ -195,21 +191,20 @@ namespace B18_Ex02
 
         private int getBoardSizeFromUser()
         {
-            string playerChoice;
+            int playerChoice = 0;
 
             Console.WriteLine("Enter the board size: < 6 / 8 / 10 > ");
-            playerChoice = Console.ReadLine();
-            playerChoice = playerChoice.Trim();
+            int.TryParse(Console.ReadLine().Trim(), out playerChoice);
 
-            while (playerChoice != "6" && playerChoice != "8" && playerChoice != "10")
+            while (playerChoice != (int)Board.eBoardSize.Small && playerChoice != (int)Board.eBoardSize.Medium && playerChoice != (int)Board.eBoardSize.Large)
             {
                 Console.WriteLine("Invalid board size, please enter the size again...");
-                playerChoice = Console.ReadLine();
+                int.TryParse(Console.ReadLine().Trim(), out playerChoice);
             }
 
             Console.Write(Environment.NewLine);
 
-            return int.Parse(playerChoice);
+            return playerChoice;
         }
 
         private void clearScreen()

@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace B18_Ex02
 {
     public class Board
     {
-        private const int k_DefaultBoardSize = 8;
-        private int m_BoardSize = k_DefaultBoardSize;
+        private int m_BoardSize = (int)eBoardSize.Medium;
         private int[,] m_BoardGame;
 
         public enum eDirection
