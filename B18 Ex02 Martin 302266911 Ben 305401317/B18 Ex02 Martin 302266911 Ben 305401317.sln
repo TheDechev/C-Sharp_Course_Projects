@@ -5,6 +5,11 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B18_Ex02", "B18_Ex02\B18_Ex02.csproj", "{52D88501-BE66-4F27-87C1-29E03A4DC5B0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2484720F-C2AE-4C34-9E81-DF75E6DCE2CD}"
+	ProjectSection(SolutionItems) = preProject
+		SUBMIT DN MTA B18 Ex02 MartinDechev 302266911 BenBublil 305401317.txt = SUBMIT DN MTA B18 Ex02 MartinDechev 302266911 BenBublil 305401317.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
