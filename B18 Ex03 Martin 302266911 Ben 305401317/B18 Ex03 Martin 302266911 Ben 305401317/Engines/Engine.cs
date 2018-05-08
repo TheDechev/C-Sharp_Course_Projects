@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace B18_Ex03_Martin_302266911_Ben_305401317
+namespace Ex03.GarageLogic
 {
-    class Program
+    public abstract class Engine
     {
-        //insert musah
+
     }
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{605301B6-2A6D-419D-85E5-30B4DB60F95B}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{F0A4711B-E374-4957-ADAD-16B52448336E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ex03.GarageLogic</RootNamespace>
-    <AssemblyName>Ex03.GarageLogic</AssemblyName>
+    <RootNamespace>Ex03.ConsoleUI</RootNamespace>
+    <AssemblyName>Ex03.ConsoleUI</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,35 +32,29 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VehicleInGarage.cs" />
-    <Compile Include="Vehicles\ElectricMotorcycle.cs" />
-    <Compile Include="Vehicles\FuelMotorcycle.cs" />
-    <Compile Include="Vehicles\Car.cs" />
-    <Compile Include="Vehicles\ElectricCar.cs" />
-    <Compile Include="Engines\ElectricEngine.cs" />
-    <Compile Include="Engines\Engine.cs" />
-    <Compile Include="Vehicles\FuelTruck.cs" />
-    <Compile Include="Vehicles\FuelCar.cs" />
-    <Compile Include="Engines\FuelEngine.cs" />
-    <Compile Include="Garage.cs" />
-    <Compile Include="Vehicles\Motorcycle.cs" />
-    <Compile Include="Vehicles\Truck.cs" />
-    <Compile Include="ValueOutOfRangeException.cs" />
-    <Compile Include="Vehicles\Vehicle .cs" />
-    <Compile Include="VehicleFactory.cs" />
-    <Compile Include="Wheel.cs" />
+    <ProjectReference Include="..\B18 Ex03 Martin 302266911 Ben 305401317\B18 Ex03 Martin 302266911 Ben 305401317.csproj">
+      <Project>{605301b6-2a6d-419d-85e5-30b4db60f95b}</Project>
+      <Name>B18 Ex03 Martin 302266911 Ben 305401317</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
