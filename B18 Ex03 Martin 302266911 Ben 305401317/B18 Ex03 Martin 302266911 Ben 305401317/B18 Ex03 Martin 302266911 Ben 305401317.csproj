@@ -40,14 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="VehicleInGarage.cs" />
-    <Compile Include="Vehicles\ElectricMotorcycle.cs" />
-    <Compile Include="Vehicles\FuelMotorcycle.cs" />
     <Compile Include="Vehicles\Car.cs" />
-    <Compile Include="Vehicles\ElectricCar.cs" />
     <Compile Include="Engines\ElectricEngine.cs" />
     <Compile Include="Engines\Engine.cs" />
-    <Compile Include="Vehicles\FuelTruck.cs" />
-    <Compile Include="Vehicles\FuelCar.cs" />
     <Compile Include="Engines\FuelEngine.cs" />
     <Compile Include="Garage.cs" />
     <Compile Include="Vehicles\Motorcycle.cs" />

@@ -11,6 +11,7 @@ namespace Ex03.GarageLogic
         private string m_ModelName;
         private string m_RegistrationPlateNumber;
         private float m_EnergyLeftPrecentage;
+        private Engine m_Engine;
         private List<Wheel> m_Wheels;
 
 
