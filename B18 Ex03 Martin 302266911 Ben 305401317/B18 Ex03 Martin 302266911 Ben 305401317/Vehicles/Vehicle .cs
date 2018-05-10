@@ -8,14 +8,24 @@ namespace Ex03.GarageLogic
 {
     public abstract class Vehicle
     {
-        private string m_ModelName;
-        private string m_RegistrationPlateNumber;
-        private float m_EnergyLeftPrecentage;
-        private Engine m_Engine;
-        private List<Wheel> m_Wheels;
+        protected readonly string m_ModelName;
+        protected readonly string m_RegistrationPlateNumber;
+        protected float m_EnergyLeftPrecentage;
+        protected Engine m_Engine;
+        protected List<Tire> m_Tires;
 
+        //TODO: continue
+        protected Vehicle(string i_ModleName)
+        {
+            this.m_ModelName = i_ModleName;
+        }
 
-
-        //ToString() func
+        public string ModelName
+        {
+            get
+            {
+                return this.m_ModelName;
+            }
+        }
     }
 }

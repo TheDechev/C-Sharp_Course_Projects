@@ -8,12 +8,12 @@ namespace Ex03.GarageLogic
 {
     class VehicleFactory
     {
-        private Dictionary<Engine,Vehicle> m_SupportedVeihiclesInSystem;
+        private List<Vehicle> m_SupportedVeihiclesInSystem;
 
-
+        //TODO: continue 
         public Vehicle CreateVehicle()
         {
-            Vehicle newVehicle = null;
+            Vehicle newVehicle = new Car(Car.eColor.White, "ss");
 
             return newVehicle;
         }

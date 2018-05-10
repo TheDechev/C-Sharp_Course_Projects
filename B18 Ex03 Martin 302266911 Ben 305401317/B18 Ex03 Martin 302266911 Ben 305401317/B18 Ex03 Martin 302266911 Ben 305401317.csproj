@@ -39,7 +39,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VehicleInGarage.cs" />
+    <Compile Include="ClientVehicle.cs" />
     <Compile Include="Vehicles\Car.cs" />
     <Compile Include="Engines\ElectricEngine.cs" />
     <Compile Include="Engines\Engine.cs" />
@@ -50,7 +50,7 @@
     <Compile Include="ValueOutOfRangeException.cs" />
     <Compile Include="Vehicles\Vehicle .cs" />
     <Compile Include="VehicleFactory.cs" />
-    <Compile Include="Wheel.cs" />
+    <Compile Include="Tire.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

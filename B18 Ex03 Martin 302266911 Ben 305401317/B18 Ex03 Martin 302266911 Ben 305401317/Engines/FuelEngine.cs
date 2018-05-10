@@ -45,10 +45,10 @@ namespace Ex03.GarageLogic
             }
         }
 
-
-        public void Refuel(float i_FuelAmountToAdd)
+        public void Refuel(float i_FuelAmountToAdd) //Fuel Vehicle
         { // Add FuelAmountToAdd to  CurrentFuelAmount if the Fuel type is correct else exception
 
         }
+
     }
 }

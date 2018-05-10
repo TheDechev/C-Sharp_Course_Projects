@@ -27,7 +27,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void Charge(float i_FuelAmountToAdd)
+        public void Charge(float i_FuelAmountToAdd) //Electric Vehicle
         { // Add FuelAmountToAdd to  CurrentFuelAmount if the Fuel type is correct else exception
 
         }

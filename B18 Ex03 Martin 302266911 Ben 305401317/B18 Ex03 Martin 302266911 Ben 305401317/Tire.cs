@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    public class Wheel
+    public class Tire
     {
         private readonly string m_ManufacturerName;
         private readonly float r_MaxManufacturerAirPressure;
@@ -36,18 +36,12 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void Inflate(float i_AirAmountToAdd)
-        {   // The function need to add the AirAmountToAdd to the CurrentAirPressure 
-            // if its not exceed from the MaxManufacturerAirPressure
-
-        }
-
 
         public override string ToString()
         {
-            string wheelsDeatails = string.Empty;
+            string tiresDeatails = string.Empty;
 
-            return wheelsDeatails;
+            return tiresDeatails;
         }
 
     }
