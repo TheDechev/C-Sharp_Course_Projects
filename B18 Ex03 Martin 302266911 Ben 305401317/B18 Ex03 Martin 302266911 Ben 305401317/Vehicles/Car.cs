@@ -28,7 +28,7 @@ namespace Ex03.GarageLogic
         private eDoorsNumber m_DoorsNumber = eDoorsNumber.Four;
         
 
-        public Car(string i_ModelName, string i_PlateNumber, eColor i_CarColor, eDoorsNumber i_DoorsNumber) : base(i_ModelName,i_PlateNumber) 
+        public Car(string i_ModelName, string i_PlateNumber, eColor i_CarColor, eDoorsNumber i_DoorsNumber, Energy i_EnergyType) : base(i_ModelName,i_PlateNumber, i_EnergyType) 
         {
             this.m_Color = i_CarColor;
             this.m_DoorsNumber = i_DoorsNumber;

@@ -8,14 +8,10 @@ namespace Ex03.GarageLogic
 {
     public abstract class Vehicle
     {
-        public enum e_VehicleType
-        {
-            ElectricCar,
-            FuelCar,
-            ElectricMotorcycle,
-            FuelMotorcycle,
-            FuelTruck
-        }
+
+
+
+
         protected readonly string m_ModelName;
         protected readonly string m_RegistrationPlateNumber;
         protected float m_EnergyLeftPrecentage;
@@ -23,10 +19,11 @@ namespace Ex03.GarageLogic
         protected List<Tire> m_Tires;
         
       
-        protected Vehicle(string i_ModelName, string i_PlateNumber)
+        protected Vehicle(string i_ModelName, string i_PlateNumber, Energy i_EnergyType)
         {
             this.m_ModelName = i_ModelName;
             this.m_RegistrationPlateNumber = i_PlateNumber;
+            this.m_Energy = i_EnergyType; 
         }
 
         public string ModelName
