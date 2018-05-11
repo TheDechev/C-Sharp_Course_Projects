@@ -61,7 +61,7 @@ namespace Ex03.GarageLogic
         {
             if(i_FuelType != this.FuelType)
             {
-                throw new Exception("Wrong fuel type!");
+                throw new ArgumentException("Wrong fuel type!");
             }
 
             this.CurrentFuelAmount += i_FuelAmountToAdd;

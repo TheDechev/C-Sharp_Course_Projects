@@ -19,11 +19,12 @@ namespace Ex03.GarageLogic
             B2
         }
 
-        public Motorcycle(string i_ModelName, string i_PlateNumber, eLicenseType i_LicenseType, int i_EngineVolume) : base(i_ModelName,i_PlateNumber) 
+        public Motorcycle(string i_LicensePlate, string i_ModelName, int i_TiresNumber, float i_EnergyLeftPercentage, Energy i_EnergyType)
+            : base(i_LicensePlate, i_ModelName, i_TiresNumber, i_EnergyLeftPercentage, i_EnergyType)
         {
-            this.m_LicenseType = i_LicenseType;
-            this.m_EngineVolume = i_EngineVolume;
         }
+
+
 
     }
 }

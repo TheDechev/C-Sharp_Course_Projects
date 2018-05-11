@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B18 Ex03 Martin 302266911 Ben 305401317", "B18 Ex03 Martin 302266911 Ben 305401317\B18 Ex03 Martin 302266911 Ben 305401317.csproj", "{605301B6-2A6D-419D-85E5-30B4DB60F95B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex03.GarageLogic", "B18 Ex03 Martin 302266911 Ben 305401317\Ex03.GarageLogic.csproj", "{605301B6-2A6D-419D-85E5-30B4DB60F95B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex03.ConsoleUI", "ConsoleApplication1\Ex03.ConsoleUI.csproj", "{F0A4711B-E374-4957-ADAD-16B52448336E}"
 EndProject

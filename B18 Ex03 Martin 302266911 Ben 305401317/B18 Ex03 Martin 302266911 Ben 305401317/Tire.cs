@@ -8,15 +8,19 @@ namespace Ex03.GarageLogic
 {
     public class Tire
     {
-        private readonly string m_ManufacturerName;
-        private readonly float r_MaxManufacturerAirPressure;
+        private string m_ManufacturerName;
+        private float m_MaxManufacturerAirPressure;
         private float m_CurrentAirPressure;
 
-        public  string ManufacturerName
+        public string ManufacturerName
         {
             get
             {
                 return m_ManufacturerName;
+            }
+            set
+            {
+                m_ManufacturerName = value;
             }
         }
 
@@ -26,22 +30,36 @@ namespace Ex03.GarageLogic
             {
                 return m_CurrentAirPressure;
             }
+            set
+            {
+                if(value > m_MaxManufacturerAirPressure)
+                {
+                    throw new ValueOutOfRangeException("Air preassure exceeding the maximum value!");
+                }
+                m_CurrentAirPressure = value;
+            }
         }
 
         public float MaxManufacturerAirPressure
         {
             get
             {
-                return MaxManufacturerAirPressure;
+                return m_MaxManufacturerAirPressure;
+            }
+            set
+            {
+                m_MaxManufacturerAirPressure = value;
             }
         }
 
-
-        public override string ToString()
+        public void Inflate(float i_AmountToAdd)
         {
-            string tiresDeatails = string.Empty;
+           if(m_CurrentAirPressure + i_AmountToAdd > m_MaxManufacturerAirPressure)
+            {
+                throw new ValueOutOfRangeException(m_CurrentAirPressure, m_MaxManufacturerAirPressure);
+            }
 
-            return tiresDeatails;
+            m_CurrentAirPressure += i_AmountToAdd;
         }
 
     }

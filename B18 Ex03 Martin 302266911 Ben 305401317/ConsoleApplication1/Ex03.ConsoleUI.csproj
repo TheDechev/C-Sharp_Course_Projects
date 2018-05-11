@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\B18 Ex03 Martin 302266911 Ben 305401317\B18 Ex03 Martin 302266911 Ben 305401317.csproj">
+    <ProjectReference Include="..\B18 Ex03 Martin 302266911 Ben 305401317\Ex03.GarageLogic.csproj">
       <Project>{605301b6-2a6d-419d-85e5-30b4db60f95b}</Project>
-      <Name>B18 Ex03 Martin 302266911 Ben 305401317</Name>
+      <Name>Ex03.GarageLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

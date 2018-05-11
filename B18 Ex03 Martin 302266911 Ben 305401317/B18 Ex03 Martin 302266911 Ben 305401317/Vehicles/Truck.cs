@@ -12,10 +12,9 @@ namespace Ex03.GarageLogic
         private float m_TrunkCapacity;
 
 
-        public Truck(string i_ModelName ,string i_PlateNumber, bool i_IsTrunkCool, float i_CurrentTrunkCapacity): base(i_ModelName,i_PlateNumber) 
+        public Truck(string i_LicensePlate, string i_ModelName, int i_TiresNumber, float i_EnergyLeftPercentage, Energy i_EnergyType)
+            : base(i_LicensePlate, i_ModelName, i_TiresNumber, i_EnergyLeftPercentage, i_EnergyType)
         {
-            this.m_IsTrunkCooled = i_IsTrunkCool;
-            this.m_TrunkCapacity = i_CurrentTrunkCapacity;
         }
 
         public bool isTrunkCooled

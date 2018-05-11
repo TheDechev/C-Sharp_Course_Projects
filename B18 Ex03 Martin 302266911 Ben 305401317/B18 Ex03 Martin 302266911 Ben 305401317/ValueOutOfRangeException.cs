@@ -11,6 +11,21 @@ namespace Ex03.GarageLogic
         private float m_MaxValue;
         private float m_MinValue;
 
+        public float MaxValue
+        {
+            get
+            {
+                return m_MaxValue;
+            }
+        }
+        public float MinValue
+        {
+            get
+            {
+                return m_MinValue;
+            }
+        }
+
         public ValueOutOfRangeException() : base("The amount exceeds the maximum range")
         {
         }
@@ -19,12 +34,14 @@ namespace Ex03.GarageLogic
         {
         }
 
-        public ValueOutOfRangeException(string i_Message, float i_CurrentAmount, float i_MaxAmount) : base(i_Message)
+        public ValueOutOfRangeException(string i_Message, float i_CurrentAmount, float i_MaxAmount)
+            : base(i_Message)
         {
             InitializeValues(i_CurrentAmount, i_MaxAmount);
         }
 
-        public ValueOutOfRangeException(float i_CurrentAmount, float i_MaxAmount) : base(string.Format("The amout exceeds the available range of {0}",i_MaxAmount-i_CurrentAmount))
+        public ValueOutOfRangeException(float i_CurrentAmount, float i_MaxAmount) :
+            base(string.Format("The amout exceeds the available range of {0}",i_MaxAmount-i_CurrentAmount))
         {
             InitializeValues(i_CurrentAmount, i_MaxAmount);
         }
@@ -35,21 +52,7 @@ namespace Ex03.GarageLogic
             m_MinValue = i_CurrentAmount;
         }
 
-        public float MaxValue
-        {
-            get
-            {
-                return m_MaxValue;
-            }
-        }
 
-        public float MinValue
-        {
-            get
-            {
-                return m_MinValue;
-            }
-        }
 
     }
 }

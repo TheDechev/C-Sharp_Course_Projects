@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    class ClientVehicle
+    public class ClientVehicle
     {
         private Vehicle m_Vehicle;
         private string m_OwnerName;
         private string m_OwnerPhoneNumber;
-        private Garage.eStatus m_Status = Garage.eStatus.InProcess;
+        private Garage.e_VehicleStatus m_Status = Garage.e_VehicleStatus.InProcess;
 
         public Vehicle Vehicle
         {
@@ -20,7 +20,6 @@ namespace Ex03.GarageLogic
                 return this.m_Vehicle;
             }
         }
-
         public string OwnerName
         {
             get
@@ -28,7 +27,6 @@ namespace Ex03.GarageLogic
                 return this.m_OwnerName;
             }
         }
-
         public string OwnerPhoneNumber
         {
             get
@@ -36,13 +34,28 @@ namespace Ex03.GarageLogic
                 return this.m_OwnerPhoneNumber;
             }
         }
-
-        public Garage.eStatus Status
+        public Garage.e_VehicleStatus Status
         {
             get
             {
                 return this.m_Status;
             }
+            set
+            {
+                m_Status = value;
+            }
+        }
+
+        public ClientVehicle(Vehicle i_Vehicle, string i_Name, string i_PhoneNumber)
+        {
+            m_Vehicle = i_Vehicle;
+            m_OwnerName = i_Name;
+            m_OwnerPhoneNumber = i_PhoneNumber;
+        }
+
+        public ClientVehicle(Vehicle i_Vehicle)
+        {
+            m_Vehicle = i_Vehicle;
         }
     }
 }

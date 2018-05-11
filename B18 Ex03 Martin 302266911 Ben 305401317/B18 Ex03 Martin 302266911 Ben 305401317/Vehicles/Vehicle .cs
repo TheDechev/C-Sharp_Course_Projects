@@ -8,22 +8,29 @@ namespace Ex03.GarageLogic
 {
     public abstract class Vehicle
     {
-
-
-
-
-        protected readonly string m_ModelName;
-        protected readonly string m_RegistrationPlateNumber;
+        protected string m_ModelName;
+        protected string m_LicensePlate;
         protected float m_EnergyLeftPrecentage;
         protected Energy m_Energy;
         protected List<Tire> m_Tires;
-        
-      
-        protected Vehicle(string i_ModelName, string i_PlateNumber, Energy i_EnergyType)
+
+        internal Vehicle(string i_LicensePlate, string i_ModelName, int i_TiresNumber, float i_EnergyLeftPercentage, Energy i_EnergyType)
         {
+            this.m_LicensePlate = i_LicensePlate;
             this.m_ModelName = i_ModelName;
-            this.m_RegistrationPlateNumber = i_PlateNumber;
-            this.m_Energy = i_EnergyType; 
+            this.m_Tires = new List<Tire>(i_TiresNumber);
+            this.m_Energy = i_EnergyType;
+            this.m_EnergyLeftPrecentage = i_EnergyLeftPercentage;
+        }
+
+        private void UpdateTireInfo(string i_ManufacturerName,float i_MaxAirPressure,float  i_SetAirPressure)
+        {
+            foreach(Tire tire in m_Tires)
+            {
+                tire.ManufacturerName = i_ManufacturerName;
+                tire.MaxManufacturerAirPressure = i_MaxAirPressure;
+                tire.CurrentAirPressure = i_SetAirPressure;
+            }
         }
 
         public string ModelName
@@ -34,11 +41,11 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public string RegistrationPlateNumber
+        public string LicensePlate
         {
             get
             {
-                return this.m_RegistrationPlateNumber;
+                return this.m_LicensePlate;
             }
         }
 
@@ -59,8 +66,18 @@ namespace Ex03.GarageLogic
                     throw new Exception("Missing energy source!");
                 }
 
-                return m_Energy.MaxCapacity;
+                return m_EnergyLeftPrecentage;
             }
         }
+
+        public void InflateTiersToMax()
+        {
+            foreach(Tire tire in m_Tires)
+            {
+                tire.Inflate(tire.MaxManufacturerAirPressure - tire.CurrentAirPressure);
+            }
+        }
+
+
     }
 }

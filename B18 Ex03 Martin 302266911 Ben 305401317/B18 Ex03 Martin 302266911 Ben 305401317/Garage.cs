@@ -8,52 +8,31 @@ namespace Ex03.GarageLogic
 {
     public class Garage
     {
+
         private Dictionary<string, ClientVehicle> m_Vehicle;
 
-        public enum eStatus
+        public enum e_VehicleStatus
         {
             InProcess,
             Repaired,
             Paid
         }
 
-        private bool IsVehicleInGarage()
-        {
-            bool isExist = false;
-
-            return isExist;
-        }
-
-        public bool insertVehicle()
-        {// By RegistrationPlateNume, if the vhicle is already in the garage the system will
-            // write a MSG (UI) and used the Vehicle thats in the garage.
+        //=========== TODO ========================================================
 
 
-            // The UI asks the user for the vehicle details
-            // sends the vehicle to the garage (--> insertVehicle)
-            // insertVehicle() func will cheak if the vehicle in the grage (--> IsVehicleInGarage())
-            // 
-            bool res = false;
-
-            return res;
-
-        }
-
-        public void InflateTire(float i_AirAmountToAdd)
-        {   // The function need to add the AirAmountToAdd to the CurrentAirPressure 
-            // if its not exceed from the MaxManufacturerAirPressure
-
-        }
-
-        public void InflateTireToMax()
-        { // By registration Plate
-
-        }
-
-        public void UpdateVehicleProcessStatus(string i_RegistrationPlateNum, )
+        public void insertVehicle(Vehicle i_VehicleToAdd, string i_ClientName, string i_ClientPhoneNumber)
         {
 
+            if (isVehicleInGarage(i_VehicleToAdd.LicensePlate))
+            {
+                m_Vehicle[i_VehicleToAdd.LicensePlate].Status = e_VehicleStatus.InProcess;
+                throw new Exception("Vehicle already exists!");
+            }
+
+            m_Vehicle.Add(i_VehicleToAdd.LicensePlate, new ClientVehicle(i_VehicleToAdd,i_ClientName, i_ClientPhoneNumber)); //TODO: Need to get the client's name and phone number
         }
+
 
         public void DisplayVehiclesList()
         {   // fillter option by process status
@@ -67,5 +46,59 @@ namespace Ex03.GarageLogic
         {
 
         }
+
+
+
+       //=========== DONE FOR *NOW* ========================================================
+
+        private bool isVehicleInGarage(string i_LicenseToCheck)
+        {
+            return this.m_Vehicle.ContainsKey(i_LicenseToCheck);
+        }
+
+        public void InflateTireToMax(string i_LicensePlate)
+        {
+            if (!isVehicleInGarage(i_LicensePlate))
+            {
+                throw new ArgumentException("License plate not found.");
+            }
+
+            m_Vehicle[i_LicensePlate].Vehicle.InflateTiersToMax();
+        }
+
+        public void RefuelFuelVehicle(string i_LicensePlate, FuelEnergy.eFuelType i_FuelType, float i_FuelToAdd)
+        {
+            if (!isVehicleInGarage(i_LicensePlate))
+            {
+                throw new ArgumentException("License plate not found.");
+            }
+
+            FuelEnergy currentEnergy = m_Vehicle[i_LicensePlate].Vehicle.Energy as FuelEnergy;
+
+            currentEnergy.Refuel(i_FuelToAdd, i_FuelType);
+        }
+
+        public void RechargeElectricVehicle(string i_LicensePlate, float i_MinutesToAdd)
+        {
+            if (!isVehicleInGarage(i_LicensePlate))
+            {
+                throw new ArgumentException("License plate not found.");
+            }
+
+            ElectricEnergy currentEnergy = m_Vehicle[i_LicensePlate].Vehicle.Energy as ElectricEnergy;
+
+            currentEnergy.Charge(i_MinutesToAdd);
+        }
+
+        public void UpdateVehicleStatus(string i_LicensePlate, e_VehicleStatus i_NewStatus)
+        {
+            if (!isVehicleInGarage(i_LicensePlate))
+            {
+                throw new ArgumentException("License plate not found.");
+            }
+
+            m_Vehicle[i_LicensePlate].Status = i_NewStatus;
+        }
+
     }
 }

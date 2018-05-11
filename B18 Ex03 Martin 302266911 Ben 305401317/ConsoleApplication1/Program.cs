@@ -8,8 +8,10 @@ namespace Ex03.ConsoleUI
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            Console.WriteLine("Test");
+
         }
     }
 }
