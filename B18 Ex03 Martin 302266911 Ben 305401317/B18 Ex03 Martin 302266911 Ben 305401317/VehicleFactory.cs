@@ -10,10 +10,9 @@ namespace Ex03.GarageLogic
     {
         private List<Vehicle> m_SupportedVeihiclesInSystem;
 
-        //TODO: continue 
         public Vehicle CreateVehicle()
         {
-            Vehicle newVehicle = new Car(Car.eColor.White, "ss");
+            Vehicle newVehicle = new Car("ModelName","1994",Car.eColor.White, Car.eDoorsNumber.Five);
 
             return newVehicle;
         }

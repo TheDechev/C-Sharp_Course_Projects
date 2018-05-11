@@ -41,9 +41,9 @@
   <ItemGroup>
     <Compile Include="ClientVehicle.cs" />
     <Compile Include="Vehicles\Car.cs" />
-    <Compile Include="Engines\ElectricEngine.cs" />
-    <Compile Include="Engines\Engine.cs" />
-    <Compile Include="Engines\FuelEngine.cs" />
+    <Compile Include="Engines\ElectricEnergy.cs" />
+    <Compile Include="Engines\Energy.cs" />
+    <Compile Include="Engines\FuelEnergy.cs" />
     <Compile Include="Garage.cs" />
     <Compile Include="Vehicles\Motorcycle.cs" />
     <Compile Include="Vehicles\Truck.cs" />

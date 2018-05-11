@@ -8,12 +8,9 @@ namespace Ex03.GarageLogic
 {
     public class Car : Vehicle
     {
-        private eColor m_Color;
-        private eDoorsNumber m_DoorsNumber = eDoorsNumber.Four;
-        
         public enum eDoorsNumber
         {
-            Tow,
+            Two,
             Three,
             Four,
             Five
@@ -27,10 +24,15 @@ namespace Ex03.GarageLogic
             Blue,
         }
 
-        public Car( eColor i_CarColor, string i_ModelName) : base (i_ModelName)
-        {
-            m_Color = i_CarColor;
+        private eColor m_Color;
+        private eDoorsNumber m_DoorsNumber = eDoorsNumber.Four;
+        
 
+        public Car(string i_ModelName, string i_PlateNumber, eColor i_CarColor, eDoorsNumber i_DoorsNumber) : base(i_ModelName,i_PlateNumber) 
+        {
+            this.m_Color = i_CarColor;
+            this.m_DoorsNumber = i_DoorsNumber;
         }
+
     }
 }
