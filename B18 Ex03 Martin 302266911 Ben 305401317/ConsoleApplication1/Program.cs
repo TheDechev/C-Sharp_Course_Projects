@@ -10,8 +10,8 @@ namespace Ex03.ConsoleUI
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Test");
-
+            GarageControlPanelUI controlPanelUI = new GarageControlPanelUI();
+            controlPanelUI.Run();
         }
     }
 }

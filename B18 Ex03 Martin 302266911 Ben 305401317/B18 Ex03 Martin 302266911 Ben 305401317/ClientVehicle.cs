@@ -11,7 +11,7 @@ namespace Ex03.GarageLogic
         private Vehicle m_Vehicle;
         private string m_OwnerName;
         private string m_OwnerPhoneNumber;
-        private Garage.e_VehicleStatus m_Status = Garage.e_VehicleStatus.InProcess;
+        private Garage.eVehicleStatus m_Status = Garage.eVehicleStatus.InProcess;
 
         public Vehicle Vehicle
         {
@@ -34,7 +34,7 @@ namespace Ex03.GarageLogic
                 return this.m_OwnerPhoneNumber;
             }
         }
-        public Garage.e_VehicleStatus Status
+        public Garage.eVehicleStatus Status
         {
             get
             {

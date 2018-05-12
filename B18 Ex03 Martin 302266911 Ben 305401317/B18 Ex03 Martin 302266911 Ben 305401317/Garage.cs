@@ -11,7 +11,7 @@ namespace Ex03.GarageLogic
 
         private Dictionary<string, ClientVehicle> m_Vehicle;
 
-        public enum e_VehicleStatus
+        public enum eVehicleStatus
         {
             InProcess,
             Repaired,
@@ -26,7 +26,7 @@ namespace Ex03.GarageLogic
 
             if (isVehicleInGarage(i_VehicleToAdd.LicensePlate))
             {
-                m_Vehicle[i_VehicleToAdd.LicensePlate].Status = e_VehicleStatus.InProcess;
+                m_Vehicle[i_VehicleToAdd.LicensePlate].Status = eVehicleStatus.InProcess;
                 throw new Exception("Vehicle already exists!");
             }
 
@@ -90,7 +90,7 @@ namespace Ex03.GarageLogic
             currentEnergy.Charge(i_MinutesToAdd);
         }
 
-        public void UpdateVehicleStatus(string i_LicensePlate, e_VehicleStatus i_NewStatus)
+        public void UpdateVehicleStatus(string i_LicensePlate, eVehicleStatus i_NewStatus)
         {
             if (!isVehicleInGarage(i_LicensePlate))
             {
