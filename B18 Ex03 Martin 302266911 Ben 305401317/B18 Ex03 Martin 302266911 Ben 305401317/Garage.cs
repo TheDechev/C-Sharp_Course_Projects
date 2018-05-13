@@ -51,7 +51,7 @@ namespace Ex03.GarageLogic
 
        //=========== DONE FOR *NOW* ========================================================
 
-        private bool isVehicleInGarage(string i_LicenseToCheck)
+        public bool isVehicleInGarage(string i_LicenseToCheck)
         {
             return this.m_Vehicle.ContainsKey(i_LicenseToCheck);
         }

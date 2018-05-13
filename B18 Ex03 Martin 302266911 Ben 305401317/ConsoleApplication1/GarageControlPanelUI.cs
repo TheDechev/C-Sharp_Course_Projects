@@ -114,6 +114,11 @@ namespace Ex03.ConsoleUI
 
         private void insertNewVehicle()
         {
+            string userPlateNum = getRegistrationPlateNumber();
+            if (m_garage.isVehicleInGarage(userPlateNum))
+            {
+                
+            }
 
             // הפונקציה בגאראז דורשת את כל הפרטים לשנות רק למספר רכבת תחילה
 
