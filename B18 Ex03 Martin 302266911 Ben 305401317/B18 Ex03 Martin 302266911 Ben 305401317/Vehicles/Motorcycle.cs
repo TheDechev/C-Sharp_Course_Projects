@@ -16,6 +16,8 @@ namespace Ex03.GarageLogic
             B2
         }
 
+        private const string k_EngineVolumeKey = "Engine Volume";
+        private const string k_LicenseTypeKey = "License type";
         private const int k_MotorcycleNumberOfWheels = 2;
         private const float k_MotorcycleMaxWheelPressure = 30f;
         private int m_EngineVolume;
@@ -27,43 +29,50 @@ namespace Ex03.GarageLogic
         {
         }
 
-        public override void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, eVehicleType i_VehicleType)
+        public override void UpdateUniqueProperties(string i_Key, string i_Value)
         {
-            int engineVolume;
-            eLicenseType licenseType = (eLicenseType)Enum.ToObject(typeof(eLicenseType), i_FirstProperty);
 
-            if(!Enum.IsDefined(typeof(eLicenseType), licenseType))
+            if (i_Key == k_EngineVolumeKey)
             {
-                throw new ValueOutOfRangeException("Invalid license plate!");
+                this.m_EngineVolume = int.Parse(i_Value);
             }
-
-            m_LicenseType = licenseType;
-
-            if (int.TryParse(i_SecondProperty, out engineVolume))
+            else if (i_Key == k_LicenseTypeKey)
             {
-                throw new FormatException("Invalid engine volume!");
+                this.m_LicenseType = LogicUtils.EnumValidation<eLicenseType>(i_Value, i_Key);
             }
-
-            this.m_EngineVolume = engineVolume;
+            else
+            {
+                throw new ArgumentException("Invalid key");
+            }
 
         }
 
-        public override string GetUniqueProperties()
+        public override string GetUniquePropertiesInfo()
         {
             return String.Format(
 @"License type: {0}
 Engine Volume: {1}", m_LicensePlate, m_EngineVolume);
         }
 
-        public override void UpdateWheelsInfo(float i_CurrentPreasure)
+        public override void UpdateWheelsInfo(float i_CurrentPreasure, string i_ManufacturerName)
         {
-            this.m_WheelsList = new List<Wheel>(k_MotorcycleNumberOfWheels);
-
             foreach (Wheel wheel in m_WheelsList)
             {
                 wheel.MaxManufacturerAirPressure = k_MotorcycleMaxWheelPressure;
                 wheel.CurrentAirPressure = i_CurrentPreasure;
+                wheel.ManufacturerName = i_ManufacturerName;
             }
+        }
+
+        public override Dictionary<string, string[]> GetUniqueAtttributesDictionary()
+        {
+            Dictionary<string, string[]> stringAttributes = new Dictionary<string, string[]>();
+
+
+            stringAttributes.Add("License Type", Enum.GetNames(typeof(eLicenseType)));
+            stringAttributes.Add("Engine volume", new string[] { });
+
+            return stringAttributes;
         }
     }
 }

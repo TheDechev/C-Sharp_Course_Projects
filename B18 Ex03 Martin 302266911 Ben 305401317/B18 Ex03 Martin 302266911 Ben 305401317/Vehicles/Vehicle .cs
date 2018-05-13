@@ -8,6 +8,8 @@ namespace Ex03.GarageLogic
 {
     public abstract class Vehicle
     {
+        protected const int k_UniqueAttributesNum = 2;
+
         public enum eVehicleType
         {
             ElectricCar,
@@ -16,7 +18,7 @@ namespace Ex03.GarageLogic
             FuelMotorcycle,
             FuelTruck
         }
-
+        public const string k_VehicleTypeKey = "Vehicle Type";
         protected readonly string m_LicensePlate;
         protected readonly List<Wheel> m_WheelsList;
         protected float m_EnergyLeftPrecentage;
@@ -28,16 +30,6 @@ namespace Ex03.GarageLogic
             this.m_WheelsList = new List<Wheel>(i_NumberOfWheels);
             this.m_LicensePlate = i_LicensePlate;
             this.m_Energy = i_EnergyType;
-        }
-
-        private void UpdateTireInfo(string i_ManufacturerName,float i_MaxAirPressure,float  i_SetAirPressure)
-        {
-            foreach(Wheel tire in m_WheelsList)
-            {
-                tire.ManufacturerName = i_ManufacturerName;
-                tire.MaxManufacturerAirPressure = i_MaxAirPressure;
-                tire.CurrentAirPressure = i_SetAirPressure;
-            }
         }
 
         public string ModelName
@@ -57,11 +49,6 @@ namespace Ex03.GarageLogic
             get
             {
                 return this.m_LicensePlate;
-            }
-
-            set
-            {
-                m_LicensePlate = value;
             }
         }
 
@@ -99,7 +86,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public abstract void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, eVehicleType i_VehicleType);
+        public abstract void UpdateUniqueProperties(string i_Key, string i_Value);
 
         public List<Wheel> TiresList
         {
@@ -109,11 +96,11 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public abstract string GetUniqueProperties();
+        public abstract string GetUniquePropertiesInfo();
 
-        public abstract void UpdateWheelsInfo(float i_CurrentPreasure);
+        public abstract void UpdateWheelsInfo(float i_CurrentPreasure, string i_ManufacturerName);
 
-
+        public abstract Dictionary<string, string[]> GetUniqueAtttributesDictionary();
 
 
     }

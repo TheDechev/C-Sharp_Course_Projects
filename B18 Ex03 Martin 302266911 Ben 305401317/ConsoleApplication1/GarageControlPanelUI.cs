@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ex03.GarageLogic;
 
 namespace Ex03.ConsoleUI
 {
     class GarageControlPanelUI
     {
-        private GarageLogic.Garage  m_garage = new GarageLogic.Garage();
+        private Garage  m_garage = new Garage();
         
         private enum eUserChoice
         {
@@ -109,9 +110,9 @@ namespace Ex03.ConsoleUI
             throw new NotImplementedException();
         }
 
-        private void updateVehicleStatus(GarageLogic.Garage.eVehicleStatus vehicleStatus)
+        private void updateVehicleStatus(Garage.eVehicleStatus vehicleStatusToUpdate)
         {
-            this.m_garage.UpdateVehicleStatus();
+            //this.m_garage.UpdateVehicleStatus();
         }
 
         private void displayVehiclesList()
@@ -127,49 +128,123 @@ namespace Ex03.ConsoleUI
         {
             if (m_garage.isVehicleInGarage(i_userPlateNum))
             {
-                this.m_garage.UpdateVehicleStatus(i_userPlateNum, GarageLogic.Garage.eVehicleStatus.InProcess);
+                this.m_garage.UpdateVehicleStatus(i_userPlateNum, Garage.eVehicleStatus.InProcess);
                 Console.WriteLine(
 @"This vehicle is already in the grage. 
 vehicle's status was updated to: 'In Process'"); 
             }
             else
             {
-                GarageLogic.Vehicle newVehicle;
+                Vehicle newVehicle;
                 newVehicle = CreateNewVehicle(i_userPlateNum);
                 
             }
         }
 
-        private GarageLogic.Vehicle CreateNewVehicle(string i_UserPlateNumber)
+        private Vehicle CreateNewVehicle(string i_UserPlateNumber)
         {
-            GarageLogic.Vehicle newVehicle;
-            GarageLogic.Vehicle.eVehicleType newVehicleType;
+            Vehicle newVehicle;
+            Vehicle.eVehicleType newVehicleType;
             string userChoice;
 
             printVehicleTypeSubMenu();
             printEnterChoiceMsg();
             userChoice = Console.ReadLine();
             
-            newVehicleType = GarageLogic.LogicUtils.EnumParse<GarageLogic.Vehicle.eVehicleType>(userChoice);
-            newVehicle = GarageLogic.VehicleFactory.CreateVehicle(i_UserPlateNumber, newVehicleType);
+            newVehicleType = LogicUtils.EnumValidation<Vehicle.eVehicleType>(userChoice,Vehicle.k_VehicleTypeKey);
+            newVehicle = VehicleFactory.CreateVehicle(i_UserPlateNumber, newVehicleType);
 
-            SetBasicVehicleInfo(newVehicle);
+            SetVehicleInfo(newVehicle,newVehicleType);
 
             return newVehicle;
 
         }
 
-        private void SetBasicVehicleInfo(GarageLogic.Vehicle vehicleToUpdate)
+        private void SetVehicleInfo(Vehicle i_VehicleToUpdate, Vehicle.eVehicleType i_vehicleType)
         {
             float currentAirPressure;
+            Console.WriteLine("<Please enter the following information> {0}", Environment.NewLine);
+            Console.WriteLine("Model: ");
+            i_VehicleToUpdate.ModelName = Console.ReadLine();
+            Console.WriteLine("Current energy source percentage: ");
+            i_VehicleToUpdate.EnergyPercentageLeft = getNumericInput(i_VehicleToUpdate.Energy.MaxCapacity);
+            Console.WriteLine("Tires air pressure: ");
+            currentAirPressure = getNumericInput(i_VehicleToUpdate.TiresList[0].MaxManufacturerAirPressure);
+            Console.WriteLine("Tiers manufacturer's name: ");
+            i_VehicleToUpdate.UpdateWheelsInfo(currentAirPressure , Console.ReadLine());
+            SetVehicleExraInfo(i_VehicleToUpdate, i_vehicleType);
+        }
 
-            Console.WriteLine("Please Enter your vehicle model: ");
-            vehicleToUpdate.ModelName = Console.ReadLine();
-            Console.WriteLine("Please Enter your current energy percentage: ");
-            vehicleToUpdate.EnergyPercentageLeft = float.Parse(Console.ReadLine());
-            Console.WriteLine("Please Enter your current tire air pressure: ");
-            currentAirPressure = float.Parse(Console.ReadLine());
-            vehicleToUpdate.UpdateWheelsInfo(currentAirPressure); //X
+
+
+        private void SetVehicleExraInfo(Vehicle i_VehicleToUpdate, Vehicle.eVehicleType i_vehicleType)
+        {
+            Dictionary<string, string[]> uniqueAttributesDictionary = i_VehicleToUpdate.GetUniqueAtttributesDictionary();
+            List<string> userInputAttributes = new List<string>(uniqueAttributesDictionary.Count);
+            int attributeValuesNum;
+
+            foreach (string key in uniqueAttributesDictionary.Keys)
+            {
+                attributeValuesNum = uniqueAttributesDictionary[key].Length;
+                Console.WriteLine("Enter {0}: ", uniqueAttributesDictionary[key]);
+                if (attributeValuesNum == 1)
+                {
+                    Console.WriteLine("Choose the following list {0}: ", key);
+                    for (int i = 0; i < uniqueAttributesDictionary[key].Length; i++)
+                    {
+                        Console.WriteLine("< {0} > {1}", i + 1, uniqueAttributesDictionary[key][i]);
+                    }
+                }
+
+                getUniquePropertyInput(i_VehicleToUpdate, key);
+            }
+
+
+        }
+
+        private float getNumericInput(float i_MaximumValue)
+        {
+            string userInput;
+            float numericInput = 0f;
+            bool isValid = false;
+            do
+            {
+                userInput = Console.ReadLine();
+                try
+                {
+                    numericInput = LogicUtils.NumericValueValidation(userInput, i_MaximumValue);
+                    isValid = true;
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+
+            } while (!isValid);
+
+            return numericInput;
+        }
+
+        private void getUniquePropertyInput(Vehicle i_Vehicle, string i_Key)
+        {
+            string userInput;
+            //float numericInput = 0f;
+            bool isValid = false;
+            do
+            {
+                userInput = Console.ReadLine();
+                try
+                {
+                    i_Vehicle.UpdateUniqueProperties(i_Key, userInput);
+                    isValid = true;
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+
+            } while (!isValid);
+
         }
 
         private void printVehicleTypeSubMenu()

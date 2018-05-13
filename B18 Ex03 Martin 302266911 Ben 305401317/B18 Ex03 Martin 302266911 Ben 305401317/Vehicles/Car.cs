@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic 
 {
+    
+
     public class Car : Vehicle
     {
         public enum eColor
@@ -18,7 +20,7 @@ namespace Ex03.GarageLogic
 
         public enum eDoorsNumber
         {
-            Two = 2,
+            Two,
             Three,
             Four,
             Five
@@ -27,6 +29,8 @@ namespace Ex03.GarageLogic
         private const int k_CarNumberOfWheels = 4;
         private const float k_FuelCarMaxWheelPressure = 30f;
         private const float k_ElectricCarMaxWheelPressure = 32f;
+        private const string k_ColorKey = "Color";
+        private const string k_DoorsNumKey = "Doors number";
         private eColor m_Color;
         private eDoorsNumber m_DoorsNumber = eDoorsNumber.Four;
 
@@ -34,25 +38,30 @@ namespace Ex03.GarageLogic
         {
         }
 
-        public override void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, eVehicleType i_VehicleType)
+        public override void UpdateUniqueProperties(string i_Key, string i_Value)
         {
-            eColor carColor = (eColor)Enum.ToObject(typeof(eColor), i_FirstProperty);
-
-            if (!Enum.IsDefined(typeof(eColor), carColor))
+            if (i_Key == k_ColorKey)
             {
-                throw new ValueOutOfRangeException("Invalid license plate!");
+               this.m_Color = LogicUtils.EnumValidation<eColor>(i_Value, k_ColorKey);
             }
-
-            this.m_Color = carColor;
-
-            eDoorsNumber doorsNum = (eDoorsNumber)Enum.ToObject(typeof(eDoorsNumber), i_SecondProperty);
-
-            if (!Enum.IsDefined(typeof(eColor), doorsNum))
+            else if (i_Key == k_DoorsNumKey)
             {
-                throw new ValueOutOfRangeException("Invalid license plate!");
+                this.m_DoorsNumber = LogicUtils.EnumValidation<eDoorsNumber>(i_Value, k_DoorsNumKey);
             }
+            else
+            {
+                throw new ArgumentException("Invalid key");
+            }
+        }
 
-            this.m_DoorsNumber = doorsNum;
+        public override Dictionary<string, string[]> GetUniqueAtttributesDictionary()
+        {
+            Dictionary<string,string[]> stringAttributes = new Dictionary<string, string[]>();
+
+            stringAttributes.Add(k_ColorKey, Enum.GetNames(typeof(eColor)));
+            stringAttributes.Add(k_DoorsNumKey, Enum.GetNames(typeof(eDoorsNumber)));
+
+            return stringAttributes;
         }
 
         public eColor Color
@@ -64,18 +73,21 @@ namespace Ex03.GarageLogic
 
             set
             {
+                
                 this.m_Color = value;
             }
         }
 
-        public override string GetUniqueProperties()
+       
+
+        public override string GetUniquePropertiesInfo()
         {
             return String.Format(
 @"Color: {0}
 Number of doors: {1}", m_Color, m_DoorsNumber);
         }
 
-        public override void UpdateWheelsInfo(float i_CurrentPreasure)
+        public override void UpdateWheelsInfo(float i_CurrentPreasure, string i_ManufacturerName)
         {
             float maxPressure = k_FuelCarMaxWheelPressure;
 
@@ -88,6 +100,7 @@ Number of doors: {1}", m_Color, m_DoorsNumber);
             {
                 wheel.MaxManufacturerAirPressure = maxPressure;
                 wheel.CurrentAirPressure = i_CurrentPreasure;
+                wheel.ManufacturerName = i_ManufacturerName;
             }
         }
 

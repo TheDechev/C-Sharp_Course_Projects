@@ -100,7 +100,7 @@ Fuel level: {1}", ((FuelEnergy)vehicleToCheck.Energy).FuelType, vehicleToCheck.E
  @"Battery level: {0}", vehicleToCheck.Energy.CurrentEnergy));
             }
 
-            vehicleInfo.Append(vehicleToCheck.GetUniqueProperties());
+            vehicleInfo.Append(vehicleToCheck.GetUniquePropertiesInfo());
 
             return vehicleInfo.ToString();
         }

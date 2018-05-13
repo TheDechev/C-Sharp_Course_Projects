@@ -10,6 +10,9 @@ namespace Ex03.GarageLogic
     {
         private const int k_TruckNumberOfWheels = 12;
         private const float k_TruckMaxWheelPressure = 28f;
+        private const string k_IsTrunkCooledKey = "Is trunk cooled";
+        private const string k_TrunkCapacityKey = "Trunk capacity";
+
 
         private bool m_IsTrunkCooled;
         private float m_TrunkCapacity;
@@ -35,41 +38,52 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public override void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, eVehicleType i_VehicleType)
+
+        public override void UpdateUniqueProperties(string i_Key, string i_Value)
         {
-            bool isTrunkCooled;
-            float trunkCapacity;
-               
-            if (bool.TryParse(i_FirstProperty, out isTrunkCooled))
+            if (i_Key == k_IsTrunkCooledKey)
             {
-                throw new FormatException("Invalid engine volume!");
+                this.m_IsTrunkCooled = bool.Parse(i_Value);
             }
-
-            this.m_IsTrunkCooled = isTrunkCooled;
-
-            if (float.TryParse(i_SecondProperty, out trunkCapacity))
+            else if (i_Key == k_TrunkCapacityKey)
             {
-                throw new FormatException("Invalid engine volume!");
+                this.m_TrunkCapacity = LogicUtils.NumericValueValidation(i_Value, float.MaxValue);
             }
-
-            this.m_TrunkCapacity = trunkCapacity;
+            else
+            {
+                throw new ArgumentException("Invalid key");
+            }
         }
 
-        public override string GetUniqueProperties()
+        public override string GetUniquePropertiesInfo()
         {
             return String.Format(
 @"Trunk capacity: {0}
 Cooled trunk: {1}", m_LicensePlate, m_IsTrunkCooled);
         }
 
-        public override void UpdateWheelsInfo(float i_CurrentPreasure)
+        public override void UpdateWheelsInfo(float i_CurrentPreasure, string i_ManufacturerName)
         {
             foreach (Wheel wheel in m_WheelsList)
             {
                 wheel.MaxManufacturerAirPressure = k_TruckMaxWheelPressure;
                 wheel.CurrentAirPressure = i_CurrentPreasure;
+                wheel.ManufacturerName = i_ManufacturerName;
             }
         }
+
+        public override Dictionary<string, string[]> GetUniqueAtttributesDictionary()
+        {
+            Dictionary<string, string[]> stringAttributes = new Dictionary<string, string[]>();
+
+            string[] isCooled = {bool.TrueString, bool.FalseString};
+
+            stringAttributes.Add("Trunk cooled", isCooled);
+            stringAttributes.Add("Trunk capacity", new string[]{});
+
+            return stringAttributes;
+        }
+
 
     }
 }
