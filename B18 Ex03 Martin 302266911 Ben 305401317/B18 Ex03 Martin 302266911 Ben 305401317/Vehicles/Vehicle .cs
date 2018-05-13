@@ -21,20 +21,17 @@ namespace Ex03.GarageLogic
         protected string m_LicensePlate;
         protected float m_EnergyLeftPrecentage;
         protected Energy m_Energy;
-        protected List<Tire> m_TiresList;
+        protected List<Wheel> m_WheelsList;
 
-        internal Vehicle(string i_LicensePlate, string i_ModelName, int i_TiresNumber, float i_EnergyLeftPercentage, Energy i_EnergyType)
+        internal Vehicle(string i_LicensePlate, Energy i_EnergyType)
         {
             this.m_LicensePlate = i_LicensePlate;
-            this.m_ModelName = i_ModelName;
-            this.m_TiresList = new List<Tire>(i_TiresNumber);
             this.m_Energy = i_EnergyType;
-            this.m_EnergyLeftPrecentage = i_EnergyLeftPercentage;
         }
 
         private void UpdateTireInfo(string i_ManufacturerName,float i_MaxAirPressure,float  i_SetAirPressure)
         {
-            foreach(Tire tire in m_TiresList)
+            foreach(Wheel tire in m_WheelsList)
             {
                 tire.ManufacturerName = i_ManufacturerName;
                 tire.MaxManufacturerAirPressure = i_MaxAirPressure;
@@ -79,25 +76,28 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void InflateTiersToMax()
+        public void InflateWheelsToMax()
         {
-            foreach(Tire tire in m_TiresList)
+            foreach(Wheel wheel in m_WheelsList)
             {
-                tire.Inflate(tire.MaxManufacturerAirPressure - tire.CurrentAirPressure);
+                wheel.Inflate(wheel.MaxManufacturerAirPressure - wheel.CurrentAirPressure);
             }
         }
 
         public abstract void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, eVehicleType i_VehicleType);
 
-        public List<Tire> TiresList
+        public List<Wheel> TiresList
         {
             get
             {
-                return this.m_TiresList;
+                return this.m_WheelsList;
             }
         }
 
         public abstract string GetUniqueProperties();
+
+        public abstract void UpdateWheelsInfo(float i_CurrentPreasure);
+
 
 
 

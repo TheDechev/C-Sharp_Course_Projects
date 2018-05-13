@@ -51,7 +51,7 @@
     <Compile Include="ValueOutOfRangeException.cs" />
     <Compile Include="Vehicles\Vehicle .cs" />
     <Compile Include="VehicleFactory.cs" />
-    <Compile Include="Tire.cs" />
+    <Compile Include="Wheel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

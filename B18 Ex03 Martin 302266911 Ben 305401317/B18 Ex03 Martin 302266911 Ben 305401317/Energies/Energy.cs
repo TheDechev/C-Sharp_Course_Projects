@@ -11,9 +11,8 @@ namespace Ex03.GarageLogic
         protected float m_CurrentEnergy;
         protected float m_MaxCapacity;
 
-        public Energy(float i_CurrentEnergy, float i_MaxCapacity)
+        public Energy(float i_MaxCapacity)
         {
-            m_CurrentEnergy = i_CurrentEnergy;
             m_MaxCapacity = i_MaxCapacity;
         }
 

@@ -16,11 +16,14 @@ namespace Ex03.GarageLogic
             B2
         }
 
+        private const int k_MotorcycleNumberOfWheels = 2;
+        private const float k_MotorcycleMaxWheelPressure = 30f;
         private int m_EngineVolume;
         private eLicenseType m_LicenseType;
 
-        public Motorcycle(string i_LicensePlate, string i_ModelName, int i_TiresNumber, float i_EnergyLeftPercentage, Energy i_EnergyType)
-            : base(i_LicensePlate, i_ModelName, i_TiresNumber, i_EnergyLeftPercentage, i_EnergyType)
+
+
+        public Motorcycle(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType)
         {
         }
 
@@ -52,5 +55,15 @@ namespace Ex03.GarageLogic
 Engine Volume: {1}", m_LicensePlate, m_EngineVolume);
         }
 
+        public override void UpdateWheelsInfo(float i_CurrentPreasure)
+        {
+            this.m_WheelsList = new List<Wheel>(k_MotorcycleNumberOfWheels);
+
+            foreach (Wheel wheel in m_WheelsList)
+            {
+                wheel.CurrentAirPressure = i_CurrentPreasure;
+                wheel.MaxManufacturerAirPressure = k_MotorcycleMaxWheelPressure;
+            }
+        }
     }
 }
