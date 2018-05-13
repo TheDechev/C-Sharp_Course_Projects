@@ -100,7 +100,7 @@ namespace Ex03.ConsoleUI
 
         private void updateVehicleStatus(GarageLogic.Garage.eVehicleStatus vehicleStatus)
         {
-            throw new NotImplementedException();
+            this.m_garage.UpdateVehicleStatus();
         }
 
         private void displayVehiclesList()
@@ -117,13 +117,65 @@ namespace Ex03.ConsoleUI
             string userPlateNum = getRegistrationPlateNumber();
             if (m_garage.isVehicleInGarage(userPlateNum))
             {
-                
+                this.m_garage.UpdateVehicleStatus(userPlateNum, GarageLogic.Garage.eVehicleStatus.InProcess);
+                Console.WriteLine(
+@"This vehicle is already in the grage. 
+vehicle's status was updated to: 'In Process'"); 
+            }
+            else
+            {
+                getInfoAndcreateNewVehicle();
+                GarageLogic.Vehicle newVehicle = GarageLogic.VehicleFactory.CreateVehicle(userPlateNum,);
             }
 
-            // הפונקציה בגאראז דורשת את כל הפרטים לשנות רק למספר רכבת תחילה
+         
+            
+        }
 
-            string userPlateNum = getRegistrationPlateNumber();
+        private void getInfoAndcreateNewVehicle()
+        {
+            GarageLogic.Vehicle newVehicle;
 
+            printVehicleTypeSubMenu();
+            printEnterChoiceMsg();
+
+            eColor carColor = (eColor)Enum.ToObject(typeof(eColor), i_FirstProperty);
+
+            if (!Enum.IsDefined(typeof(eColor), carColor))
+            {
+                throw new ValueOutOfRangeException("Invalid license plate!");
+            }
+
+            GarageLogic.Vehicle.eVehicleType vehicleType = (GarageLogic.Vehicle.eVehicleType)Enum.ToObject(typeof(GarageLogic.Vehicle.eVehicleType), i_FirstProperty);
+
+            newVehicle = GarageLogic.VehicleFactory.CreateVehicle();
+
+
+
+        }
+
+        public void getEnumFromUser(Enum i_enumType, int value)
+        {
+
+
+            i_enumType.GetType() carColor = (enumType.GetType())Enum.ToObject(typeof(enumType), value);
+
+            if (!Enum.IsDefined(typeof(eColor), carColor))
+            {
+                throw new ValueOutOfRangeException("Invalid license plate!");
+            }
+        }
+
+        private void printVehicleTypeSubMenu()
+        {
+            Console.WriteLine(
+@"Please Enter yours vehicle type:
+        < 1 > Electric car
+        < 2 > Fuel car
+        < 3 > Electric motorcycle
+        < 4 > Fuel motorcycle
+        < 5 > Fuel truck
+            ");
         }
 
         private string getRegistrationPlateNumber()

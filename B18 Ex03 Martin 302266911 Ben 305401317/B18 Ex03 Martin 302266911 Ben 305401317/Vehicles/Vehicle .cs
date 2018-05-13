@@ -8,7 +8,7 @@ namespace Ex03.GarageLogic
 {
     public abstract class Vehicle
     {
-        public enum e_VehicleType
+        public enum eVehicleType
         {
             ElectricCar,
             FuelCar,
@@ -87,7 +87,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public abstract void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, e_VehicleType i_VehicleType);
+        public abstract void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, eVehicleType i_VehicleType);
 
 
 

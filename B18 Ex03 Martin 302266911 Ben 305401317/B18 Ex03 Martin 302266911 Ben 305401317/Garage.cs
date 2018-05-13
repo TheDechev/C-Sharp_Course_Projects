@@ -23,7 +23,7 @@ namespace Ex03.GarageLogic
 
         public void insertVehicle(Vehicle i_VehicleToAdd, string i_ClientName, string i_ClientPhoneNumber)
         {
-
+          
             if (isVehicleInGarage(i_VehicleToAdd.LicensePlate))
             {
                 m_Vehicle[i_VehicleToAdd.LicensePlate].Status = eVehicleStatus.InProcess;

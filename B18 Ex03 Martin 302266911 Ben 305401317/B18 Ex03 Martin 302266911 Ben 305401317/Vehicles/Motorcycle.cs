@@ -26,7 +26,7 @@ namespace Ex03.GarageLogic
         {
         }
 
-        public override void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, e_VehicleType i_VehicleType)
+        public override void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, eVehicleType i_VehicleType)
         {
             int engineVolume;
             eLicenseType licenseType = (eLicenseType)Enum.ToObject(typeof(eLicenseType), i_FirstProperty);
