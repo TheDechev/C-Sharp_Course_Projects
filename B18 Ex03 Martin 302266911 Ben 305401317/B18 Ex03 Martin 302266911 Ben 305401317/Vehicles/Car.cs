@@ -34,8 +34,16 @@ namespace Ex03.GarageLogic
         private eColor m_Color;
         private eDoorsNumber m_DoorsNumber = eDoorsNumber.Four;
 
-        public Car(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType, k_CarNumberOfWheels) 
+        public Car(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType) 
         {
+            float maxPressure = k_FuelCarMaxWheelPressure;
+
+            if (i_EnergyType is ElectricEnergy)
+            {
+                maxPressure = k_ElectricCarMaxWheelPressure;
+            }
+
+            base.AddNewWheels(k_CarNumberOfWheels, maxPressure);
         }
 
         public override void UpdateUniqueProperties(string i_Key, string i_Value)
@@ -78,8 +86,6 @@ namespace Ex03.GarageLogic
             }
         }
 
-       
-
         public override string GetUniquePropertiesInfo()
         {
             return String.Format(
@@ -87,22 +93,6 @@ namespace Ex03.GarageLogic
 Number of doors: {1}", m_Color, m_DoorsNumber);
         }
 
-        public override void UpdateWheelsInfo(float i_CurrentPreasure, string i_ManufacturerName)
-        {
-            float maxPressure = k_FuelCarMaxWheelPressure;
-
-            if (this.Energy is ElectricEnergy)
-            {
-                maxPressure = k_ElectricCarMaxWheelPressure;
-            }
-
-            foreach (Wheel wheel in m_WheelsList)
-            {
-                wheel.MaxManufacturerAirPressure = maxPressure;
-                wheel.CurrentAirPressure = i_CurrentPreasure;
-                wheel.ManufacturerName = i_ManufacturerName;
-            }
-        }
 
     }
 }

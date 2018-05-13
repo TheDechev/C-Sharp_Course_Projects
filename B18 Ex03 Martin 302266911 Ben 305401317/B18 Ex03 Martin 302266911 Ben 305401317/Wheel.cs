@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
     public class Wheel
     {
         private string m_ManufacturerName;
-        private float m_MaxManufacturerAirPressure;
+        private float m_MaxAirPressure;
         private float m_CurrentAirPressure;
 
         public string ManufacturerName
@@ -32,7 +32,7 @@ namespace Ex03.GarageLogic
             }
             set
             {
-                if(value > m_MaxManufacturerAirPressure)
+                if(value > m_MaxAirPressure)
                 {
                     throw new ValueOutOfRangeException("Air preassure exceeding the maximum value!");
                 }
@@ -40,23 +40,23 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public float MaxManufacturerAirPressure
+        public float MaxAirPressure
         {
             get
             {
-                return m_MaxManufacturerAirPressure;
+                return m_MaxAirPressure;
             }
             set
             {
-                m_MaxManufacturerAirPressure = value;
+                m_MaxAirPressure = value;
             }
         }
 
         public void Inflate(float i_AmountToAdd)
         {
-           if(m_CurrentAirPressure + i_AmountToAdd > m_MaxManufacturerAirPressure)
+           if(m_CurrentAirPressure + i_AmountToAdd > m_MaxAirPressure)
             {
-                throw new ValueOutOfRangeException(m_CurrentAirPressure, m_MaxManufacturerAirPressure);
+                throw new ValueOutOfRangeException(m_CurrentAirPressure, m_MaxAirPressure);
             }
 
             m_CurrentAirPressure += i_AmountToAdd;

@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
     public class Garage
     {
 
-        public const string k_VehicleStatus = "Vehicle status"
+        public const string k_VehicleStatus = "Vehicle status";
 
         private Dictionary<string, ClientVehicle> m_Vehicle = new Dictionary<string, ClientVehicle>();
 
