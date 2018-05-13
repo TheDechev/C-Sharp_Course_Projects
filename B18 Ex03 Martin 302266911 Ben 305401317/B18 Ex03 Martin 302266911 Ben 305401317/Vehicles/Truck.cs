@@ -33,7 +33,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public override void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, e_VehicleType i_VehicleType)
+        public override void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, eVehicleType i_VehicleType)
         {
             bool isTrunkCooled;
             float trunkCapacity;
