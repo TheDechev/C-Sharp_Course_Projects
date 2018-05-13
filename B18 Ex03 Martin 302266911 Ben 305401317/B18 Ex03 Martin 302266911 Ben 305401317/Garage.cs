@@ -23,8 +23,6 @@ namespace Ex03.GarageLogic
 
         public void insertVehicle(Vehicle i_VehicleToAdd, string i_ClientName, string i_ClientPhoneNumber)
         {
-            CheckLicensePlate(i_VehicleToAdd.LicensePlate);
-
             m_Vehicle.Add(i_VehicleToAdd.LicensePlate, new ClientVehicle(i_VehicleToAdd,i_ClientName, i_ClientPhoneNumber)); 
         }
 

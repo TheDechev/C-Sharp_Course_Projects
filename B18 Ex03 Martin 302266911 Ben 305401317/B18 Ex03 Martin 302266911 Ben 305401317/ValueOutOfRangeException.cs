@@ -41,7 +41,7 @@ namespace Ex03.GarageLogic
         }
 
         public ValueOutOfRangeException(float i_CurrentAmount, float i_MaxAmount) :
-            base(string.Format("The amout exceeds the available range of {0}",i_MaxAmount-i_CurrentAmount))
+            base(string.Format("The amout exceeds the available range of {0}",Math.Abs(i_MaxAmount-i_CurrentAmount)))
         {
             InitializeValues(i_CurrentAmount, i_MaxAmount);
         }

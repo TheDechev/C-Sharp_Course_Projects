@@ -42,9 +42,17 @@ namespace Ex03.GarageLogic
 
         public override void UpdateUniqueProperties(string i_Key, string i_Value)
         {
+            int trunkCool;
             if (i_Key == k_IsTrunkCooledKey)
             {
-                this.m_IsTrunkCooled = bool.Parse(i_Value);
+                int.TryParse(i_Value, out trunkCool);
+
+                if(trunkCool > 1 || trunkCool < 0)
+                {
+                    throw new ValueOutOfRangeException(trunkCool, 1);
+                }
+
+                this.m_IsTrunkCooled = (trunkCool == 1);
             }
             else if (i_Key == k_TrunkCapacityKey)
             {
@@ -69,8 +77,8 @@ Cooled trunk: {1}", m_LicensePlate, m_IsTrunkCooled);
 
             string[] isCooled = {bool.TrueString, bool.FalseString};
 
-            stringAttributes.Add("Trunk cooled", isCooled);
-            stringAttributes.Add("Trunk capacity", new string[]{});
+            stringAttributes.Add(k_IsTrunkCooledKey, isCooled);
+            stringAttributes.Add(k_TrunkCapacityKey, new string[]{});
 
             return stringAttributes;
         }

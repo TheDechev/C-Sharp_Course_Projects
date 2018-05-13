@@ -33,7 +33,7 @@ namespace Ex03.ConsoleUI
             string plateNumber = string.Empty;
 
             while (!exitProgram)
-            { 
+            {
                 PrintMenu();
                 printEnterChoiceMsg();
                 userChoice = getUserChoice();
@@ -75,7 +75,7 @@ namespace Ex03.ConsoleUI
                         break;
                 }
 
-                Console.WriteLine("Press 'Enter' to continue..");
+                Console.WriteLine("Press 'Any Key' to continue..");
                 Console.ReadLine();
                 Console.Clear();
             }
@@ -193,7 +193,6 @@ namespace Ex03.ConsoleUI
             string userChoice;
             Garage.eVehicleStatus fillter;
 
-            Console.Clear();
             printVehicleListFillterSubMenu();
             printEnterChoiceMsg();
             userChoice = Console.ReadLine();
@@ -213,7 +212,13 @@ vehicle's status was updated to: 'In Process'");
             else
             {
                 Vehicle newVehicle;
+               
                 newVehicle = CreateNewVehicle(i_userPlateNum);
+                string clientName, clientPhone;
+                Console.Write("Client's name:");
+                clientName = Console.ReadLine();
+                clientPhone = getNumericInput(99999999999, "Client's phone number").ToString();
+                this.m_garage.insertVehicle(newVehicle, clientName, clientPhone);
             }
         }
 
@@ -258,7 +263,7 @@ vehicle's status was updated to: 'In Process'");
             foreach (string key in uniqueAttributesDictionary.Keys)
             {
                 attributeValuesNum = uniqueAttributesDictionary[key].Length;
-                Console.WriteLine("Enter {0}: ", uniqueAttributesDictionary[key]);
+                Console.WriteLine("Enter {0}: ", key);
                 if (attributeValuesNum > 1)
                 {
                     Console.WriteLine("Choose the following list {0}: ", key);
@@ -266,8 +271,9 @@ vehicle's status was updated to: 'In Process'");
                     {
                         Console.WriteLine("< {0} > {1}", i + 1, uniqueAttributesDictionary[key][i]);
                     }
+                    printEnterChoiceMsg();
                 }
-
+                
                 getUniquePropertyInput(i_VehicleToUpdate, key);
             }
 
@@ -281,7 +287,7 @@ vehicle's status was updated to: 'In Process'");
             bool isValid = false;
             do
             {
-                Console.WriteLine(i_AskUserMsg);
+                Console.Write(i_AskUserMsg);
                 userInput = Console.ReadLine();
                 try
                 {

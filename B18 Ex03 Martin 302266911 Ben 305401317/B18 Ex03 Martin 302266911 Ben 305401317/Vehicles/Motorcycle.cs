@@ -10,7 +10,7 @@ namespace Ex03.GarageLogic
     {
         public enum eLicenseType
         {
-            A,
+            A = 1,
             A1,
             B1,
             B2
@@ -35,7 +35,7 @@ namespace Ex03.GarageLogic
 
             if (i_Key == k_EngineVolumeKey)
             {
-                this.m_EngineVolume = int.Parse(i_Value);
+                this.m_EngineVolume = (int)LogicUtils.NumericValueValidation(i_Value, int.MaxValue);
             }
             else if (i_Key == k_LicenseTypeKey)
             {
@@ -59,8 +59,8 @@ Engine Volume: {1}", m_LicensePlate, m_EngineVolume);
         {
             Dictionary<string, string[]> stringAttributes = new Dictionary<string, string[]>();
 
-            stringAttributes.Add("License Type", Enum.GetNames(typeof(eLicenseType)));
-            stringAttributes.Add("Engine volume", new string[] { });
+            stringAttributes.Add(k_LicenseTypeKey, Enum.GetNames(typeof(eLicenseType)));
+            stringAttributes.Add(k_EngineVolumeKey, new string[] { });
 
             return stringAttributes;
         }
