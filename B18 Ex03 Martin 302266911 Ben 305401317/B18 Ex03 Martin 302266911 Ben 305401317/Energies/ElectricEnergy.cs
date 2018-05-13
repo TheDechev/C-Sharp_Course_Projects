@@ -35,7 +35,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public ElectricEnergy(float i_StartBatteryTime, float i_MaxBatteryTime) : base(i_StartBatteryTime,i_MaxBatteryTime)
+        public ElectricEnergy(float i_MaxBatteryTime) : base(i_MaxBatteryTime)
         {
         }
 

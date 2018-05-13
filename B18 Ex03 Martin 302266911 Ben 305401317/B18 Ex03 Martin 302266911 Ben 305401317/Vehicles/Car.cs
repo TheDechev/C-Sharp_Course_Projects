@@ -24,13 +24,13 @@ namespace Ex03.GarageLogic
             Five
         }
 
-
+        private const int k_CarNumberOfWheels = 4;
+        private const float k_FuelCarMaxWheelPressure = 30f;
+        private const float k_ElectricCarMaxWheelPressure = 32f;
         private eColor m_Color;
         private eDoorsNumber m_DoorsNumber = eDoorsNumber.Four;
-        
 
-        public Car(string i_LicensePlate, string i_ModelName, int i_TiresNumber, float i_EnergyLeftPercentage, Energy i_EnergyType) 
-            : base(i_LicensePlate, i_ModelName, i_TiresNumber, i_EnergyLeftPercentage, i_EnergyType) 
+        public Car(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType) 
         {
         }
 
@@ -73,6 +73,23 @@ namespace Ex03.GarageLogic
             return String.Format(
 @"Color: {0}
 Number of doors: {1}", m_Color, m_DoorsNumber);
+        }
+
+        public override void UpdateWheelsInfo(float i_CurrentPreasure)
+        {
+            float maxPressure = k_FuelCarMaxWheelPressure;
+
+            if (this.Energy is ElectricEnergy)
+            {
+                maxPressure = k_ElectricCarMaxWheelPressure;
+            }
+
+            this.m_WheelsList = new List<Wheel>(k_CarNumberOfWheels);
+            foreach (Wheel wheel in m_WheelsList)
+            {
+                wheel.CurrentAirPressure = i_CurrentPreasure;
+                wheel.MaxManufacturerAirPressure = maxPressure;
+            }
         }
 
     }

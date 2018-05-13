@@ -52,7 +52,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public FuelEnergy(eFuelType i_FuelType, float i_StartFuel, float i_MaxFuelCapacity) : base (i_StartFuel,i_MaxFuelCapacity)
+        public FuelEnergy(eFuelType i_FuelType, float i_MaxFuelCapacity) : base (i_MaxFuelCapacity)
         {
             m_FuelType = i_FuelType;
         }
