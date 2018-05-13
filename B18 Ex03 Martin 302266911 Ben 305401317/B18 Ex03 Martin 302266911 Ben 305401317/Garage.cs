@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
     public class Garage
     {
 
-        public const string k_VehicleStatus = "Vehicle status"
+        public const string k_VehicleStatus = "Vehicle status";
 
         private Dictionary<string, ClientVehicle> m_Vehicle = new Dictionary<string, ClientVehicle>();
 
@@ -87,19 +87,22 @@ Owner Name: {2}
 Status in garage: {3}
 Air pressure in tires: {4}
 Tiers manufacturer: {5}
-", vehicleToCheck.LicensePlate, vehicleToCheck.ModelName, m_Vehicle[i_LicensePlate].Status, vehicleToCheck.TiresList[0].CurrentAirPressure,
-vehicleToCheck.TiresList[0].ManufacturerName));
+",  vehicleToCheck.LicensePlate, 
+    vehicleToCheck.ModelName, 
+    m_Vehicle[i_LicensePlate].Status, 
+    vehicleToCheck.TiresList[0].CurrentAirPressure,
+    vehicleToCheck.TiresList[0].ManufacturerName));
 
             if (vehicleToCheck.Energy is FuelEnergy)
             {
                 vehicleInfo.Append(String.Format(
- @"Fuel Type: {0}
+@"Fuel Type: {0}
 Fuel level: {1}", ((FuelEnergy)vehicleToCheck.Energy).FuelType, vehicleToCheck.Energy.CurrentEnergy));
             }
             else if (vehicleToCheck.Energy is ElectricEnergy)
             {
                 vehicleInfo.Append(String.Format(
- @"Battery level: {0}", vehicleToCheck.Energy.CurrentEnergy));
+@"Battery level: {0}", vehicleToCheck.Energy.CurrentEnergy));
             }
 
             vehicleInfo.Append(vehicleToCheck.GetUniquePropertiesInfo());

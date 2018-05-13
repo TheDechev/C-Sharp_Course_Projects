@@ -93,29 +93,38 @@ namespace Ex03.ConsoleUI
             Console.WriteLine();
         }
 
-        private void inflateTieres(string plateNumber)
+        private void inflateTieres(string i_PlateNumber)
         {
             throw new NotImplementedException();
         }
 
-        private void refuelVehicle(string plateNumber)
+        private void refuelVehicle(string i_PlateNumber)
         {
             throw new NotImplementedException();
         }
 
-        private void chargeVehicle(string plateNumber)
+        private void chargeVehicle(string i_PlateNumber)
         {
             throw new NotImplementedException();
         }
 
-        private void displayVehicleFullDetails(string plateNumber)
+        private void displayVehicleFullDetails(string i_PlateNumber)
         {
-            throw new NotImplementedException();
+            
+            if (m_garage.isVehicleInGarage(i_PlateNumber))
+            {
+                Console.WriteLine("Vehicle Information:");
+                Console.WriteLine(m_garage.DisplayVehicleFullDeatails(i_PlateNumber));
+            }
+            else
+            {
+                Console.WriteLine("This vehicle is not in the garage");
+            }
         }
 
-        private bool isUserMenuChoiceValid(eUserChoice userChoice)
+        private bool isUserMenuChoiceValid(eUserChoice i_UserChoice)
         {
-            return Enum.IsDefined(typeof(eUserChoice), userChoice);
+            return Enum.IsDefined(typeof(eUserChoice), i_UserChoice);
         }
 
         private void printEnterChoiceMsg()
@@ -124,11 +133,6 @@ namespace Ex03.ConsoleUI
         }
 
         private void printInvalidInputMsg()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void displayVehicleFullDetails()
         {
             throw new NotImplementedException();
         }
