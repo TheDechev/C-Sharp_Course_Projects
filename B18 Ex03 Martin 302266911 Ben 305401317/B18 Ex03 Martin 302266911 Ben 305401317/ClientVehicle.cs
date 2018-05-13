@@ -20,6 +20,7 @@ namespace Ex03.GarageLogic
                 return this.m_Vehicle;
             }
         }
+
         public string OwnerName
         {
             get
@@ -27,6 +28,7 @@ namespace Ex03.GarageLogic
                 return this.m_OwnerName;
             }
         }
+
         public string OwnerPhoneNumber
         {
             get
@@ -34,6 +36,7 @@ namespace Ex03.GarageLogic
                 return this.m_OwnerPhoneNumber;
             }
         }
+
         public Garage.eVehicleStatus Status
         {
             get
@@ -57,5 +60,6 @@ namespace Ex03.GarageLogic
         {
             m_Vehicle = i_Vehicle;
         }
+
     }
 }
