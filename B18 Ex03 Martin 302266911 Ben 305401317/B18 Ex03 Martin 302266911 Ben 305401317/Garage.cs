@@ -9,6 +9,8 @@ namespace Ex03.GarageLogic
     public class Garage
     {
 
+        public const string k_VehicleStatus = "Vehicle status"
+
         private Dictionary<string, ClientVehicle> m_Vehicle = new Dictionary<string, ClientVehicle>();
 
         public enum eVehicleStatus
@@ -113,7 +115,7 @@ Fuel level: {1}", ((FuelEnergy)vehicleToCheck.Energy).FuelType, vehicleToCheck.E
             {
                 if (i_FilterByStatus == eVehicleStatus.None || client.Status == i_FilterByStatus)
                 {
-                    licensePlatesStr.Append(client.Vehicle.LicensePlate + Environment.NewLine);
+                    licensePlatesStr.Append(string.Format("{0}{1}", client.Vehicle.LicensePlate, Environment.NewLine).ToString());
                 }
             }
 
