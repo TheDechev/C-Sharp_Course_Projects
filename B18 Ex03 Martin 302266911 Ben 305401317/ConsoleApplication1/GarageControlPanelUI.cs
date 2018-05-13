@@ -27,7 +27,7 @@ namespace Ex03.ConsoleUI
         {
             bool exitProgram = false;
             eUserChoice userChoice;
-            string plateNumber;
+            string plateNumber = string.Empty;
 
             while (!exitProgram)
             { 
@@ -35,9 +35,11 @@ namespace Ex03.ConsoleUI
                 printEnterChoiceMsg();
                 userChoice = getUserChoice();
 
-                /// IF USER CHOICE IS NOT ALL LIST AND VALID
-                plateNumber = getRegistrationPlateNumber();
-
+                if (isUserMenuChoiceValid(userChoice) && userChoice != eUserChoice.DisplayVehicleList)
+                {
+                    plateNumber = getRegistrationPlateNumber();
+                }
+                
                 switch (userChoice)
                 {
                     case eUserChoice.InsertNewVehicle:
@@ -71,6 +73,11 @@ namespace Ex03.ConsoleUI
             }
            
     }
+
+        private bool isUserMenuChoiceValid(eUserChoice userChoice)
+        {
+            return Enum.IsDefined(typeof(eUserChoice), userChoice);
+        }
 
         private void printEnterChoiceMsg()
         {
@@ -129,7 +136,7 @@ vehicle's status was updated to: 'In Process'");
             {
                 GarageLogic.Vehicle newVehicle;
                 newVehicle = CreateNewVehicle(i_userPlateNum);
-                SetBasicVehicleInfo();
+                
             }
         }
 
@@ -146,8 +153,23 @@ vehicle's status was updated to: 'In Process'");
             newVehicleType = GarageLogic.LogicUtils.EnumParse<GarageLogic.Vehicle.eVehicleType>(userChoice);
             newVehicle = GarageLogic.VehicleFactory.CreateVehicle(i_UserPlateNumber, newVehicleType);
 
+            SetBasicVehicleInfo(newVehicle);
+
             return newVehicle;
 
+        }
+
+        private void SetBasicVehicleInfo(GarageLogic.Vehicle vehicleToUpdate)
+        {
+            float currentAirPressure;
+
+            Console.WriteLine("Please Enter your vehicle model: ");
+            vehicleToUpdate.ModelName = Console.ReadLine();
+            Console.WriteLine("Please Enter your current energy percentage: ");
+            vehicleToUpdate.EnergyPercentageLeft = float.Parse(Console.ReadLine());
+            Console.WriteLine("Please Enter your current tire air pressure: ");
+            currentAirPressure = float.Parse(Console.ReadLine());
+            vehicleToUpdate.UpdateWheelsInfo(currentAirPressure); //X
         }
 
         private void printVehicleTypeSubMenu()
