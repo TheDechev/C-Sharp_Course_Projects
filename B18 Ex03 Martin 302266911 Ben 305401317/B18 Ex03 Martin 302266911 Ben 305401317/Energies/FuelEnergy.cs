@@ -15,8 +15,8 @@ namespace Ex03.GarageLogic
             Octan98,
             Soler
         }
-
         private eFuelType m_FuelType;
+        private readonly string k_FuelUnits = "Liters of fuel";
 
         public eFuelType FuelType
         {
@@ -25,7 +25,6 @@ namespace Ex03.GarageLogic
                 return this.m_FuelType;
             }
         }
-
         public float CurrentFuelAmount
         {
             get
@@ -43,7 +42,6 @@ namespace Ex03.GarageLogic
                 m_CurrentEnergy = value;
             }
         }
-
         public float MaxFuelAmount
         {
             get
@@ -67,8 +65,11 @@ namespace Ex03.GarageLogic
             this.CurrentFuelAmount += i_FuelAmountToAdd;
         }
 
+        public override string EnergyUnits()
+        {
+            return k_FuelUnits;
+        }
 
-        
 
 
     }

@@ -13,7 +13,7 @@ namespace Ex03.GarageLogic
 
         public enum eVehicleStatus
         {
-            InProcess,
+            InProcess = 1,
             Repaired,
             Paid,
             None

@@ -9,6 +9,8 @@ namespace Ex03.GarageLogic
     class ElectricEnergy : Energy
     {
 
+        private readonly string k_ElectricUnits = "Battery time in hours";
+
         public float BatteryTimeLeft
         {
             get
@@ -35,6 +37,14 @@ namespace Ex03.GarageLogic
             }
         }
 
+        public float RemainingBatteryPercentage
+        {
+            get
+            {
+                return this.m_RemainingEnergyPercentage;
+            }
+        }
+
         public ElectricEnergy(float i_MaxBatteryTime) : base(i_MaxBatteryTime)
         {
         }
@@ -44,5 +54,9 @@ namespace Ex03.GarageLogic
             this.BatteryTimeLeft += i_ChargeAmount;
         }
 
+        public override string EnergyUnits()
+        {
+            return k_ElectricUnits;
+        }
     }
 }

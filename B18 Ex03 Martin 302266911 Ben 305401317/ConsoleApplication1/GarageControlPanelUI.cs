@@ -205,16 +205,14 @@ vehicle's status was updated to: 'In Process'");
             Console.WriteLine("Please Enter the following information: {0}", Environment.NewLine);
             Console.Write("Model: ");
             i_VehicleToUpdate.ModelName = Console.ReadLine();
-            Console.Write("Current energy source percentage: ");
-            i_VehicleToUpdate.EnergyPercentageLeft = getNumericInput(100f);
+            Console.Write("{0}: ",i_VehicleToUpdate.Energy.EnergyUnits());
+            i_VehicleToUpdate.Energy.CurrentEnergy = getNumericInput(i_VehicleToUpdate.Energy.MaxCapacity);
             Console.Write("Tires air pressure: ");
             currentAirPressure = getNumericInput(i_VehicleToUpdate.TiresList[0].MaxManufacturerAirPressure);
             Console.Write("Tiers manufacturer's name: ");
             i_VehicleToUpdate.UpdateWheelsInfo(currentAirPressure , Console.ReadLine());
             SetVehicleExraInfo(i_VehicleToUpdate, i_vehicleType);
         }
-
-
 
         private void SetVehicleExraInfo(Vehicle i_VehicleToUpdate, Vehicle.eVehicleType i_vehicleType)
         {
@@ -226,7 +224,7 @@ vehicle's status was updated to: 'In Process'");
             {
                 attributeValuesNum = uniqueAttributesDictionary[key].Length;
                 Console.WriteLine("Enter {0}: ", uniqueAttributesDictionary[key]);
-                if (attributeValuesNum == 1)
+                if (attributeValuesNum > 1)
                 {
                     Console.WriteLine("Choose the following list {0}: ", key);
                     for (int i = 0; i < uniqueAttributesDictionary[key].Length; i++)
@@ -254,7 +252,7 @@ vehicle's status was updated to: 'In Process'");
                     numericInput = LogicUtils.NumericValueValidation(userInput, i_MaximumValue);
                     isValid = true;
                 }
-                catch (Exception exception)
+                catch (ValueOutOfRangeException exception)
                 {
                     Console.WriteLine(exception.Message);
                 }

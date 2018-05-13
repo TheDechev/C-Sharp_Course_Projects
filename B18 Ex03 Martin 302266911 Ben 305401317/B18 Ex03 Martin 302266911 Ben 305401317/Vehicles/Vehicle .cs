@@ -22,7 +22,6 @@ namespace Ex03.GarageLogic
         public const string k_VehicleTypeKey = "Vehicle Type";
         protected readonly string m_LicensePlate;
         protected readonly List<Wheel> m_WheelsList;
-        protected float m_EnergyLeftPrecentage;
         protected string m_ModelName;
         protected Energy m_Energy;
 
@@ -58,24 +57,6 @@ namespace Ex03.GarageLogic
             get
             {
                return this.m_Energy;
-            }
-        }
-
-        public float EnergyPercentageLeft
-        {
-            get
-            {
-                if(m_Energy == null)
-                {
-                    throw new Exception("Missing energy source!");
-                }
-
-                return m_EnergyLeftPrecentage;
-            }
-
-            set
-            {
-                this.Energy.CurrentEnergy = value;
             }
         }
 
