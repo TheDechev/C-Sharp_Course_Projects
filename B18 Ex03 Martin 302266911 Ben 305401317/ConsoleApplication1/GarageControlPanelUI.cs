@@ -8,7 +8,7 @@ namespace Ex03.ConsoleUI
 {
     class GarageControlPanelUI
     {
-
+        private GarageLogic.Garage  m_garage = new GarageLogic.Garage();
         
         private enum eUserChoice
         {
@@ -20,17 +20,16 @@ namespace Ex03.ConsoleUI
             ChargeVehicle,
             DisplayVehicleFullDetails,
             ExitProgram
-
         }
 
 
         public void Run()
         {
             bool exitProgram = false;
-            eUserChoice userChoice; 
+            eUserChoice userChoice;
 
-            do
-            {
+            while (!exitProgram)
+            { 
                 PrintMenu();
                 printEnterChoiceMsg();
                 userChoice = getUserChoice();
@@ -66,7 +65,7 @@ namespace Ex03.ConsoleUI
                         break;
                 }
             }
-            while (!exitProgram);
+           
     }
 
         private void printEnterChoiceMsg()
@@ -99,19 +98,35 @@ namespace Ex03.ConsoleUI
             throw new NotImplementedException();
         }
 
-        private void updateVehicleStatus()
+        private void updateVehicleStatus(GarageLogic.Garage.eVehicleStatus vehicleStatus)
         {
             throw new NotImplementedException();
         }
 
         private void displayVehiclesList()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            printVehicleListFillterSubMenu();
+            printEnterChoiceMsg();
+                        
+            
         }
 
         private void insertNewVehicle()
         {
 
+            // הפונקציה בגאראז דורשת את כל הפרטים לשנות רק למספר רכבת תחילה
+
+            string userPlateNum = getRegistrationPlateNumber();
+
+        }
+
+        private string getRegistrationPlateNumber()
+        {
+            Console.Write("Please Enter your registration plate number: ");
+            string userPlateNum = Console.ReadLine();
+
+            return userPlateNum;
         }
 
         private eUserChoice getUserChoice()
