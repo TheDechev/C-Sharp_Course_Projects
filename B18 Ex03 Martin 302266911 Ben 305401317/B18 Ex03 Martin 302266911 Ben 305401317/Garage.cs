@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
     public class Garage
     {
 
-        private Dictionary<string, ClientVehicle> m_Vehicle;
+        private Dictionary<string, ClientVehicle> m_Vehicle = new Dictionary<string, ClientVehicle>();
 
         public enum eVehicleStatus
         {
@@ -35,7 +35,7 @@ namespace Ex03.GarageLogic
         {
             CheckLicensePlate(i_LicensePlate);
 
-            m_Vehicle[i_LicensePlate].Vehicle.InflateTiersToMax();
+            m_Vehicle[i_LicensePlate].Vehicle.InflateWheelsToMax();
         }
         
         public void RefuelFuelVehicle(string i_LicensePlate, FuelEnergy.eFuelType i_FuelType, float i_FuelToAdd)

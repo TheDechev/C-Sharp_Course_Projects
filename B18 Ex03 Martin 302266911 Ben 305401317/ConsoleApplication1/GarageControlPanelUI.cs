@@ -49,21 +49,21 @@ namespace Ex03.ConsoleUI
                     case eUserChoice.DisplayVehicleList:
                         displayVehiclesList();
                         break;
-                    case eUserChoice.UpdateVehicleStatus:
-                        updateVehicleStatus();
-                        break;
-                    case eUserChoice.InflateTieres:
-                        inflateTieres();
-                        break;
-                    case eUserChoice.RefuelVehicle:
-                        refuelVehicle();
-                        break;
-                    case eUserChoice.ChargeVehicle:
-                        chargeVehicle();
-                        break;
-                    case eUserChoice.DisplayVehicleFullDetails:
-                        displayVehicleFullDetails();
-                        break;
+                    //case eUserChoice.UpdateVehicleStatus:
+                    //    updateVehicleStatus();
+                    //    break;
+                    //case eUserChoice.InflateTieres:
+                    //    inflateTieres();
+                    //    break;
+                    //case eUserChoice.RefuelVehicle:
+                    //    refuelVehicle();
+                    //    break;
+                    //case eUserChoice.ChargeVehicle:
+                    //    chargeVehicle();
+                    //    break;
+                    //case eUserChoice.DisplayVehicleFullDetails:
+                    //    displayVehicleFullDetails();
+                    //    break;
                     case eUserChoice.ExitProgram:
                         exitProgram = true;
                         break;
