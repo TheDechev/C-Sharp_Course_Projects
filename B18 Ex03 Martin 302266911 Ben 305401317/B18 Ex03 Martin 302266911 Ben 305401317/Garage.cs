@@ -42,9 +42,12 @@ namespace Ex03.GarageLogic
             // 4. no fillter
         }
 
-        public void DisplayVehicleFullDeatails()
+        public void DisplayVehicleFullDeatails(string i_LicensePlate)
         {
-
+            if (isVehicleInGarage(i_LicensePlate))
+            {
+                throw new Exception("Vehicle not in garage!");
+            }
         }
 
 
