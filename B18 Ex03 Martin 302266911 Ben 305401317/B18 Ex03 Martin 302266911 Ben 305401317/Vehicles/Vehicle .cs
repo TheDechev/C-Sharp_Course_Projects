@@ -18,6 +18,7 @@ namespace Ex03.GarageLogic
             FuelMotorcycle,
             FuelTruck
         }
+
         public const string k_VehicleTypeKey = "Vehicle Type";
         protected readonly string m_LicensePlate;
         protected readonly List<Wheel> m_WheelsList;
@@ -101,7 +102,6 @@ namespace Ex03.GarageLogic
         public abstract void UpdateWheelsInfo(float i_CurrentPreasure, string i_ManufacturerName);
 
         public abstract Dictionary<string, string[]> GetUniqueAtttributesDictionary();
-
 
     }
 }

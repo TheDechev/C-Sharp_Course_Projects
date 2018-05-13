@@ -143,7 +143,6 @@ namespace Ex03.ConsoleUI
             statusToUpdateStr = Console.ReadLine();
             statusToUpdate = LogicUtils.EnumValidation<Garage.eVehicleStatus>(statusToUpdateStr, k_VehicleStatusKey);
             this.m_garage.UpdateVehicleStatus(i_LicensePlate, statusToUpdate);
-            //this.m_garage.UpdateVehicleStatus();
         }
 
         private void printUpdateStatusSubMenu()
