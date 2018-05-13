@@ -242,10 +242,8 @@ vehicle's status was updated to: 'In Process'");
             Console.WriteLine("Please Enter the following information: {0}", Environment.NewLine);
             Console.Write("Model: ");
             i_VehicleToUpdate.ModelName = Console.ReadLine();
-            Console.Write("{0}: ",i_VehicleToUpdate.Energy.EnergyUnits());
-            i_VehicleToUpdate.Energy.CurrentEnergy = getNumericInput(i_VehicleToUpdate.Energy.MaxCapacity);
-            Console.Write("Tires air pressure: ");
-            currentAirPressure = getNumericInput(i_VehicleToUpdate.TiresList[0].MaxManufacturerAirPressure);
+            i_VehicleToUpdate.Energy.CurrentEnergy = getNumericInput(i_VehicleToUpdate.Energy.MaxCapacity,String.Format("{0}: ", i_VehicleToUpdate.Energy.EnergyUnits()).ToString() );
+            currentAirPressure = getNumericInput(i_VehicleToUpdate.TiresList[0].MaxAirPressure, "Tires air pressure: ");
             Console.Write("Tiers manufacturer's name: ");
             i_VehicleToUpdate.UpdateWheelsInfo(currentAirPressure , Console.ReadLine());
             SetVehicleExraInfo(i_VehicleToUpdate, i_vehicleType);
@@ -276,20 +274,21 @@ vehicle's status was updated to: 'In Process'");
 
         }
 
-        private float getNumericInput(float i_MaximumValue)
+        private float getNumericInput(float i_MaximumValue, string i_AskUserMsg)
         {
             string userInput;
             float numericInput = 0f;
             bool isValid = false;
             do
             {
+                Console.WriteLine(i_AskUserMsg);
                 userInput = Console.ReadLine();
                 try
                 {
                     numericInput = LogicUtils.NumericValueValidation(userInput, i_MaximumValue);
                     isValid = true;
                 }
-                catch (ValueOutOfRangeException exception)
+                catch (Exception exception)
                 {
                     Console.WriteLine(exception.Message);
                 }

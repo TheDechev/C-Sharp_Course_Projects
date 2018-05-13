@@ -25,9 +25,9 @@ namespace Ex03.GarageLogic
         protected string m_ModelName;
         protected Energy m_Energy;
 
-        internal Vehicle(string i_LicensePlate, Energy i_EnergyType, int i_NumberOfWheels)
+        internal Vehicle(string i_LicensePlate, Energy i_EnergyType)
         {
-            this.m_WheelsList = new List<Wheel>(i_NumberOfWheels);
+            this.m_WheelsList = new List<Wheel>();
             this.m_LicensePlate = i_LicensePlate;
             this.m_Energy = i_EnergyType;
         }
@@ -64,7 +64,7 @@ namespace Ex03.GarageLogic
         {
             foreach(Wheel wheel in m_WheelsList)
             {
-                wheel.Inflate(wheel.MaxManufacturerAirPressure - wheel.CurrentAirPressure);
+                wheel.Inflate(wheel.MaxAirPressure - wheel.CurrentAirPressure);
             }
         }
 
@@ -80,9 +80,26 @@ namespace Ex03.GarageLogic
 
         public abstract string GetUniquePropertiesInfo();
 
-        public abstract void UpdateWheelsInfo(float i_CurrentPreasure, string i_ManufacturerName);
+        public void UpdateWheelsInfo(float i_CurrentPreasure, string i_ManufacturerName)
+        {
+            foreach (Wheel wheel in m_WheelsList)
+            {
+                wheel.CurrentAirPressure = i_CurrentPreasure;
+                wheel.ManufacturerName = i_ManufacturerName;
+            }
+        }
 
         public abstract Dictionary<string, string[]> GetUniqueAtttributesDictionary();
+
+        protected void AddNewWheels(int i_NumberOfWheels, float i_MaxPressure)
+        {
+            for (int i = 0; i < i_NumberOfWheels; i++)
+            {
+                Wheel wheel = new Wheel();
+                wheel.MaxAirPressure = i_MaxPressure;
+                this.m_WheelsList.Add(wheel);
+            }
+        }
 
     }
 }

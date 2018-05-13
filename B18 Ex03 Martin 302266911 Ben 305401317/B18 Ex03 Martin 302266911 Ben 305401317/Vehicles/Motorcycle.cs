@@ -25,8 +25,9 @@ namespace Ex03.GarageLogic
 
 
 
-        public Motorcycle(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType, k_MotorcycleNumberOfWheels)
+        public Motorcycle(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType)
         {
+            base.AddNewWheels(k_MotorcycleNumberOfWheels, k_MotorcycleMaxWheelPressure);
         }
 
         public override void UpdateUniqueProperties(string i_Key, string i_Value)
@@ -54,20 +55,9 @@ namespace Ex03.GarageLogic
 Engine Volume: {1}", m_LicensePlate, m_EngineVolume);
         }
 
-        public override void UpdateWheelsInfo(float i_CurrentPreasure, string i_ManufacturerName)
-        {
-            foreach (Wheel wheel in m_WheelsList)
-            {
-                wheel.MaxManufacturerAirPressure = k_MotorcycleMaxWheelPressure;
-                wheel.CurrentAirPressure = i_CurrentPreasure;
-                wheel.ManufacturerName = i_ManufacturerName;
-            }
-        }
-
         public override Dictionary<string, string[]> GetUniqueAtttributesDictionary()
         {
             Dictionary<string, string[]> stringAttributes = new Dictionary<string, string[]>();
-
 
             stringAttributes.Add("License Type", Enum.GetNames(typeof(eLicenseType)));
             stringAttributes.Add("Engine volume", new string[] { });
