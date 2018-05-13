@@ -34,6 +34,7 @@ namespace Ex03.GarageLogic
             {
                 return this.m_CurrentEnergy;
             }
+
         }
 
         public float MaxCapacity

@@ -33,6 +33,25 @@ namespace Ex03.GarageLogic
             }
         }
 
+        public override void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, e_VehicleType i_VehicleType)
+        {
+            bool isTrunkCooled;
+            float trunkCapacity;
+               
+            if (bool.TryParse(i_FirstProperty, out isTrunkCooled))
+            {
+                throw new FormatException("Invalid engine volume!");
+            }
+
+            this.m_IsTrunkCooled = isTrunkCooled;
+
+            if (float.TryParse(i_SecondProperty, out trunkCapacity))
+            {
+                throw new FormatException("Invalid engine volume!");
+            }
+
+            this.m_TrunkCapacity = trunkCapacity;
+        }
 
     }
 }

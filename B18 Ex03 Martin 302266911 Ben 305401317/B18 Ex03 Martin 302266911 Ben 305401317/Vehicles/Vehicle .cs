@@ -8,6 +8,15 @@ namespace Ex03.GarageLogic
 {
     public abstract class Vehicle
     {
+        public enum e_VehicleType
+        {
+            ElectricCar,
+            FuelCar,
+            ElectricMotorcycle,
+            FuelMotorcycle,
+            FuelTruck
+        }
+
         protected string m_ModelName;
         protected string m_LicensePlate;
         protected float m_EnergyLeftPrecentage;
@@ -77,6 +86,9 @@ namespace Ex03.GarageLogic
                 tire.Inflate(tire.MaxManufacturerAirPressure - tire.CurrentAirPressure);
             }
         }
+
+        public abstract void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, e_VehicleType i_VehicleType);
+
 
 
     }
