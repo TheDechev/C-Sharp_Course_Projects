@@ -15,38 +15,16 @@ namespace Ex03.GarageLogic
         {
             InProcess,
             Repaired,
-            Paid
+            Paid,
+            None
         }
-
-        //=========== TODO ========================================================
-
 
         public void insertVehicle(Vehicle i_VehicleToAdd, string i_ClientName, string i_ClientPhoneNumber)
         {
-          
-            if (isVehicleInGarage(i_VehicleToAdd.LicensePlate))
-            {
-                m_Vehicle[i_VehicleToAdd.LicensePlate].Status = eVehicleStatus.InProcess;
-                throw new Exception("Vehicle already exists!");
-            }
+            CheckLicensePlate(i_VehicleToAdd.LicensePlate);
 
-            m_Vehicle.Add(i_VehicleToAdd.LicensePlate, new ClientVehicle(i_VehicleToAdd,i_ClientName, i_ClientPhoneNumber)); //TODO: Need to get the client's name and phone number
+            m_Vehicle.Add(i_VehicleToAdd.LicensePlate, new ClientVehicle(i_VehicleToAdd,i_ClientName, i_ClientPhoneNumber)); 
         }
-
-
-        public void DisplayVehiclesList()
-        {   // fillter option by process status
-            // 1. InProcess
-            // 2. Repaired
-            // 3. Paid
-            // 4. no fillter
-        }
-
-        
-
-
-
-       //=========== DONE FOR *NOW* ========================================================
 
         public bool isVehicleInGarage(string i_LicenseToCheck)
         {
@@ -55,44 +33,42 @@ namespace Ex03.GarageLogic
 
         public void InflateTireToMax(string i_LicensePlate)
         {
-            if (!isVehicleInGarage(i_LicensePlate))
-            {
-                throw new ArgumentException("License plate not found.");
-            }
+            CheckLicensePlate(i_LicensePlate);
 
             m_Vehicle[i_LicensePlate].Vehicle.InflateTiersToMax();
         }
-
+        
         public void RefuelFuelVehicle(string i_LicensePlate, FuelEnergy.eFuelType i_FuelType, float i_FuelToAdd)
         {
-            if (!isVehicleInGarage(i_LicensePlate))
-            {
-                throw new ArgumentException("License plate not found.");
-            }
+            CheckLicensePlate(i_LicensePlate);
 
             FuelEnergy currentEnergy = m_Vehicle[i_LicensePlate].Vehicle.Energy as FuelEnergy;
+
+            if(currentEnergy == null)
+            {
+                throw new ArgumentException("Vehicle doesn't have fuel type energy!");
+            }
 
             currentEnergy.Refuel(i_FuelToAdd, i_FuelType);
         }
 
         public void RechargeElectricVehicle(string i_LicensePlate, float i_MinutesToAdd)
         {
-            if (!isVehicleInGarage(i_LicensePlate))
-            {
-                throw new ArgumentException("License plate not found.");
-            }
+            CheckLicensePlate(i_LicensePlate);
 
             ElectricEnergy currentEnergy = m_Vehicle[i_LicensePlate].Vehicle.Energy as ElectricEnergy;
+
+            if (currentEnergy == null)
+            {
+                throw new ArgumentException("Vehicle doesn't have electric type energy!");
+            }
 
             currentEnergy.Charge(i_MinutesToAdd);
         }
 
         public void UpdateVehicleStatus(string i_LicensePlate, eVehicleStatus i_NewStatus)
         {
-            if (!isVehicleInGarage(i_LicensePlate))
-            {
-                throw new ArgumentException("License plate not found.");
-            }
+            CheckLicensePlate(i_LicensePlate);
 
             m_Vehicle[i_LicensePlate].Status = i_NewStatus;
         }
@@ -100,14 +76,7 @@ namespace Ex03.GarageLogic
         public string DisplayVehicleFullDeatails(string i_LicensePlate)
         {
             StringBuilder vehicleInfo = new StringBuilder();
-
-            if (!isVehicleInGarage(i_LicensePlate))
-            {
-                throw new Exception("Vehicle not in garage!");
-            }
-
             Vehicle vehicleToCheck = this.m_Vehicle[i_LicensePlate].Vehicle;
-
 
             vehicleInfo.Append(String.Format(
 @"License Plate: {0},
@@ -134,6 +103,29 @@ Fuel level: {1}", ((FuelEnergy)vehicleToCheck.Energy).FuelType, vehicleToCheck.E
             vehicleInfo.Append(vehicleToCheck.GetUniqueProperties());
 
             return vehicleInfo.ToString();
+        }
+
+        public string DisplayVehiclesList(eVehicleStatus i_FilterByStatus)
+        {
+            StringBuilder licensePlatesStr = new StringBuilder();
+
+            foreach (ClientVehicle client in m_Vehicle.Values)
+            {
+                if (i_FilterByStatus == eVehicleStatus.None || client.Status == i_FilterByStatus)
+                {
+                    licensePlatesStr.Append(client.Vehicle.LicensePlate + Environment.NewLine);
+                }
+            }
+
+            return licensePlatesStr.ToString();
+        }
+
+        private void CheckLicensePlate(string i_LicensePlate)
+        {
+            if (!isVehicleInGarage(i_LicensePlate))
+            {
+                throw new Exception("License plate not found!");
+            }
         }
 
     }
