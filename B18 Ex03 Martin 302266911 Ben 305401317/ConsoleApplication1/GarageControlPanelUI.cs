@@ -9,6 +9,8 @@ namespace Ex03.ConsoleUI
 {
     class GarageControlPanelUI
     {
+        private const string k_VehicleStatusKey = "Vehicle status";
+
         private Garage  m_garage = new Garage();
         
         private enum eUserChoice
@@ -49,21 +51,21 @@ namespace Ex03.ConsoleUI
                     case eUserChoice.DisplayVehicleList:
                         displayVehiclesList();
                         break;
-                    //case eUserChoice.UpdateVehicleStatus:
-                    //    updateVehicleStatus();
-                    //    break;
-                    //case eUserChoice.InflateTieres:
-                    //    inflateTieres();
-                    //    break;
-                    //case eUserChoice.RefuelVehicle:
-                    //    refuelVehicle();
-                    //    break;
-                    //case eUserChoice.ChargeVehicle:
-                    //    chargeVehicle();
-                    //    break;
-                    //case eUserChoice.DisplayVehicleFullDetails:
-                    //    displayVehicleFullDetails();
-                    //    break;
+                    case eUserChoice.UpdateVehicleStatus:
+                        updateVehicleStatus(plateNumber);
+                        break;
+                    case eUserChoice.InflateTieres:
+                        inflateTieres(plateNumber);
+                        break;
+                    case eUserChoice.RefuelVehicle:
+                        refuelVehicle(plateNumber);
+                        break;
+                    case eUserChoice.ChargeVehicle:
+                        chargeVehicle(plateNumber);
+                        break;
+                    case eUserChoice.DisplayVehicleFullDetails:
+                        displayVehicleFullDetails(plateNumber);
+                        break;
                     case eUserChoice.ExitProgram:
                         exitProgram = true;
                         break;
@@ -75,6 +77,27 @@ namespace Ex03.ConsoleUI
            
     }
 
+
+        private void inflateTieres(string plateNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void refuelVehicle(string plateNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void chargeVehicle(string plateNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void displayVehicleFullDetails(string plateNumber)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool isUserMenuChoiceValid(eUserChoice userChoice)
         {
             return Enum.IsDefined(typeof(eUserChoice), userChoice);
@@ -82,7 +105,7 @@ namespace Ex03.ConsoleUI
 
         private void printEnterChoiceMsg()
         {
-            Console.Write("Please Enter your choice: ");
+            Console.Write("Enter your choice: ");
         }
 
         private void printInvalidInputMsg()
@@ -110,10 +133,28 @@ namespace Ex03.ConsoleUI
             throw new NotImplementedException();
         }
 
-        private void updateVehicleStatus(Garage.eVehicleStatus vehicleStatusToUpdate)
+        private void updateVehicleStatus(string i_LicensePlate)
         {
+            string statusToUpdateStr;
+            Garage.eVehicleStatus statusToUpdate;
+
+            printUpdateStatusSubMenu();
+            printEnterChoiceMsg();
+            statusToUpdateStr = Console.ReadLine();
+            statusToUpdate = LogicUtils.EnumValidation<Garage.eVehicleStatus>(statusToUpdateStr, k_VehicleStatusKey);
+            this.m_garage.UpdateVehicleStatus(i_LicensePlate, statusToUpdate);
             //this.m_garage.UpdateVehicleStatus();
         }
+
+        private void printUpdateStatusSubMenu()
+        {        
+            Console.WriteLine(
+@"Choose the desire status to update:
+< 1 > In process
+< 2 > Repaired
+< 3 > Paid
+           ");
+    }
 
         private void displayVehiclesList()
         {
@@ -137,7 +178,6 @@ vehicle's status was updated to: 'In Process'");
             {
                 Vehicle newVehicle;
                 newVehicle = CreateNewVehicle(i_userPlateNum);
-                
             }
         }
 
@@ -163,14 +203,14 @@ vehicle's status was updated to: 'In Process'");
         private void SetVehicleInfo(Vehicle i_VehicleToUpdate, Vehicle.eVehicleType i_vehicleType)
         {
             float currentAirPressure;
-            Console.WriteLine("<Please enter the following information> {0}", Environment.NewLine);
-            Console.WriteLine("Model: ");
+            Console.WriteLine("Please Enter the following information: {0}", Environment.NewLine);
+            Console.Write("Model: ");
             i_VehicleToUpdate.ModelName = Console.ReadLine();
-            Console.WriteLine("Current energy source percentage: ");
-            i_VehicleToUpdate.EnergyPercentageLeft = getNumericInput(i_VehicleToUpdate.Energy.MaxCapacity);
-            Console.WriteLine("Tires air pressure: ");
+            Console.Write("Current energy source percentage: ");
+            i_VehicleToUpdate.EnergyPercentageLeft = getNumericInput(100f);
+            Console.Write("Tires air pressure: ");
             currentAirPressure = getNumericInput(i_VehicleToUpdate.TiresList[0].MaxManufacturerAirPressure);
-            Console.WriteLine("Tiers manufacturer's name: ");
+            Console.Write("Tiers manufacturer's name: ");
             i_VehicleToUpdate.UpdateWheelsInfo(currentAirPressure , Console.ReadLine());
             SetVehicleExraInfo(i_VehicleToUpdate, i_vehicleType);
         }
@@ -250,18 +290,18 @@ vehicle's status was updated to: 'In Process'");
         private void printVehicleTypeSubMenu()
         {
             Console.WriteLine(
-@"Please Enter yours vehicle type:
-        < 1 > Electric car
-        < 2 > Fuel car
-        < 3 > Electric motorcycle
-        < 4 > Fuel motorcycle
-        < 5 > Fuel truck
-            ");
+@"Enter yours vehicle type:
+< 1 > Electric car
+< 2 > Fuel car
+< 3 > Electric motorcycle
+< 4 > Fuel motorcycle
+< 5 > Fuel truck
+        ");
         }
 
         private string getRegistrationPlateNumber()
         {
-            Console.Write("Please Enter your registration plate number: ");
+            Console.Write("Enter your registration plate number: ");
             string userPlateNum = Console.ReadLine();
 
             return userPlateNum;
@@ -281,27 +321,28 @@ vehicle's status was updated to: 'In Process'");
         private void PrintMenu()
         {
             Console.WriteLine(
-      @"Hello! Welcome to the Garage Control pannel :)
-        Please Enter XXXXXX execut:
-        < 1 > Insert a new vehicle to the system.
-        < 2 > Display all the registration plates list of the vehicles.
-        < 3 > Update vehicle's status.
-        < 4 > Inflate vehicle's wheels to maximum.
-        < 5 > Refuel a vehicle powered by fuel.
-        < 6 > Charge an electric vehicle.
-        < 7 > Display vehicle's full details.
-        < 8 > Exit
-            ");
+@"Hello! Welcome to the Garage Control pannel :)
+---------------------------------------------------------------
+Please choose an action to execut:
+< 1 > Insert a new vehicle to the system.
+< 2 > Display all the registration plates list of the vehicles.
+< 3 > Update vehicle's status.
+< 4 > Inflate vehicle's wheels to maximum.
+< 5 > Refuel a vehicle powered by fuel.
+< 6 > Charge an electric vehicle.
+< 7 > Display vehicle's full details.
+< 8 > Exit
+    ");
         }
 
         private void printVehicleListFillterSubMenu()
         {
             Console.WriteLine(
-      @"Please Enter the fillter method
-        < 1 > In process
-        < 2 > Repaired
-        < 3 > Paid
-        < 4 > Without fillter
+@"Please Enter the fillter method
+< 1 > In process
+< 2 > Repaired
+< 3 > Paid
+< 4 > Without fillter
             ");
         }
     }
