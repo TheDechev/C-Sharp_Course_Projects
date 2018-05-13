@@ -27,6 +27,7 @@ namespace Ex03.ConsoleUI
         {
             bool exitProgram = false;
             eUserChoice userChoice;
+            string plateNumber;
 
             while (!exitProgram)
             { 
@@ -34,10 +35,13 @@ namespace Ex03.ConsoleUI
                 printEnterChoiceMsg();
                 userChoice = getUserChoice();
 
+                /// IF USER CHOICE IS NOT ALL LIST AND VALID
+                plateNumber = getRegistrationPlateNumber();
+
                 switch (userChoice)
                 {
                     case eUserChoice.InsertNewVehicle:
-                        insertNewVehicle();
+                        insertNewVehicle(plateNumber);
                         break;
                     case eUserChoice.DisplayVehicleList:
                         displayVehiclesList();
@@ -112,46 +116,35 @@ namespace Ex03.ConsoleUI
             
         }
 
-        private void insertNewVehicle()
+        private void insertNewVehicle(string i_userPlateNum)
         {
-            string userPlateNum = getRegistrationPlateNumber();
-            if (m_garage.isVehicleInGarage(userPlateNum))
+            if (m_garage.isVehicleInGarage(i_userPlateNum))
             {
-                this.m_garage.UpdateVehicleStatus(userPlateNum, GarageLogic.Garage.eVehicleStatus.InProcess);
+                this.m_garage.UpdateVehicleStatus(i_userPlateNum, GarageLogic.Garage.eVehicleStatus.InProcess);
                 Console.WriteLine(
 @"This vehicle is already in the grage. 
 vehicle's status was updated to: 'In Process'"); 
             }
             else
             {
-                getInfoAndcreateNewVehicle();
-                GarageLogic.Vehicle newVehicle = GarageLogic.VehicleFactory.CreateVehicle(userPlateNum,);
+                getInfoAndcreateNewVehicle(i_userPlateNum);
+                GarageLogic.Vehicle newVehicle = GarageLogic.VehicleFactory.CreateVehicle(i_userPlateNum,);
             }
-
-         
-            
         }
 
-        private void getInfoAndcreateNewVehicle()
+        private void getInfoAndcreateNewVehicle(string i_UserPlateNumber)
         {
             GarageLogic.Vehicle newVehicle;
+            GarageLogic.Vehicle.eVehicleType newVehicleType;
+            string userChoice;
 
             printVehicleTypeSubMenu();
             printEnterChoiceMsg();
+            userChoice = Console.ReadLine();
+            
 
-            eColor carColor = (eColor)Enum.ToObject(typeof(eColor), i_FirstProperty);
-
-            if (!Enum.IsDefined(typeof(eColor), carColor))
-            {
-                throw new ValueOutOfRangeException("Invalid license plate!");
-            }
-
-            GarageLogic.Vehicle.eVehicleType vehicleType = (GarageLogic.Vehicle.eVehicleType)Enum.ToObject(typeof(GarageLogic.Vehicle.eVehicleType), i_FirstProperty);
-
-            newVehicle = GarageLogic.VehicleFactory.CreateVehicle();
-
-
-
+            newVehicleType = GarageLogic.LogicUtils.EnumParse<GarageLogic.Vehicle.eVehicleType>(userChoice);
+            newVehicle = GarageLogic.VehicleFactory.CreateVehicle(i_UserPlateNumber, newVehicleType);
         }
 
         public  T getEnumFromUser<T>()
