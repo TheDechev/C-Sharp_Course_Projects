@@ -127,12 +127,13 @@ vehicle's status was updated to: 'In Process'");
             }
             else
             {
-                getInfoAndcreateNewVehicle(i_userPlateNum);
-                GarageLogic.Vehicle newVehicle = GarageLogic.VehicleFactory.CreateVehicle(i_userPlateNum,);
+                GarageLogic.Vehicle newVehicle;
+                newVehicle = CreateNewVehicle(i_userPlateNum);
+                SetBasicVehicleInfo();
             }
         }
 
-        private void getInfoAndcreateNewVehicle(string i_UserPlateNumber)
+        private GarageLogic.Vehicle CreateNewVehicle(string i_UserPlateNumber)
         {
             GarageLogic.Vehicle newVehicle;
             GarageLogic.Vehicle.eVehicleType newVehicleType;
@@ -142,28 +143,12 @@ vehicle's status was updated to: 'In Process'");
             printEnterChoiceMsg();
             userChoice = Console.ReadLine();
             
-
             newVehicleType = GarageLogic.LogicUtils.EnumParse<GarageLogic.Vehicle.eVehicleType>(userChoice);
             newVehicle = GarageLogic.VehicleFactory.CreateVehicle(i_UserPlateNumber, newVehicleType);
+
+            return newVehicle;
+
         }
-
-        public  T getEnumFromUser<T>()
-        {
-            string value = Console.ReadLine();
-
-            T userInput = (T)Enum.ToObject(typeof(T), value);
-            if (!Enum.IsDefined(typeof(T), userInput))
-            {
-                //ERROR
-            }
-            else
-            {
-                return userInput;
-            }
-
-            return userInput;
-        }
-
 
         private void printVehicleTypeSubMenu()
         {
