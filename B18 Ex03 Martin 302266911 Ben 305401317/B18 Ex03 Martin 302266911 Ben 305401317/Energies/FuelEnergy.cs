@@ -10,13 +10,15 @@ namespace Ex03.GarageLogic
     {
         public enum eFuelType
         {
-            Octan95,
+            Octan95 = 1,
             Octan96,
             Octan98,
             Soler
         }
         private eFuelType m_FuelType;
         private readonly string k_FuelUnits = "Liters of fuel";
+        public static readonly string k_FuelTypeKey= "Fuel Type";
+
 
         public eFuelType FuelType
         {

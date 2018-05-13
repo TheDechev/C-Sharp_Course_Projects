@@ -8,9 +8,9 @@ namespace Ex03.GarageLogic
 {
     public static class LogicUtils
     {
-        public static T EnumValidation<T>(string i_StrToEnum, string i_KeyStr)
+        public static T EnumValidation<T>(string i_EnumToStr, string i_KeyStr)
         {
-            int enumVal = int.Parse(i_StrToEnum);
+            int enumVal = int.Parse(i_EnumToStr);
             T userInput = (T)Enum.ToObject(typeof(T), enumVal);
 
             if (!Enum.IsDefined(typeof(T), enumVal))

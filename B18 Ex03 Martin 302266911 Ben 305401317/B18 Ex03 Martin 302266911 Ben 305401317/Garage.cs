@@ -10,7 +10,7 @@ namespace Ex03.GarageLogic
     {
 
         public const string k_VehicleStatus = "Vehicle status";
-
+        public const string k_LicenseNotFound = "License plate not found!";
         private Dictionary<string, ClientVehicle> m_Vehicle = new Dictionary<string, ClientVehicle>();
 
         public enum eVehicleStatus
@@ -127,7 +127,7 @@ Fuel level: {1}", ((FuelEnergy)vehicleToCheck.Energy).FuelType, vehicleToCheck.E
         {
             if (!isVehicleInGarage(i_LicensePlate))
             {
-                throw new Exception("License plate not found!");
+                throw new ArgumentException(k_LicenseNotFound);
             }
         }
 
