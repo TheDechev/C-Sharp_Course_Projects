@@ -8,6 +8,14 @@ namespace Ex03.GarageLogic
 {
     public class Car : Vehicle
     {
+        public enum eColor
+        {
+            White,
+            Black,
+            Gray,
+            Blue,
+        }
+
         public enum eDoorsNumber
         {
             Two = 2,
@@ -16,13 +24,6 @@ namespace Ex03.GarageLogic
             Five
         }
 
-        public enum eColor
-        {
-            White,
-            Black,
-            Gray,
-            Blue,
-        }
 
         private eColor m_Color;
         private eDoorsNumber m_DoorsNumber = eDoorsNumber.Four;
@@ -32,6 +33,28 @@ namespace Ex03.GarageLogic
             : base(i_LicensePlate, i_ModelName, i_TiresNumber, i_EnergyLeftPercentage, i_EnergyType) 
         {
         }
+
+        public override void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, e_VehicleType i_VehicleType)
+        {
+            eColor carColor = (eColor)Enum.ToObject(typeof(eColor), i_FirstProperty);
+
+            if (!Enum.IsDefined(typeof(eColor), carColor))
+            {
+                throw new ValueOutOfRangeException("Invalid license plate!");
+            }
+
+            this.m_Color = carColor;
+
+            eDoorsNumber doorsNum = (eDoorsNumber)Enum.ToObject(typeof(eDoorsNumber), i_SecondProperty);
+
+            if (!Enum.IsDefined(typeof(eColor), doorsNum))
+            {
+                throw new ValueOutOfRangeException("Invalid license plate!");
+            }
+
+            this.m_DoorsNumber = doorsNum;
+        }
+
 
         public eColor Color
         {

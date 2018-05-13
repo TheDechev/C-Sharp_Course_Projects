@@ -8,14 +8,7 @@ namespace Ex03.GarageLogic
 {
     public static class VehicleFactory
     {
-        public enum e_VehicleType
-        {
-            ElectricCar,
-            FuelCar,
-            ElectricMotorcycle,
-            FuelMotorcycle,
-            FuelTruck
-        }
+
 
         //Wheels number default values
         private const int k_CarNumberOfWheels = 4;
@@ -40,27 +33,27 @@ namespace Ex03.GarageLogic
             Vehicle newVehicle = null;
             Energy energyType = null;
 
-            if (i_VechicleType == e_VehicleType.FuelCar)
+            if (i_VechicleType == Vehicle.e_VehicleType.FuelCar)
             {
                 energyType = new FuelEnergy(FuelEnergy.eFuelType.Octan98, i_StartingEnergy, k_FuelCarMaxEnergyCapacity);
                 newVehicle = new Car(i_LicensePlate, i_ModelName, k_CarNumberOfWheels, energyType.CurrentEnergy, energyType);
             }
-            else if (i_VechicleType == e_VehicleType.ElectricCar)
+            else if (i_VechicleType == Vehicle.e_VehicleType.ElectricCar)
             {
                 energyType = new ElectricEnergy(i_StartingEnergy, k_ElectricCarMaxEnergyCapacity);
                 newVehicle = new Car(i_LicensePlate, i_ModelName, k_CarNumberOfWheels, energyType.CurrentEnergy, energyType);
             }
-            else if (i_VechicleType == e_VehicleType.ElectricMotorcycle)
+            else if (i_VechicleType == Vehicle.e_VehicleType.ElectricMotorcycle)
             {
                 energyType = new ElectricEnergy(i_StartingEnergy, k_ElectricMotorcycleMaxEnergyCapacity);
                 newVehicle = new Motorcycle(i_LicensePlate, i_ModelName, k_MotorcycleNumberOfWheels, energyType.CurrentEnergy, energyType);
             }
-            else if (i_VechicleType == e_VehicleType.FuelMotorcycle)
+            else if (i_VechicleType == Vehicle.e_VehicleType.FuelMotorcycle)
             {
                 energyType = new FuelEnergy(FuelEnergy.eFuelType.Octan96, i_StartingEnergy, k_FuelMotorcycleMaxEnergyCapacity);
                 newVehicle = new Motorcycle(i_LicensePlate, i_ModelName, k_MotorcycleNumberOfWheels, energyType.CurrentEnergy, energyType);
             }
-            else if (i_VechicleType == e_VehicleType.FuelTruck)
+            else if (i_VechicleType == Vehicle.e_VehicleType.FuelTruck)
             {
                 energyType = new FuelEnergy(FuelEnergy.eFuelType.Soler, i_StartingEnergy, k_TruckMaxEnergyCapacity);
                 newVehicle = new Truck(i_LicensePlate, i_ModelName, k_TruckNumberOfWheels, energyType.CurrentEnergy, energyType);
