@@ -15,9 +15,8 @@ namespace Ex03.GarageLogic
         private float m_TrunkCapacity;
 
 
-        public Truck(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType)
+        public Truck(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType, k_TruckNumberOfWheels)
         {
-            UpdateWheelsInfo(k_TruckNumberOfWheels, i_WheelsPressure, k_TruckMaxWheelPressure);
         }
 
         public bool isTrunkCooled
@@ -65,12 +64,10 @@ Cooled trunk: {1}", m_LicensePlate, m_IsTrunkCooled);
 
         public override void UpdateWheelsInfo(float i_CurrentPreasure)
         {
-            this.m_WheelsList = new List<Wheel>(k_TruckNumberOfWheels);
-
             foreach (Wheel wheel in m_WheelsList)
             {
-                wheel.CurrentAirPressure = i_CurrentPreasure;
                 wheel.MaxManufacturerAirPressure = k_TruckMaxWheelPressure;
+                wheel.CurrentAirPressure = i_CurrentPreasure;
             }
         }
 

@@ -30,7 +30,7 @@ namespace Ex03.GarageLogic
         private eColor m_Color;
         private eDoorsNumber m_DoorsNumber = eDoorsNumber.Four;
 
-        public Car(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType) 
+        public Car(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType, k_CarNumberOfWheels) 
         {
         }
 
@@ -84,11 +84,10 @@ Number of doors: {1}", m_Color, m_DoorsNumber);
                 maxPressure = k_ElectricCarMaxWheelPressure;
             }
 
-            this.m_WheelsList = new List<Wheel>(k_CarNumberOfWheels);
             foreach (Wheel wheel in m_WheelsList)
             {
-                wheel.CurrentAirPressure = i_CurrentPreasure;
                 wheel.MaxManufacturerAirPressure = maxPressure;
+                wheel.CurrentAirPressure = i_CurrentPreasure;
             }
         }
 

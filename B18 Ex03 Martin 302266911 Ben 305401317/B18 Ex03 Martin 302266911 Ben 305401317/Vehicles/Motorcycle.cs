@@ -23,7 +23,7 @@ namespace Ex03.GarageLogic
 
 
 
-        public Motorcycle(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType)
+        public Motorcycle(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType, k_MotorcycleNumberOfWheels)
         {
         }
 
@@ -61,8 +61,8 @@ Engine Volume: {1}", m_LicensePlate, m_EngineVolume);
 
             foreach (Wheel wheel in m_WheelsList)
             {
-                wheel.CurrentAirPressure = i_CurrentPreasure;
                 wheel.MaxManufacturerAirPressure = k_MotorcycleMaxWheelPressure;
+                wheel.CurrentAirPressure = i_CurrentPreasure;
             }
         }
     }

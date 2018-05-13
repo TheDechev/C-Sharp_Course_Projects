@@ -17,14 +17,15 @@ namespace Ex03.GarageLogic
             FuelTruck
         }
 
-        protected string m_ModelName;
-        protected string m_LicensePlate;
+        protected readonly string m_LicensePlate;
+        protected readonly List<Wheel> m_WheelsList;
         protected float m_EnergyLeftPrecentage;
+        protected string m_ModelName;
         protected Energy m_Energy;
-        protected List<Wheel> m_WheelsList;
 
-        internal Vehicle(string i_LicensePlate, Energy i_EnergyType)
+        internal Vehicle(string i_LicensePlate, Energy i_EnergyType, int i_NumberOfWheels)
         {
+            this.m_WheelsList = new List<Wheel>(i_NumberOfWheels);
             this.m_LicensePlate = i_LicensePlate;
             this.m_Energy = i_EnergyType;
         }
