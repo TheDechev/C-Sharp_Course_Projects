@@ -45,6 +45,10 @@ namespace Ex03.GarageLogic
             {
                 return this.m_ModelName;
             }
+            set
+            {
+                m_ModelName = value;
+            }
         }
 
         public string LicensePlate
@@ -52,6 +56,11 @@ namespace Ex03.GarageLogic
             get
             {
                 return this.m_LicensePlate;
+            }
+
+            set
+            {
+                m_LicensePlate = value;
             }
         }
 
@@ -73,6 +82,11 @@ namespace Ex03.GarageLogic
                 }
 
                 return m_EnergyLeftPrecentage;
+            }
+
+            set
+            {
+                this.Energy.CurrentEnergy = value;
             }
         }
 
