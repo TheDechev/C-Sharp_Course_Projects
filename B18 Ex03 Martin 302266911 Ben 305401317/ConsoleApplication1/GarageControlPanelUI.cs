@@ -154,17 +154,23 @@ vehicle's status was updated to: 'In Process'");
 
         }
 
-        public void getEnumFromUser(Enum i_enumType, int value)
+        public  T getEnumFromUser<T>()
         {
+            string value = Console.ReadLine();
 
-
-            i_enumType.GetType() carColor = (enumType.GetType())Enum.ToObject(typeof(enumType), value);
-
-            if (!Enum.IsDefined(typeof(eColor), carColor))
+            T userInput = (T)Enum.ToObject(typeof(T), value);
+            if (!Enum.IsDefined(typeof(T), userInput))
             {
-                throw new ValueOutOfRangeException("Invalid license plate!");
+                //ERROR
             }
+            else
+            {
+                return userInput;
+            }
+
+            return userInput;
         }
+
 
         private void printVehicleTypeSubMenu()
         {
