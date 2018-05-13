@@ -53,5 +53,12 @@ namespace Ex03.GarageLogic
             this.m_TrunkCapacity = trunkCapacity;
         }
 
+        public override string GetUniqueProperties()
+        {
+            return String.Format(
+@"Trunk capacity: {0}
+Cooled trunk: {1}", m_LicensePlate, m_IsTrunkCooled);
+        }
+
     }
 }

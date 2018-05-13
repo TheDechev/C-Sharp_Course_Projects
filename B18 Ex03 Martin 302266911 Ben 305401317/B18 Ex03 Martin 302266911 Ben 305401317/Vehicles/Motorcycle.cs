@@ -19,8 +19,6 @@ namespace Ex03.GarageLogic
         private int m_EngineVolume;
         private eLicenseType m_LicenseType;
 
-
-
         public Motorcycle(string i_LicensePlate, string i_ModelName, int i_TiresNumber, float i_EnergyLeftPercentage, Energy i_EnergyType)
             : base(i_LicensePlate, i_ModelName, i_TiresNumber, i_EnergyLeftPercentage, i_EnergyType)
         {
@@ -45,6 +43,13 @@ namespace Ex03.GarageLogic
 
             this.m_EngineVolume = engineVolume;
 
+        }
+
+        public override string GetUniqueProperties()
+        {
+            return String.Format(
+@"License type: {0}
+Engine Volume: {1}", m_LicensePlate, m_EngineVolume);
         }
 
     }

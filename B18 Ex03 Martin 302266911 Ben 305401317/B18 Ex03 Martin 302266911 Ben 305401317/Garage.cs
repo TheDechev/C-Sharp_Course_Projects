@@ -42,13 +42,7 @@ namespace Ex03.GarageLogic
             // 4. no fillter
         }
 
-        public void DisplayVehicleFullDeatails(string i_LicensePlate)
-        {
-            if (isVehicleInGarage(i_LicensePlate))
-            {
-                throw new Exception("Vehicle not in garage!");
-            }
-        }
+        
 
 
 
@@ -101,6 +95,45 @@ namespace Ex03.GarageLogic
             }
 
             m_Vehicle[i_LicensePlate].Status = i_NewStatus;
+        }
+
+        public string DisplayVehicleFullDeatails(string i_LicensePlate)
+        {
+            StringBuilder vehicleInfo = new StringBuilder();
+
+            if (!isVehicleInGarage(i_LicensePlate))
+            {
+                throw new Exception("Vehicle not in garage!");
+            }
+
+            Vehicle vehicleToCheck = this.m_Vehicle[i_LicensePlate].Vehicle;
+
+
+            vehicleInfo.Append(String.Format(
+@"License Plate: {0},
+Model Name: {1}
+Owner Name: {2}
+Status in garage: {3}
+Air pressure in tires: {4}
+Tiers manufacturer: {5}
+", vehicleToCheck.LicensePlate, vehicleToCheck.ModelName, m_Vehicle[i_LicensePlate].Status, vehicleToCheck.TiresList[0].CurrentAirPressure,
+vehicleToCheck.TiresList[0].ManufacturerName));
+
+            if (vehicleToCheck.Energy is FuelEnergy)
+            {
+                vehicleInfo.Append(String.Format(
+ @"Fuel Type: {0}
+Fuel level: {1}", ((FuelEnergy)vehicleToCheck.Energy).FuelType, vehicleToCheck.Energy.CurrentEnergy));
+            }
+            else if (vehicleToCheck.Energy is ElectricEnergy)
+            {
+                vehicleInfo.Append(String.Format(
+ @"Battery level: {0}", vehicleToCheck.Energy.CurrentEnergy));
+            }
+
+            vehicleInfo.Append(vehicleToCheck.GetUniqueProperties());
+
+            return vehicleInfo.ToString();
         }
 
     }

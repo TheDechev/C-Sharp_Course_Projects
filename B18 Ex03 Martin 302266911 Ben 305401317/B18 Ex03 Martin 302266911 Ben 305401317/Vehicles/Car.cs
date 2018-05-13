@@ -55,7 +55,6 @@ namespace Ex03.GarageLogic
             this.m_DoorsNumber = doorsNum;
         }
 
-
         public eColor Color
         {
             get
@@ -67,6 +66,13 @@ namespace Ex03.GarageLogic
             {
                 this.m_Color = value;
             }
+        }
+
+        public override string GetUniqueProperties()
+        {
+            return String.Format(
+@"Color: {0}
+Number of doors: {1}", m_Color, m_DoorsNumber);
         }
 
     }

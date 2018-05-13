@@ -21,20 +21,20 @@ namespace Ex03.GarageLogic
         protected string m_LicensePlate;
         protected float m_EnergyLeftPrecentage;
         protected Energy m_Energy;
-        protected List<Tire> m_Tires;
+        protected List<Tire> m_TiresList;
 
         internal Vehicle(string i_LicensePlate, string i_ModelName, int i_TiresNumber, float i_EnergyLeftPercentage, Energy i_EnergyType)
         {
             this.m_LicensePlate = i_LicensePlate;
             this.m_ModelName = i_ModelName;
-            this.m_Tires = new List<Tire>(i_TiresNumber);
+            this.m_TiresList = new List<Tire>(i_TiresNumber);
             this.m_Energy = i_EnergyType;
             this.m_EnergyLeftPrecentage = i_EnergyLeftPercentage;
         }
 
         private void UpdateTireInfo(string i_ManufacturerName,float i_MaxAirPressure,float  i_SetAirPressure)
         {
-            foreach(Tire tire in m_Tires)
+            foreach(Tire tire in m_TiresList)
             {
                 tire.ManufacturerName = i_ManufacturerName;
                 tire.MaxManufacturerAirPressure = i_MaxAirPressure;
@@ -81,13 +81,23 @@ namespace Ex03.GarageLogic
 
         public void InflateTiersToMax()
         {
-            foreach(Tire tire in m_Tires)
+            foreach(Tire tire in m_TiresList)
             {
                 tire.Inflate(tire.MaxManufacturerAirPressure - tire.CurrentAirPressure);
             }
         }
 
         public abstract void UpdateUniqueProperties(string i_FirstProperty, string i_SecondProperty, e_VehicleType i_VehicleType);
+
+        public List<Tire> TiresList
+        {
+            get
+            {
+                return this.m_TiresList;
+            }
+        }
+
+        public abstract string GetUniqueProperties();
 
 
 
