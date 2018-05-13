@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using Ex03.GarageLogic;
 
 namespace Ex03.ConsoleUI
@@ -38,7 +38,7 @@ namespace Ex03.ConsoleUI
                 printEnterChoiceMsg();
                 userChoice = getUserChoice();
 
-                if (isUserMenuChoiceValid(userChoice) && userChoice != eUserChoice.DisplayVehicleList)
+                if (isUserMenuChoiceValid(userChoice) && userChoice != eUserChoice.DisplayVehicleList && userChoice != eUserChoice.ExitProgram)
                 {
                     plateNumber = getRegistrationPlateNumber();
                 }
@@ -68,15 +68,30 @@ namespace Ex03.ConsoleUI
                         break;
                     case eUserChoice.ExitProgram:
                         exitProgram = true;
+                        printExitPorgramMsg();
                         break;
                     default:
                         printInvalidInputMsg();
                         break;
                 }
+
+                Console.WriteLine("Press 'Enter' to continue..");
+                Console.ReadLine();
+                Console.Clear();
             }
            
     }
 
+        private void printExitPorgramMsg()
+        {
+            Console.Write("Exiting program ");
+            for (int i = 0; i < 10; i++)
+            {
+                Console.Write(" . ");
+                Thread.Sleep(100);
+            }
+            Console.WriteLine();
+        }
 
         private void inflateTieres(string plateNumber)
         {
@@ -136,13 +151,27 @@ namespace Ex03.ConsoleUI
         private void updateVehicleStatus(string i_LicensePlate)
         {
             string statusToUpdateStr;
-            Garage.eVehicleStatus statusToUpdate;
+            bool isPlateExist = true;
 
+            Garage.eVehicleStatus statusToUpdate;
             printUpdateStatusSubMenu();
-            printEnterChoiceMsg();
-            statusToUpdateStr = Console.ReadLine();
-            statusToUpdate = LogicUtils.EnumValidation<Garage.eVehicleStatus>(statusToUpdateStr, k_VehicleStatusKey);
-            this.m_garage.UpdateVehicleStatus(i_LicensePlate, statusToUpdate);
+
+            do
+            {
+                
+                printEnterChoiceMsg();
+                statusToUpdateStr = Console.ReadLine();
+                statusToUpdate = LogicUtils.EnumValidation<Garage.eVehicleStatus>(statusToUpdateStr, k_VehicleStatusKey);
+                try
+                {
+                    this.m_garage.UpdateVehicleStatus(i_LicensePlate, statusToUpdate);
+                    isPlateExist = false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            } while (isPlateExist); 
         }
 
         private void printUpdateStatusSubMenu()
@@ -152,16 +181,20 @@ namespace Ex03.ConsoleUI
 < 1 > In process
 < 2 > Repaired
 < 3 > Paid
-           ");
+");
     }
 
         private void displayVehiclesList()
         {
+            string userChoice;
+            Garage.eVehicleStatus fillter;
+
             Console.Clear();
             printVehicleListFillterSubMenu();
             printEnterChoiceMsg();
-                        
-            
+            userChoice = Console.ReadLine();
+            fillter = LogicUtils.EnumValidation< Garage.eVehicleStatus>(userChoice, Garage.k_VehicleStatus);
+            m_garage.DisplayVehiclesList(fillter);          
         }
 
         private void insertNewVehicle(string i_userPlateNum)
