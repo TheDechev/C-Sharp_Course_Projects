@@ -1,5 +1,4 @@
-﻿
-namespace Ex03.GarageLogic
+﻿namespace Ex03.GarageLogic
 {
     public abstract class Energy
     {
@@ -9,7 +8,7 @@ namespace Ex03.GarageLogic
 
         internal Energy(float i_MaxCapacity)
         {
-            m_MaxCapacity = i_MaxCapacity;
+            this.m_MaxCapacity = i_MaxCapacity;
         }
 
         public float CurrentEnergy
@@ -18,15 +17,16 @@ namespace Ex03.GarageLogic
             {
                 return this.m_CurrentEnergy;
             }
+
             set
             {
-                if (value > m_MaxCapacity)
+                if (value > this.m_MaxCapacity)
                 {
-                    throw new ValueOutOfRangeException(m_CurrentEnergy, m_MaxCapacity);
+                    throw new ValueOutOfRangeException(this.m_CurrentEnergy, this.m_MaxCapacity);
                 }
 
                 this.m_CurrentEnergy = value;
-                m_RemainingEnergyPercentage = (m_CurrentEnergy / m_MaxCapacity) * 100;
+                this.m_RemainingEnergyPercentage = (this.m_CurrentEnergy / this.m_MaxCapacity) * 100;
             }
         }
 
@@ -42,7 +42,7 @@ namespace Ex03.GarageLogic
         {
             get
             {
-                return m_RemainingEnergyPercentage;
+                return this.m_RemainingEnergyPercentage;
             }
         }
 

@@ -15,7 +15,7 @@ namespace Ex03.GarageLogic
 
             if (!Enum.IsDefined(typeof(T), enumVal))
             {
-                throw new ValueOutOfRangeException(String.Format("Invalid {0} entered", i_KeyStr).ToString());
+                throw new ValueOutOfRangeException(string.Format("Invalid {0} entered", i_KeyStr).ToString());
             }
 
             return userInput;
@@ -25,13 +25,13 @@ namespace Ex03.GarageLogic
         {
             float validator;
 
-            if(!float.TryParse(i_InputValue,out validator))
+            if(!float.TryParse(i_InputValue, out validator))
             {
                 throw new FormatException("Invalid input, not numbers!");
             }
             else if (validator > i_Maximum || validator < 0)
             {
-                throw new ValueOutOfRangeException(String.Format("Value out of range. Maximum amount is {0} ",i_Maximum));
+                throw new ValueOutOfRangeException(string.Format("Value out of range. Maximum amount is {0} ", i_Maximum));
             }
             else
             {

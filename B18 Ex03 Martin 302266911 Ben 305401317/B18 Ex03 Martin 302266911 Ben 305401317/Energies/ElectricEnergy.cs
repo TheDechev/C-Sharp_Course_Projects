@@ -8,7 +8,6 @@ namespace Ex03.GarageLogic
 {
     public class ElectricEnergy : Energy
     {
-
         public const string k_ElectricUnits = "Battery time in hours";
 
         public float BatteryTimeLeft
@@ -20,9 +19,9 @@ namespace Ex03.GarageLogic
 
             set
             {
-                if (value > m_MaxCapacity)
+                if (value > this.m_MaxCapacity)
                 {
-                    throw new ValueOutOfRangeException("Exceeded max battery time", m_CurrentEnergy, m_MaxCapacity);
+                    throw new ValueOutOfRangeException("Exceeded max battery time", this.m_CurrentEnergy, this.m_MaxCapacity);
                 }
 
                 this.CurrentEnergy = value;
@@ -47,6 +46,7 @@ namespace Ex03.GarageLogic
             {
                 throw new ValueOutOfRangeException("Battery fully charged, can't charge more!");
             }
+
             this.BatteryTimeLeft += i_ChargeAmount;
         }
 

@@ -20,14 +20,13 @@ namespace Ex03.GarageLogic
         private int m_EngineVolume;
         private eLicenseType m_LicenseType;
 
-        internal Motorcycle(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType)
+        internal Motorcycle(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType)
         {
-            base.AddNewTires(k_MotorcycleNumberOfTires, k_MotorcycleMaxTirePressure);
+            AddNewTires(k_MotorcycleNumberOfTires, k_MotorcycleMaxTirePressure);
         }
 
         public override void UpdateUniqueProperties(string i_Key, string i_Value)
         {
-
             if (i_Key == k_EngineVolumeKey)
             {
                 this.m_EngineVolume = (int)LogicUtils.NumericValueValidation(i_Value, int.MaxValue);
@@ -40,14 +39,15 @@ namespace Ex03.GarageLogic
             {
                 throw new ArgumentException("Invalid key");
             }
-
         }
 
         public override string GetUniquePropertiesInfo()
         {
-            return String.Format(
+            return string.Format(
 @"License type: {0}
-Engine Volume: {1}", m_LicensePlate, m_EngineVolume);
+Engine Volume: {1}", 
+            this.m_LicensePlate, 
+            this.m_EngineVolume);
         }
 
         public override Dictionary<string, string[]> GetUniqueAtttributesDictionary()

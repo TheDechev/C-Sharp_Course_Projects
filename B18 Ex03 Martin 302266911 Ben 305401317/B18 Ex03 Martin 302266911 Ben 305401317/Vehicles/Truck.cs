@@ -16,9 +16,9 @@ namespace Ex03.GarageLogic
         private bool m_IsTrunkCooled;
         private float m_TrunkCapacity;
 
-        internal Truck(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType)
+        internal Truck(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType)
         {
-            base.AddNewTires(k_TruckNumberOfTires,k_TruckMaxTirePressure);
+            base.AddNewTires(k_TruckNumberOfTires, k_TruckMaxTirePressure);
         }
 
         public bool isTrunkCooled
@@ -51,7 +51,7 @@ namespace Ex03.GarageLogic
                     throw new ValueOutOfRangeException(0, 1);
                 }
 
-                this.m_IsTrunkCooled = (trunkCool == trueValue);
+                this.m_IsTrunkCooled = trunkCool == trueValue;
             }
             else if (i_Key == k_TrunkCapacityKey)
             {
@@ -65,19 +65,19 @@ namespace Ex03.GarageLogic
 
         public override string GetUniquePropertiesInfo()
         {
-            return String.Format(
+            return string.Format(
 @"Trunk capacity: {0}
-Cooled trunk: {1}", m_LicensePlate, m_IsTrunkCooled);
+Cooled trunk: {1}", 
+            this.m_LicensePlate, 
+            this.m_IsTrunkCooled);
         }
 
         public override Dictionary<string, string[]> GetUniqueAtttributesDictionary()
         {
             Dictionary<string, string[]> stringAttributes = new Dictionary<string, string[]>();
-
-            string[] isCooled = {bool.TrueString, bool.FalseString};
-
+            string[] isCooled = { bool.TrueString, bool.FalseString };
             stringAttributes.Add(k_IsTrunkCooledKey, isCooled);
-            stringAttributes.Add(k_TrunkCapacityKey, new string[]{});
+            stringAttributes.Add(k_TrunkCapacityKey, new string[] {});
 
             return stringAttributes;
         }

@@ -43,19 +43,18 @@ namespace Ex03.GarageLogic
             {
                 return this.m_Status;
             }
+
             set
             {
-                m_Status = value;
+                this.m_Status = value;
             }
         }
 
         public ClientVehicle(Vehicle i_Vehicle, string i_Name, string i_PhoneNumber)
         {
-            m_Vehicle = i_Vehicle;
-            m_OwnerName = i_Name;
-            m_OwnerPhoneNumber = i_PhoneNumber;
+            this.m_Vehicle = i_Vehicle;
+            this.m_OwnerName = i_Name;
+            this.m_OwnerPhoneNumber = i_PhoneNumber;
         }
-
-
     }
 }

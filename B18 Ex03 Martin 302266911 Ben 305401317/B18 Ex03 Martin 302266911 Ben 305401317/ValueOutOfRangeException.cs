@@ -15,14 +15,15 @@ namespace Ex03.GarageLogic
         {
             get
             {
-                return m_MaxValue;
+                return this.m_MaxValue;
             }
         }
+
         public float MinValue
         {
             get
             {
-                return m_MinValue;
+                return this.m_MinValue;
             }
         }
 
@@ -35,7 +36,7 @@ namespace Ex03.GarageLogic
         }
 
         public ValueOutOfRangeException(string i_Message, float i_CurrentAmount, float i_MaxAmount)
-            : base(string.Format("{0}. Avalilable amount to add is: {1} ", i_Message, Math.Abs(i_MaxAmount-i_CurrentAmount)))
+            : base(string.Format("{0}. Avalilable amount to add is: {1} ", i_Message, Math.Abs(i_MaxAmount - i_CurrentAmount)))
         {
             InitializeValues(i_CurrentAmount, i_MaxAmount);
         }
@@ -48,8 +49,8 @@ namespace Ex03.GarageLogic
 
         private void InitializeValues(float i_CurrentAmount, float i_MaxAmount)
         {
-            m_MaxValue = i_MaxAmount;
-            m_MinValue = i_CurrentAmount;
+            this.m_MaxValue = i_MaxAmount;
+            this.m_MinValue = i_CurrentAmount;
         }
     }
 }

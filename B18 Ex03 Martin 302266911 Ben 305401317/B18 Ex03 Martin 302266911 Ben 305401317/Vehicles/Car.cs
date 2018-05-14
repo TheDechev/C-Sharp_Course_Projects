@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Ex03.GarageLogic 
 {
-    
     public class Car : Vehicle
     {
         private const int k_CarNumberOfTires = 4;
@@ -60,8 +59,7 @@ namespace Ex03.GarageLogic
 
         public override Dictionary<string, string[]> GetUniqueAtttributesDictionary()
         {
-            Dictionary<string,string[]> stringAttributes = new Dictionary<string, string[]>();
-
+            Dictionary<string, string[]> stringAttributes = new Dictionary<string, string[]>();
             stringAttributes.Add(k_ColorKey, Enum.GetNames(typeof(eColor)));
             stringAttributes.Add(k_DoorsNumKey, Enum.GetNames(typeof(eDoorsNumber)));
 
@@ -70,9 +68,11 @@ namespace Ex03.GarageLogic
 
         public override string GetUniquePropertiesInfo()
         {
-            return String.Format(
+            return string.Format(
 @"Color: {0}
-Number of doors: {1}", m_Color, m_DoorsNumber);
+Number of doors: {1}", 
+            this.m_Color, 
+            this.m_DoorsNumber);
         }
     }
 }

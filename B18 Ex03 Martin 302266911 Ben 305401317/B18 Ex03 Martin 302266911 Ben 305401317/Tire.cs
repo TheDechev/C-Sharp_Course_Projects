@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ex03.GarageLogic
+﻿namespace Ex03.GarageLogic
 {
     public class Tire
     {
@@ -16,11 +10,12 @@ namespace Ex03.GarageLogic
         {
             get
             {
-                return m_ManufacturerName;
+                return this.m_ManufacturerName;
             }
+
             set
             {
-                m_ManufacturerName = value;
+                this.m_ManufacturerName = value;
             }
         }
 
@@ -28,15 +23,17 @@ namespace Ex03.GarageLogic
         {
             get
             {
-                return m_CurrentAirPressure;
+                return this.m_CurrentAirPressure;
             }
+
             set
             {
-                if(value > m_MaxAirPressure)
+                if(value > this.m_MaxAirPressure)
                 {
                     throw new ValueOutOfRangeException("Air preassure exceeding the maximum value!");
                 }
-                m_CurrentAirPressure = value;
+
+                this.m_CurrentAirPressure = value;
             }
         }
 
@@ -44,23 +41,23 @@ namespace Ex03.GarageLogic
         {
             get
             {
-                return m_MaxAirPressure;
+                return this.m_MaxAirPressure;
             }
+
             set
             {
-                m_MaxAirPressure = value;
+                this.m_MaxAirPressure = value;
             }
         }
 
         public void Inflate(float i_AmountToAdd)
         {
-           if(m_CurrentAirPressure + i_AmountToAdd > m_MaxAirPressure)
+           if(this.m_CurrentAirPressure + i_AmountToAdd > this.m_MaxAirPressure)
             {
-                throw new ValueOutOfRangeException(m_CurrentAirPressure, m_MaxAirPressure);
+                throw new ValueOutOfRangeException(this.m_CurrentAirPressure, this.m_MaxAirPressure);
             }
 
-            m_CurrentAirPressure += i_AmountToAdd;
+            this.m_CurrentAirPressure += i_AmountToAdd;
         }
-
     }
 }

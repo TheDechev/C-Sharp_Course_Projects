@@ -12,7 +12,7 @@ namespace Ex03.ConsoleUI
         private const string k_VehicleInGarageStr = "Update to process";
         private const string k_LoadingChar = " . ";
         private const long k_MaxPhoneNumber = 99999999999;
-        private Garage  m_Garage = new Garage();
+        private Garage m_Garage = new Garage();
 
         private enum eUserChoice
         {
@@ -34,36 +34,36 @@ namespace Ex03.ConsoleUI
             while (!exitProgram)
             {
                 string plateNumber = string.Empty;
-                PrintMenu();
-                userChoice = getUserChoice();
-                getLicensePlate(ref plateNumber, ref userChoice);
+                this.printMenu();
+                userChoice = this.getUserChoice();
+                this.getLicensePlate(ref plateNumber, ref userChoice);
 
                 switch (userChoice)
                 {
                     case eUserChoice.InsertNewVehicle:
-                        insertNewVehicle(plateNumber);
+                        this.insertNewVehicle(plateNumber);
                         break;
                     case eUserChoice.DisplayVehicleList:
-                        displayVehiclesLicensePlateList();
+                        this.displayVehiclesLicensePlateList();
                         break;
                     case eUserChoice.UpdateVehicleStatus:
-                        updateVehicleStatus(plateNumber);
+                        this.updateVehicleStatus(plateNumber);
                         break;
                     case eUserChoice.InflateTieres:
-                        inflateTieresToMax(plateNumber);
+                        this.inflateTieresToMax(plateNumber);
                         break;
                     case eUserChoice.RefuelVehicle:
-                        refuelVehicle(plateNumber);
+                        this.refuelVehicle(plateNumber);
                         break;
                     case eUserChoice.ChargeVehicle:
-                        chargeVehicle(plateNumber);
+                        this.chargeVehicle(plateNumber);
                         break;
                     case eUserChoice.DisplayVehicleFullDetails:
-                        displayVehicleFullDetails(plateNumber);
+                        this.displayVehicleFullDetails(plateNumber);
                         break;
                     case eUserChoice.ExitProgram:
                         exitProgram = true;
-                        printExitPorgramMsg();
+                        this.printExitPorgramMsg();
                         return;
                 }
 
@@ -75,7 +75,7 @@ namespace Ex03.ConsoleUI
 
         private void insertNewVehicle(string i_userPlateNum)
         {
-            if (m_Garage.isVehicleInGarage(i_userPlateNum))
+            if (this.m_Garage.isVehicleInGarage(i_userPlateNum))
             {
                 this.m_Garage.UpdateVehicleStatus(i_userPlateNum, ((int)Garage.eVehicleStatus.InProcess).ToString());
                 Console.WriteLine(
@@ -85,25 +85,25 @@ vehicle's status was updated to: 'In Process'");
             else
             {
                 Vehicle newVehicle;
-                newVehicle = CreateNewVehicle(i_userPlateNum);
+                newVehicle = this.createNewVehicle(i_userPlateNum);
                 string clientName, clientPhone;
                 Console.Write("Client's name: ");
                 clientName = Console.ReadLine().Trim();
-                clientPhone = getNumericInput(k_MaxPhoneNumber, "Client's phone number: ").ToString();
+                clientPhone = this.getNumericInput(k_MaxPhoneNumber, "Client's phone number: ").ToString();
                 this.m_Garage.insertVehicle(newVehicle, clientName, clientPhone);
-                Console.WriteLine("{0}Vehicle added successfuly!",Environment.NewLine);
+                Console.WriteLine("{0}Vehicle added successfuly!", Environment.NewLine);
             }
         }
 
-        private Vehicle CreateNewVehicle(string i_UserPlateNumber)
+        private Vehicle createNewVehicle(string i_UserPlateNumber)
         {
             bool isVehicleTypeValid = false;
             Vehicle newVehicle;
-            VehicleFactory.eVehicleType newVehicleType = VehicleFactory.eVehicleType.FuelCar; //default value
+            VehicleFactory.eVehicleType newVehicleType = VehicleFactory.eVehicleType.FuelCar;
             string userChoice;
             Console.WriteLine("{0}Please Enter the following information: {0}", Environment.NewLine);
-            printMultiChoiceList(VehicleFactory.k_VehicleTypeKey, Enum.GetNames(typeof(VehicleFactory.eVehicleType)));
-            printEnterChoiceMsg();
+            this.printMultiChoiceList(VehicleFactory.k_VehicleTypeKey, Enum.GetNames(typeof(VehicleFactory.eVehicleType)));
+            this.printEnterChoiceMsg();
             do
             {
                 try
@@ -116,28 +116,28 @@ vehicle's status was updated to: 'In Process'");
                 {
                     Console.WriteLine(exception.Message);
                 }
-            } while (!isVehicleTypeValid);
+            }
+            while (!isVehicleTypeValid);
 
             newVehicle = VehicleFactory.CreateVehicle(i_UserPlateNumber, newVehicleType);
-            SetVehicleInfo(newVehicle, newVehicleType);
+            this.setVehicleInfo(newVehicle, newVehicleType);
 
             return newVehicle;
-
         }
 
-        private void SetVehicleInfo(Vehicle i_VehicleToUpdate, VehicleFactory.eVehicleType i_vehicleType)
+        private void setVehicleInfo(Vehicle i_VehicleToUpdate, VehicleFactory.eVehicleType i_vehicleType)
         {
             float currentAirPressure;
             Console.Write("Model: ");
             i_VehicleToUpdate.ModelName = Console.ReadLine().Trim();
-            i_VehicleToUpdate.Energy.CurrentEnergy = getNumericInput(i_VehicleToUpdate.Energy.MaxCapacity, String.Format("{0}: ", i_VehicleToUpdate.Energy.EnergyUnits()).ToString());
-            currentAirPressure = getNumericInput(i_VehicleToUpdate.TiresList[0].MaxAirPressure, "Tires air pressure: ");
+            i_VehicleToUpdate.Energy.CurrentEnergy = this.getNumericInput(i_VehicleToUpdate.Energy.MaxCapacity, string.Format("{0}: ", i_VehicleToUpdate.Energy.EnergyUnits()).ToString());
+            currentAirPressure = this.getNumericInput(i_VehicleToUpdate.TiresList[0].MaxAirPressure, "Tires air pressure: ");
             Console.Write("Tiers manufacturer's name: ");
             i_VehicleToUpdate.UpdateTiresInfo(currentAirPressure, Console.ReadLine().Trim());
-            SetVehicleUniqueInfo(i_VehicleToUpdate, i_vehicleType);
+            this.setVehicleUniqueInfo(i_VehicleToUpdate, i_vehicleType);
         }
 
-        private void SetVehicleUniqueInfo(Vehicle i_VehicleToUpdate, VehicleFactory.eVehicleType i_vehicleType)
+        private void setVehicleUniqueInfo(Vehicle i_VehicleToUpdate, VehicleFactory.eVehicleType i_vehicleType)
         {
             Dictionary<string, string[]> uniqueAttributesDictionary = i_VehicleToUpdate.GetUniqueAtttributesDictionary();
             List<string> userInputAttributes = new List<string>(uniqueAttributesDictionary.Count);
@@ -149,19 +149,19 @@ vehicle's status was updated to: 'In Process'");
 
                 if (attributeValuesNum > 1)
                 {
-                    printMultiChoiceList(key, uniqueAttributesDictionary[key]);
-                    printEnterChoiceMsg();
+                    this.printMultiChoiceList(key, uniqueAttributesDictionary[key]);
+                    this.printEnterChoiceMsg();
                 }
                 else
                 {
                     Console.Write("Enter {0}: ", key);
                 }
 
-                SetVehicleUniquePropertyInput(i_VehicleToUpdate, key);
+                this.setVehicleUniquePropertyInput(i_VehicleToUpdate, key);
             }
         }
 
-        private void SetVehicleUniquePropertyInput(Vehicle i_Vehicle, string i_Key)
+        private void setVehicleUniquePropertyInput(Vehicle i_Vehicle, string i_Key)
         {
             string userInput;
             bool isValid = false;
@@ -178,9 +178,8 @@ vehicle's status was updated to: 'In Process'");
                 {
                     Console.WriteLine(exception.Message);
                 }
-
-            } while (!isValid);
-
+            }
+            while (!isValid);
         }
 
         private void displayVehiclesLicensePlateList()
@@ -188,20 +187,21 @@ vehicle's status was updated to: 'In Process'");
             bool isStatusValid = false;
             string filterStr = string.Empty;
             string[] enumNames = Enum.GetNames(typeof(Garage.eVehicleStatus));
-            printMultiChoiceList(Garage.k_VehicleStatusKey, enumNames);
+            this.printMultiChoiceList(Garage.k_VehicleStatusKey, enumNames);
             Console.WriteLine("< {0} > None", enumNames.Length + 1);
             do
             {
                 try
                 {
-                    printEnterChoiceMsg();
+                    this.printEnterChoiceMsg();
                     filterStr = Console.ReadLine();
-                    string displayVehicleList = m_Garage.DisplayVehiclesList(filterStr);
+                    string displayVehicleList = this.m_Garage.DisplayVehiclesList(filterStr);
                     Console.WriteLine("{0}Vehicles in garage with the chosen status are: ", Environment.NewLine);
                     if (displayVehicleList == string.Empty)
                     {
                         displayVehicleList = "<No vehicles in garage with this status.>";
                     }
+
                     Console.WriteLine("{0}{1}", Environment.NewLine, displayVehicleList);
                     isStatusValid = true;
                 }
@@ -209,32 +209,31 @@ vehicle's status was updated to: 'In Process'");
                 {
                     Console.WriteLine(exception.Message);
                 }
-
-            } while (!isStatusValid);
+            }
+            while (!isStatusValid);
         }
 
         private void updateVehicleStatus(string i_LicensePlate)
         {
             bool isUpdateSuccessful = false;
-            printMultiChoiceList(Garage.k_VehicleStatusKey, Enum.GetNames(typeof(Garage.eVehicleStatus)));
+            this.printMultiChoiceList(Garage.k_VehicleStatusKey, Enum.GetNames(typeof(Garage.eVehicleStatus)));
 
             do
             {
                 try
                 {
-                    printEnterChoiceMsg();
+                    this.printEnterChoiceMsg();
                     string statusToUpdateStr = Console.ReadLine();
                     this.m_Garage.UpdateVehicleStatus(i_LicensePlate, statusToUpdateStr);
                     isUpdateSuccessful = true;
                     Console.WriteLine("The vehicle with license plate \"{0}\" status was updated successfuly", i_LicensePlate);
                 }
-
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception.Message);
                 }
-
-            } while (!isUpdateSuccessful);
+            }
+            while (!isUpdateSuccessful);
         }
 
         private void inflateTieresToMax(string i_PlateNumber)
@@ -245,15 +244,15 @@ vehicle's status was updated to: 'In Process'");
 
         private void refuelVehicle(string i_PlateNumber)
         {
-            printMultiChoiceList(FuelEnergy.k_FuelTypeKey, Enum.GetNames(typeof(FuelEnergy.eFuelType)));
-            printEnterChoiceMsg();
+            this.printMultiChoiceList(FuelEnergy.k_FuelTypeKey, Enum.GetNames(typeof(FuelEnergy.eFuelType)));
+            this.printEnterChoiceMsg();
             string i_Choice = Console.ReadLine();
 
             try
             {
                 FuelEnergy.eFuelType fuelTypeChosen = LogicUtils.EnumValidation<FuelEnergy.eFuelType>(i_Choice, FuelEnergy.k_FuelTypeKey);
-                float amountToAdd = GetAmountOfUnitsToAdd(FuelEnergy.k_FuelUnits);
-                m_Garage.RefuelFuelVehicle(i_PlateNumber, fuelTypeChosen, amountToAdd);
+                float amountToAdd = this.getAmountOfUnitsToAdd(FuelEnergy.k_FuelUnits);
+                this.m_Garage.RefuelFuelVehicle(i_PlateNumber, fuelTypeChosen, amountToAdd);
                 Console.WriteLine("The vehicle with license plate: {0} was refueled successfuly!", i_PlateNumber);
             }
             catch(Exception exception)
@@ -264,12 +263,12 @@ vehicle's status was updated to: 'In Process'");
 
         private void chargeVehicle(string i_PlateNumber)
         {
-            float amountToAdd = GetAmountOfUnitsToAdd(ElectricEnergy.k_ElectricUnits);
+            float amountToAdd = this.getAmountOfUnitsToAdd(ElectricEnergy.k_ElectricUnits);
 
             try
             {
-                m_Garage.RechargeElectricVehicle(i_PlateNumber, amountToAdd);
-                Console.WriteLine("The vehicle with license plate: {0} was charged successfuly with {1} hours!", i_PlateNumber,amountToAdd);
+                this.m_Garage.RechargeElectricVehicle(i_PlateNumber, amountToAdd);
+                Console.WriteLine("The vehicle with license plate: {0} was charged successfuly with {1} hours!", i_PlateNumber, amountToAdd);
             }
             catch (Exception exception)
             {
@@ -277,7 +276,7 @@ vehicle's status was updated to: 'In Process'");
             }
         }
 
-        private float GetAmountOfUnitsToAdd(string i_UnitsToAddKey)
+        private float getAmountOfUnitsToAdd(string i_UnitsToAddKey)
         {
             Console.Write("Enter {0} to add: ", i_UnitsToAddKey);
             float userInput;
@@ -296,7 +295,7 @@ vehicle's status was updated to: 'In Process'");
         {
             Console.Clear();
             Console.WriteLine("Vehicle Information:");
-            Console.WriteLine(m_Garage.DisplayVehicleFullDeatails(i_PlateNumber));
+            Console.WriteLine(this.m_Garage.DisplayVehicleFullDeatails(i_PlateNumber));
         }
 
         private float getNumericInput(float i_MaximumValue, string i_AskUserMsg)
@@ -317,8 +316,8 @@ vehicle's status was updated to: 'In Process'");
                 {
                     Console.WriteLine(exception.Message);
                 }
-
-            } while (!isValid);
+            }
+            while (!isValid);
 
             return numericInput;
         }
@@ -333,7 +332,7 @@ vehicle's status was updated to: 'In Process'");
             {
                 try
                 {
-                    printEnterChoiceMsg();
+                    this.printEnterChoiceMsg();
                     userChoiceStr = Console.ReadLine();
                     userChoice = LogicUtils.EnumValidation<eUserChoice>(userChoiceStr, k_UserChoiceKey);
                     isValidInput = true;
@@ -342,18 +341,19 @@ vehicle's status was updated to: 'In Process'");
                 {
                     Console.WriteLine(exception.Message);
                 }
-            } while (!isValidInput);
-
+            }
+            while (!isValidInput);
 
             return userChoice;
         }
+
         private void getLicensePlate(ref string io_PlateNumber, ref eUserChoice io_UserChoice)
         {
             if (Enum.IsDefined(typeof(eUserChoice), io_UserChoice) && io_UserChoice != eUserChoice.DisplayVehicleList && io_UserChoice != eUserChoice.ExitProgram)
             {
                 Console.Write("Enter your registration plate number: ");
                 io_PlateNumber = Console.ReadLine().Trim();
-                bool isVehicleInGarage = m_Garage.isVehicleInGarage(io_PlateNumber);
+                bool isVehicleInGarage = this.m_Garage.isVehicleInGarage(io_PlateNumber);
 
                 if (!isVehicleInGarage)
                 {
@@ -381,7 +381,7 @@ vehicle's status was updated to: 'In Process'");
             }
         }
 
-        private void PrintMenu()
+        private void printMenu()
         {
             Console.WriteLine(
 @"Hello! Welcome to the Garage Control pannel :)
@@ -406,6 +406,7 @@ Please choose an action to execut:
                 Console.Write(k_LoadingChar);
                 Thread.Sleep(100);
             }
+
             Console.WriteLine();
         }
     }

@@ -23,9 +23,10 @@ namespace Ex03.GarageLogic
             {
                 return this.m_ModelName;
             }
+
             set
             {
-                m_ModelName = value;
+                this.m_ModelName = value;
             }
         }
 
@@ -59,7 +60,7 @@ namespace Ex03.GarageLogic
 
         public void UpdateTiresInfo(float i_CurrentPreasure, string i_ManufacturerName)
         {
-            foreach (Tire tire in m_TiresList)
+            foreach (Tire tire in this.m_TiresList)
             {
                 tire.CurrentAirPressure = i_CurrentPreasure;
                 tire.ManufacturerName = i_ManufacturerName;
@@ -70,7 +71,7 @@ namespace Ex03.GarageLogic
 
         public void InflateTiresToMax()
         {
-            foreach (Tire tire in m_TiresList)
+            foreach (Tire tire in this.m_TiresList)
             {
                 tire.Inflate(tire.MaxAirPressure - tire.CurrentAirPressure);
             }
@@ -85,6 +86,5 @@ namespace Ex03.GarageLogic
                 this.m_TiresList.Add(tire);
             }
         }
-
     }
 }

@@ -24,7 +24,7 @@ namespace Ex03.GarageLogic
             FuelTruck
         }
 
-        public static Vehicle CreateVehicle(string i_LicensePlate , eVehicleType i_VehicleType)
+        public static Vehicle CreateVehicle(string i_LicensePlate, eVehicleType i_VehicleType)
         {
             Vehicle newVehicle = null;
             Energy energyType = null;
@@ -42,7 +42,7 @@ namespace Ex03.GarageLogic
             else if (i_VehicleType == eVehicleType.ElectricMotorcycle)
             {
                 energyType = new ElectricEnergy(k_ElectricMotorcycleMaxEnergyCapacity);
-                newVehicle = new Motorcycle(i_LicensePlate,energyType);
+                newVehicle = new Motorcycle(i_LicensePlate, energyType);
             }
             else if (i_VehicleType == eVehicleType.FuelMotorcycle)
             {
