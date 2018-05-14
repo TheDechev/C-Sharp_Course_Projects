@@ -93,31 +93,32 @@ namespace Ex03.GarageLogic
             Vehicle vehicleToCheck = this.m_Vehicle[i_LicensePlate].Vehicle;
 
             vehicleInfo.Append(String.Format(
-@"License Plate: {0},
+@"{6}License Plate: {0}
 Model Name: {1}
 Owner Name: {2}
 Status in garage: {3}
 Air pressure in tires: {4}
 Tiers manufacturer: {5}
 ",  vehicleToCheck.LicensePlate, 
-    vehicleToCheck.ModelName, 
+    vehicleToCheck.ModelName,
+    m_Vehicle[i_LicensePlate].OwnerName,
     m_Vehicle[i_LicensePlate].Status, 
     vehicleToCheck.TiresList[0].CurrentAirPressure,
-    vehicleToCheck.TiresList[0].ManufacturerName));
+    vehicleToCheck.TiresList[0].ManufacturerName,Environment.NewLine)) ;
 
             if (vehicleToCheck.Energy is FuelEnergy)
             {
                 vehicleInfo.Append(String.Format(
 @"Fuel Type: {0}
-Fuel level: {1}", ((FuelEnergy)vehicleToCheck.Energy).FuelType, vehicleToCheck.Energy.CurrentEnergy));
+Fuel liters remaining percentage: {1}", ((FuelEnergy)vehicleToCheck.Energy).FuelType, vehicleToCheck.Energy.RemainingEnergyPercentage));
             }
             else if (vehicleToCheck.Energy is ElectricEnergy)
             {
                 vehicleInfo.Append(String.Format(
-@"Battery level: {0}", vehicleToCheck.Energy.CurrentEnergy));
+@"Battery ramining percentage: {0}", vehicleToCheck.Energy.RemainingEnergyPercentage));
             }
 
-            vehicleInfo.Append(vehicleToCheck.GetUniquePropertiesInfo());
+            vehicleInfo.Append(String.Format("{0}{1}",Environment.NewLine, vehicleToCheck.GetUniquePropertiesInfo()));
 
             return vehicleInfo.ToString();
         }
