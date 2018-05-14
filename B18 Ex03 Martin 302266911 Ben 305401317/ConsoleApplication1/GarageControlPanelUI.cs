@@ -388,15 +388,23 @@ vehicle's status was updated to: 'In Process'");
 
         private eUserChoice getUserChoice()
         {
-            eUserChoice userChoice;
+            eUserChoice userChoice = eUserChoice.ExitProgram;
             string userChoiceStr;
+            bool isValidInput = false;
 
+            do
+            {
+                try
+                {
+                    userChoiceStr = Console.ReadLine();
+                    userChoice = LogicUtils.EnumValidation<eUserChoice>(userChoiceStr, k_UserChoiceKey);
+                }
+                catch(Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            } while (!isValidInput);
 
-            //TODO: input validition ALL USER CHOICES IN UI
-            userChoiceStr = Console.ReadLine();
-            userChoice = LogicUtils.EnumValidation<eUserChoice>(userChoiceStr, k_UserChoiceKey);
-                
-              //  (eUserChoice)Enum.Parse(typeof(eUserChoice), userChoiceStr);
 
             return userChoice;
         }
