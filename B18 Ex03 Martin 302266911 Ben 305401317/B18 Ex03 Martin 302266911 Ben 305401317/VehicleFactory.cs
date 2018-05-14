@@ -8,6 +8,13 @@ namespace Ex03.GarageLogic
 {
     public static class VehicleFactory
     {
+        private const float k_TruckMaxEnergyCapacity = 115f;
+        private const float k_FuelCarMaxEnergyCapacity = 45f;
+        private const float k_FuelMotorcycleMaxEnergyCapacity = 6f;
+        private const float k_ElectricCarMaxEnergyCapacity = 3.2f;
+        private const float k_ElectricMotorcycleMaxEnergyCapacity = 1.8f;
+        public const string k_VehicleTypeKey = "Vehicle Type";
+
         public enum eVehicleType
         {
             ElectricCar = 1,
@@ -16,15 +23,6 @@ namespace Ex03.GarageLogic
             FuelMotorcycle,
             FuelTruck
         }
-
-        //Wheel pressure default values
-        //Energy capacity default values
-        private const float k_TruckMaxEnergyCapacity = 115f;
-        private const float k_FuelCarMaxEnergyCapacity = 45f;
-        private const float k_FuelMotorcycleMaxEnergyCapacity = 6f;
-        private const float k_ElectricCarMaxEnergyCapacity = 3.2f;
-        private const float k_ElectricMotorcycleMaxEnergyCapacity = 1.8f;
-        public const string k_VehicleTypeKey = "Vehicle Type";
 
         public static Vehicle CreateVehicle(string i_LicensePlate , eVehicleType i_VehicleType)
         {

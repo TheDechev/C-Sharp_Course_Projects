@@ -10,7 +10,7 @@ namespace Ex03.GarageLogic
     {
         private float m_MaxValue;
         private float m_MinValue;
-        private const string i_AvailableRangeStr = " ";
+
         public float MaxValue
         {
             get
@@ -51,8 +51,5 @@ namespace Ex03.GarageLogic
             m_MaxValue = i_MaxAmount;
             m_MinValue = i_CurrentAmount;
         }
-
-
-
     }
 }

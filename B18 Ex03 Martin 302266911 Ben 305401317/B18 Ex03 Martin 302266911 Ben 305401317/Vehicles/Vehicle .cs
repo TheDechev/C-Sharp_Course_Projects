@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {
@@ -10,13 +6,13 @@ namespace Ex03.GarageLogic
     {
         protected const int k_UniqueAttributesNum = 2;
         protected readonly string m_LicensePlate;
-        protected readonly List<Wheel> m_WheelsList;
+        protected readonly List<Tire> m_TiresList;
         protected string m_ModelName;
         protected Energy m_Energy;
 
         internal Vehicle(string i_LicensePlate, Energy i_EnergyType)
         {
-            this.m_WheelsList = new List<Wheel>();
+            this.m_TiresList = new List<Tire>();
             this.m_LicensePlate = i_LicensePlate;
             this.m_Energy = i_EnergyType;
         }
@@ -49,19 +45,11 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public List<Wheel> TiresList
+        public List<Tire> TiresList
         {
             get
             {
-                return this.m_WheelsList;
-            }
-        }
-
-        public void InflateWheelsToMax()
-        {
-            foreach(Wheel wheel in m_WheelsList)
-            {
-                wheel.Inflate(wheel.MaxAirPressure - wheel.CurrentAirPressure);
+                return this.m_TiresList;
             }
         }
 
@@ -69,24 +57,32 @@ namespace Ex03.GarageLogic
 
         public abstract string GetUniquePropertiesInfo();
 
-        public void UpdateWheelsInfo(float i_CurrentPreasure, string i_ManufacturerName)
+        public void UpdateTiresInfo(float i_CurrentPreasure, string i_ManufacturerName)
         {
-            foreach (Wheel wheel in m_WheelsList)
+            foreach (Tire tire in m_TiresList)
             {
-                wheel.CurrentAirPressure = i_CurrentPreasure;
-                wheel.ManufacturerName = i_ManufacturerName;
+                tire.CurrentAirPressure = i_CurrentPreasure;
+                tire.ManufacturerName = i_ManufacturerName;
             }
         }
 
         public abstract Dictionary<string, string[]> GetUniqueAtttributesDictionary();
 
-        protected void AddNewWheels(int i_NumberOfWheels, float i_MaxPressure)
+        public void InflateTiresToMax()
         {
-            for (int i = 0; i < i_NumberOfWheels; i++)
+            foreach (Tire tire in m_TiresList)
             {
-                Wheel wheel = new Wheel();
-                wheel.MaxAirPressure = i_MaxPressure;
-                this.m_WheelsList.Add(wheel);
+                tire.Inflate(tire.MaxAirPressure - tire.CurrentAirPressure);
+            }
+        }
+
+        protected void AddNewTires(int i_NumberOfTires, float i_MaxPressure)
+        {
+            for (int i = 0; i < i_NumberOfTires; i++)
+            {
+                Tire tire = new Tire();
+                tire.MaxAirPressure = i_MaxPressure;
+                this.m_TiresList.Add(tire);
             }
         }
 

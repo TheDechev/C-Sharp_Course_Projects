@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Ex03.GarageLogic
 {
     public abstract class Energy
@@ -12,20 +7,9 @@ namespace Ex03.GarageLogic
         protected float m_MaxCapacity;
         protected float m_RemainingEnergyPercentage;
 
-        public Energy(float i_MaxCapacity)
+        internal Energy(float i_MaxCapacity)
         {
             m_MaxCapacity = i_MaxCapacity;
-        }
-
-        protected bool isExceedingMaxAmount(float i_AmountToAdd)
-        {
-            bool isExceeding = false;
-            if (i_AmountToAdd + m_CurrentEnergy > m_MaxCapacity)
-            {
-                isExceeding = true;
-            }
-
-            return isExceeding;
         }
 
         public float CurrentEnergy
@@ -63,6 +47,5 @@ namespace Ex03.GarageLogic
         }
 
         public abstract string EnergyUnits();
-
     }
 }

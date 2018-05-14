@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
@@ -18,15 +15,14 @@ namespace Ex03.GarageLogic
 
         private const string k_EngineVolumeKey = "Engine Volume";
         private const string k_LicenseTypeKey = "License type";
-        private const int k_MotorcycleNumberOfWheels = 2;
-        private const float k_MotorcycleMaxWheelPressure = 30f;
+        private const int k_MotorcycleNumberOfTires = 2;
+        private const float k_MotorcycleMaxTirePressure = 30f;
         private int m_EngineVolume;
         private eLicenseType m_LicenseType;
 
-
-        public Motorcycle(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType)
+        internal Motorcycle(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType)
         {
-            base.AddNewWheels(k_MotorcycleNumberOfWheels, k_MotorcycleMaxWheelPressure);
+            base.AddNewTires(k_MotorcycleNumberOfTires, k_MotorcycleMaxTirePressure);
         }
 
         public override void UpdateUniqueProperties(string i_Key, string i_Value)

@@ -37,15 +37,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public float RemainingBatteryPercentage
-        {
-            get
-            {
-                return this.m_RemainingEnergyPercentage;
-            }
-        }
-
-        public ElectricEnergy(float i_MaxBatteryTime) : base(i_MaxBatteryTime)
+        internal ElectricEnergy(float i_MaxBatteryTime) : base(i_MaxBatteryTime)
         {
         }
 

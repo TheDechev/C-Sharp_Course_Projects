@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    public class ClientVehicle
+    internal class ClientVehicle
     {
         private Vehicle m_Vehicle;
         private string m_OwnerName;
@@ -56,10 +56,6 @@ namespace Ex03.GarageLogic
             m_OwnerPhoneNumber = i_PhoneNumber;
         }
 
-        public ClientVehicle(Vehicle i_Vehicle)
-        {
-            m_Vehicle = i_Vehicle;
-        }
 
     }
 }

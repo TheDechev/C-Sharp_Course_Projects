@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using Ex03.GarageLogic;
 
@@ -12,6 +10,7 @@ namespace Ex03.ConsoleUI
         private const string k_VehicleStatusKey = "Vehicle status";
         private const string k_UserChoiceKey = "User choice";
         private const string k_VehicleInGarageStr = "Update to process";
+        private const string k_LoadingChar = " . ";
         private const long k_MaxPhoneNumber = 99999999999;
         private Garage  m_Garage = new Garage();
 
@@ -134,7 +133,7 @@ vehicle's status was updated to: 'In Process'");
             i_VehicleToUpdate.Energy.CurrentEnergy = getNumericInput(i_VehicleToUpdate.Energy.MaxCapacity, String.Format("{0}: ", i_VehicleToUpdate.Energy.EnergyUnits()).ToString());
             currentAirPressure = getNumericInput(i_VehicleToUpdate.TiresList[0].MaxAirPressure, "Tires air pressure: ");
             Console.Write("Tiers manufacturer's name: ");
-            i_VehicleToUpdate.UpdateWheelsInfo(currentAirPressure, Console.ReadLine().Trim());
+            i_VehicleToUpdate.UpdateTiresInfo(currentAirPressure, Console.ReadLine().Trim());
             SetVehicleUniqueInfo(i_VehicleToUpdate, i_vehicleType);
         }
 
@@ -391,7 +390,7 @@ Please choose an action to execut:
 < 1 > Insert a new vehicle to the system.
 < 2 > Display all the registration plates list of the vehicles.
 < 3 > Update vehicle's status.
-< 4 > Inflate vehicle's wheels to maximum.
+< 4 > Inflate vehicle's tires to maximum.
 < 5 > Refuel a vehicle powered by fuel.
 < 6 > Charge an electric vehicle.
 < 7 > Display vehicle's full details.
@@ -404,11 +403,10 @@ Please choose an action to execut:
             Console.Write("Exiting program ");
             for (int i = 0; i < 10; i++)
             {
-                Console.Write(" . ");
+                Console.Write(k_LoadingChar);
                 Thread.Sleep(100);
             }
             Console.WriteLine();
         }
-
     }
 }

@@ -19,9 +19,10 @@ namespace Ex03.GarageLogic
         public string k_NoStatusFilter = (Enum.GetNames(typeof(eVehicleStatus)).Length+1).ToString();
         private Dictionary<string, ClientVehicle> m_Vehicle = new Dictionary<string, ClientVehicle>();
 
+
+        //TODO: DELETE CTOR - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         public Garage()
         {
-            //TODO: DELETE THESE TEST OBJECTS
             Vehicle testVehicle1 = VehicleFactory.CreateVehicle("FuelCar-Test", VehicleFactory.eVehicleType.FuelCar);
             Vehicle testVehicle2 = VehicleFactory.CreateVehicle("ElectricCar-Test", VehicleFactory.eVehicleType.ElectricCar);
             Vehicle testVehicle3 = VehicleFactory.CreateVehicle("FuelMotorcycle-Test", VehicleFactory.eVehicleType.FuelMotorcycle);
@@ -47,7 +48,7 @@ namespace Ex03.GarageLogic
         public void InflateTireToMax(string i_LicensePlate)
         {
             CheckLicensePlate(i_LicensePlate);
-            m_Vehicle[i_LicensePlate].Vehicle.InflateWheelsToMax();
+            m_Vehicle[i_LicensePlate].Vehicle.InflateTiresToMax();
         }
         
         public void RefuelFuelVehicle(string i_LicensePlate, FuelEnergy.eFuelType i_FuelType , float i_FuelToAdd)
@@ -147,6 +148,5 @@ Fuel liters remaining percentage: {1}", ((FuelEnergy)vehicleToCheck.Energy).Fuel
                 throw new ArgumentException("License plate not found!");
             }
         }
-
     }
 }

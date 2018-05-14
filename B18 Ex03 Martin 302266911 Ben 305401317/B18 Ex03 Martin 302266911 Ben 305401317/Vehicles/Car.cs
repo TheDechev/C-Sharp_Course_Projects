@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic 
 {
     
     public class Car : Vehicle
     {
+        private const int k_CarNumberOfTires = 4;
+        private const float k_FuelCarMaxTriePressure = 30f;
+        private const float k_ElectricCarMaxTirePressure = 32f;
+        private const string k_ColorKey = "Color";
+        private const string k_DoorsNumKey = "Doors number";
+        private eColor m_Color = eColor.White;
+        private eDoorsNumber m_DoorsNumber = eDoorsNumber.Four;
+
         public enum eColor
         {
             White = 1,
@@ -25,24 +30,16 @@ namespace Ex03.GarageLogic
             Five
         }
 
-        private const int k_CarNumberOfWheels = 4;
-        private const float k_FuelCarMaxWheelPressure = 30f;
-        private const float k_ElectricCarMaxWheelPressure = 32f;
-        private const string k_ColorKey = "Color";
-        private const string k_DoorsNumKey = "Doors number";
-        private eColor m_Color = eColor.White;
-        private eDoorsNumber m_DoorsNumber = eDoorsNumber.Four;
-
-        public Car(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType) 
+        internal Car(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType) 
         {
-            float maxPressure = k_FuelCarMaxWheelPressure;
+            float maxPressure = k_FuelCarMaxTriePressure;
 
             if (i_EnergyType is ElectricEnergy)
             {
-                maxPressure = k_ElectricCarMaxWheelPressure;
+                maxPressure = k_ElectricCarMaxTirePressure;
             }
 
-            base.AddNewWheels(k_CarNumberOfWheels, maxPressure);
+            base.AddNewTires(k_CarNumberOfTires, maxPressure);
         }
 
         public override void UpdateUniqueProperties(string i_Key, string i_Value)
@@ -71,26 +68,11 @@ namespace Ex03.GarageLogic
             return stringAttributes;
         }
 
-        public eColor Color
-        {
-            get
-            {
-                return this.m_Color;
-            }
-
-            set
-            {
-                
-                this.m_Color = value;
-            }
-        }
-
         public override string GetUniquePropertiesInfo()
         {
             return String.Format(
 @"Color: {0}
 Number of doors: {1}", m_Color, m_DoorsNumber);
         }
-
     }
 }
