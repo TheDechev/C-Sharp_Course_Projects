@@ -12,7 +12,7 @@ namespace Ex03.GarageLogic
     {
         public enum eColor
         {
-            White,
+            White = 1,
             Black,
             Gray,
             Blue,
@@ -20,7 +20,7 @@ namespace Ex03.GarageLogic
 
         public enum eDoorsNumber
         {
-            Two,
+            Two = 1,
             Three,
             Four,
             Five

@@ -10,6 +10,7 @@ namespace Ex03.ConsoleUI
     class GarageControlPanelUI
     {
         private const string k_VehicleStatusKey = "Vehicle status";
+        private const string k_UserChoiceKey = "User choice";
         private const long k_MaxPhoneNumber = 99999999999;
         private Garage  m_Garage = new Garage();
         
@@ -75,7 +76,7 @@ namespace Ex03.ConsoleUI
                         break;
                 }
 
-                Console.WriteLine("{0}<Press any key to return to main menu>",Environment.NewLine);
+                Console.WriteLine("{0}< Press 'Any Key' to return to main menu >",Environment.NewLine);
                 Console.ReadLine();
                 Console.Clear();
             }
@@ -271,7 +272,7 @@ vehicle's status was updated to: 'In Process'");
             newVehicle = VehicleFactory.CreateVehicle(i_UserPlateNumber, newVehicleType);
 
             SetVehicleInfo(newVehicle,newVehicleType);
-
+            
             return newVehicle;
 
         }
@@ -390,8 +391,12 @@ vehicle's status was updated to: 'In Process'");
             eUserChoice userChoice;
             string userChoiceStr;
 
+
+            //TODO: input validition ALL USER CHOICES IN UI
             userChoiceStr = Console.ReadLine();
-            userChoice = (eUserChoice)Enum.Parse(typeof(eUserChoice), userChoiceStr);
+            userChoice = LogicUtils.EnumValidation<eUserChoice>(userChoiceStr, k_UserChoiceKey);
+                
+              //  (eUserChoice)Enum.Parse(typeof(eUserChoice), userChoiceStr);
 
             return userChoice;
         }
