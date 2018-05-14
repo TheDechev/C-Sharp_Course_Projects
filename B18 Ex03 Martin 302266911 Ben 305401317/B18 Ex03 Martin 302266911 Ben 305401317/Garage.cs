@@ -13,6 +13,21 @@ namespace Ex03.GarageLogic
         public const string k_LicenseNotFound = "License plate not found!";
         private Dictionary<string, ClientVehicle> m_Vehicle = new Dictionary<string, ClientVehicle>();
 
+        public Garage()
+        {
+            //TODO: DELETE THESE TEST OBJECTS
+            Vehicle testVehicle1 = VehicleFactory.CreateVehicle("FuelCar-Test", Vehicle.eVehicleType.FuelCar);
+            Vehicle testVehicle2 = VehicleFactory.CreateVehicle("ElectricCar-Test", Vehicle.eVehicleType.ElectricCar);
+            Vehicle testVehicle3 = VehicleFactory.CreateVehicle("FuelMotorcycle-Test", Vehicle.eVehicleType.FuelMotorcycle);
+            Vehicle testVehicle4 = VehicleFactory.CreateVehicle("FuelTruck-Test", Vehicle.eVehicleType.FuelTruck);
+            Vehicle testVehicle5 = VehicleFactory.CreateVehicle("ElectricMotorcycle-Test", Vehicle.eVehicleType.ElectricMotorcycle);
+            m_Vehicle.Add("FuelCar-Test", new ClientVehicle(testVehicle1, "Martin", "050-0125456"));
+            m_Vehicle.Add("ElectricCar-Test", new ClientVehicle(testVehicle2, "Ben", "050-7123456"));
+            m_Vehicle.Add("FuelMotorcycle-Test", new ClientVehicle(testVehicle3, "Mrt-Ben", "050-0423456"));
+            m_Vehicle.Add("FuelTruck-Test", new ClientVehicle(testVehicle4, "MBn", "050-0123456"));
+            m_Vehicle.Add("ElectricMotorcycle-Test", new ClientVehicle(testVehicle5, "Be", "050-5123456"));
+        }
+
         public enum eVehicleStatus
         {
             InProcess = 1,
