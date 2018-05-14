@@ -183,16 +183,8 @@ vehicle's status was updated to: 'In Process'");
 
         private void displayVehicleFullDetails(string i_PlateNumber)
         {
-            
-            if (m_Garage.isVehicleInGarage(i_PlateNumber))
-            {
-                Console.WriteLine("Vehicle Information:");
-                Console.WriteLine(m_Garage.DisplayVehicleFullDeatails(i_PlateNumber));
-            }
-            else
-            {
-                Console.WriteLine("This vehicle is not in the garage");
-            }
+            Console.WriteLine("Vehicle Information:");
+            Console.WriteLine(m_Garage.DisplayVehicleFullDeatails(i_PlateNumber));
         }
 
         private bool isUserMenuChoiceValid(eUserChoice i_UserChoice)
@@ -209,7 +201,12 @@ vehicle's status was updated to: 'In Process'");
             printEnterChoiceMsg();
             userChoice = Console.ReadLine();
             fillter = LogicUtils.EnumValidation< Garage.eVehicleStatus>(userChoice, Garage.k_VehicleStatusKey);
-            Console.WriteLine("{0}{1}",Environment.NewLine, m_Garage.DisplayVehiclesList(fillter));       
+            string displayVehicleList = m_Garage.DisplayVehiclesList(fillter);
+            if(displayVehicleList == string.Empty)
+            {
+                displayVehicleList = "No vehicles in garage with this status.";
+            }
+            Console.WriteLine("{0}{1}",Environment.NewLine, displayVehicleList);       
         }
 
         private Vehicle CreateNewVehicle(string i_UserPlateNumber)
