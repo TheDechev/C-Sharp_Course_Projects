@@ -45,7 +45,7 @@
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAEAAAQCAAAAQAAAAAAQAAAABBABAAAEEgAggAAAAA=</HashCode>
+      <HashCode>AAAEAAAQCAAAAQAAAAAAQAAAABBABAAAEEAAggAAAAA=</HashCode>
       <FileName>Garage.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -65,8 +65,15 @@
   </Class>
   <Class Name="Ex03.GarageLogic.VehicleFactory">
     <Position X="22.5" Y="0.5" Width="3" />
+    <NestedTypes>
+      <Enum Name="Ex03.GarageLogic.VehicleFactory.eVehicleType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>VehicleFactory.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAQAEAAAAACIAAAAAAAAAgAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <HashCode>AAQAEAAAAACIAAAAAAAAAgAAAAAAAAAAAAAAEAAAIAA=</HashCode>
       <FileName>VehicleFactory.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -112,15 +119,8 @@
   </Class>
   <Class Name="Ex03.GarageLogic.Vehicle">
     <Position X="7.25" Y="0.5" Width="2.25" />
-    <NestedTypes>
-      <Enum Name="Ex03.GarageLogic.Vehicle.eVehicleType" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Vehicles\Vehicle .cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAEAFQAAAMAAAAAAAAEgEEAAIAABAAEAAAAEAgAAgA=</HashCode>
+      <HashCode>AAAEAFQAAAMAAAAAAAAEgEEAAIAABAAEAAAAAAgAAgA=</HashCode>
       <FileName>Vehicles\Vehicle .cs</FileName>
     </TypeIdentifier>
   </Class>

@@ -38,7 +38,7 @@ namespace Ex03.GarageLogic
             {
                 if (value > m_MaxCapacity)
                 {
-                    throw new ValueOutOfRangeException("Exceeded max energy capacity!", m_CurrentEnergy, m_MaxCapacity);
+                    throw new ValueOutOfRangeException(m_CurrentEnergy, m_MaxCapacity);
                 }
 
                 this.m_CurrentEnergy = value;

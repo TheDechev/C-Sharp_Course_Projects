@@ -30,7 +30,7 @@ namespace Ex03.GarageLogic
         private const float k_ElectricCarMaxWheelPressure = 32f;
         private const string k_ColorKey = "Color";
         private const string k_DoorsNumKey = "Doors number";
-        private eColor m_Color;
+        private eColor m_Color = eColor.White;
         private eDoorsNumber m_DoorsNumber = eDoorsNumber.Four;
 
         public Car(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType) 

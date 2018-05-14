@@ -22,19 +22,17 @@ namespace Ex03.GarageLogic
         public Garage()
         {
             //TODO: DELETE THESE TEST OBJECTS
-            Vehicle testVehicle1 = VehicleFactory.CreateVehicle("FuelCar-Test", Vehicle.eVehicleType.FuelCar);
-            Vehicle testVehicle2 = VehicleFactory.CreateVehicle("ElectricCar-Test", Vehicle.eVehicleType.ElectricCar);
-            Vehicle testVehicle3 = VehicleFactory.CreateVehicle("FuelMotorcycle-Test", Vehicle.eVehicleType.FuelMotorcycle);
-            Vehicle testVehicle4 = VehicleFactory.CreateVehicle("FuelTruck-Test", Vehicle.eVehicleType.FuelTruck);
-            Vehicle testVehicle5 = VehicleFactory.CreateVehicle("ElectricMotorcycle-Test", Vehicle.eVehicleType.ElectricMotorcycle);
+            Vehicle testVehicle1 = VehicleFactory.CreateVehicle("FuelCar-Test", VehicleFactory.eVehicleType.FuelCar);
+            Vehicle testVehicle2 = VehicleFactory.CreateVehicle("ElectricCar-Test", VehicleFactory.eVehicleType.ElectricCar);
+            Vehicle testVehicle3 = VehicleFactory.CreateVehicle("FuelMotorcycle-Test", VehicleFactory.eVehicleType.FuelMotorcycle);
+            Vehicle testVehicle4 = VehicleFactory.CreateVehicle("FuelTruck-Test", VehicleFactory.eVehicleType.FuelTruck);
+            Vehicle testVehicle5 = VehicleFactory.CreateVehicle("ElectricMotorcycle-Test", VehicleFactory.eVehicleType.ElectricMotorcycle);
             m_Vehicle.Add("FuelCar-Test", new ClientVehicle(testVehicle1, "Martin", "050-0125456"));
             m_Vehicle.Add("ElectricCar-Test", new ClientVehicle(testVehicle2, "Ben", "050-7123456"));
             m_Vehicle.Add("FuelMotorcycle-Test", new ClientVehicle(testVehicle3, "Mrt-Ben", "050-0423456"));
             m_Vehicle.Add("FuelTruck-Test", new ClientVehicle(testVehicle4, "MBn", "050-0123456"));
             m_Vehicle.Add("ElectricMotorcycle-Test", new ClientVehicle(testVehicle5, "Be", "050-5123456"));
         }
-
-
 
         public void insertVehicle(Vehicle i_VehicleToAdd, string i_ClientName, string i_ClientPhoneNumber)
         {
@@ -52,24 +50,22 @@ namespace Ex03.GarageLogic
             m_Vehicle[i_LicensePlate].Vehicle.InflateWheelsToMax();
         }
         
-        public void RefuelFuelVehicle(string i_LicensePlate, string i_EnergyType , float i_FuelToAdd)
+        public void RefuelFuelVehicle(string i_LicensePlate, FuelEnergy.eFuelType i_FuelType , float i_FuelToAdd)
         {
-            FuelEnergy.eFuelType fuelTypeChosen = LogicUtils.EnumValidation<FuelEnergy.eFuelType>(i_EnergyType, FuelEnergy.k_FuelTypeKey);
             CheckLicensePlate(i_LicensePlate);
             FuelEnergy currentEnergy = m_Vehicle[i_LicensePlate].Vehicle.Energy as FuelEnergy;
 
-            if(currentEnergy == null)
+            if (currentEnergy == null)
             {
                 throw new ArgumentException("Vehicle doesn't have fuel type energy!");
             }
 
-            currentEnergy.Refuel(i_FuelToAdd, fuelTypeChosen);
+            currentEnergy.Refuel(i_FuelToAdd, i_FuelType);
         }
 
         public void RechargeElectricVehicle(string i_LicensePlate, float i_MinutesToAdd)
         {
             CheckLicensePlate(i_LicensePlate);
-
             ElectricEnergy currentEnergy = m_Vehicle[i_LicensePlate].Vehicle.Energy as ElectricEnergy;
 
             if (currentEnergy == null)
@@ -82,16 +78,9 @@ namespace Ex03.GarageLogic
 
         public void UpdateVehicleStatus(string i_LicensePlate, string i_NewStatus)
         {
-            if (isVehicleInGarage(i_LicensePlate))
-            {
-                m_Vehicle[i_LicensePlate].Status = eVehicleStatus.InProcess;
-            }
-            else
-            {
-                Garage.eVehicleStatus statusToUpdate = LogicUtils.EnumValidation<Garage.eVehicleStatus>(i_NewStatus, k_VehicleStatusKey);
-                CheckLicensePlate(i_LicensePlate);
-                m_Vehicle[i_LicensePlate].Status = statusToUpdate;
-            }
+            Garage.eVehicleStatus statusToUpdate = LogicUtils.EnumValidation<Garage.eVehicleStatus>(i_NewStatus, k_VehicleStatusKey);
+            CheckLicensePlate(i_LicensePlate);
+            m_Vehicle[i_LicensePlate].Status = statusToUpdate;
         }
 
         public string DisplayVehicleFullDeatails(string i_LicensePlate)
@@ -117,12 +106,12 @@ Tiers manufacturer: {5}
             {
                 vehicleInfo.Append(String.Format(
 @"Fuel Type: {0}
-Fuel liters remaining percentage: {1}", ((FuelEnergy)vehicleToCheck.Energy).FuelType, vehicleToCheck.Energy.RemainingEnergyPercentage));
+Fuel liters remaining percentage: {1}", ((FuelEnergy)vehicleToCheck.Energy).FuelType, vehicleToCheck.Energy.RemainingEnergyPercentage.ToString("0.##\\%")));
             }
             else if (vehicleToCheck.Energy is ElectricEnergy)
             {
                 vehicleInfo.Append(String.Format(
-@"Battery ramining percentage: {0}", vehicleToCheck.Energy.RemainingEnergyPercentage));
+@"Battery ramining percentage: {0}", vehicleToCheck.Energy.RemainingEnergyPercentage.ToString("0.##\\%")));
             }
 
             vehicleInfo.Append(String.Format("{0}{1}",Environment.NewLine, vehicleToCheck.GetUniquePropertiesInfo()));

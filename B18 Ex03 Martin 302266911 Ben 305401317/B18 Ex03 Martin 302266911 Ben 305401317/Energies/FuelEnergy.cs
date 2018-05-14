@@ -16,7 +16,7 @@ namespace Ex03.GarageLogic
             Soler
         }
         private eFuelType m_FuelType;
-        private readonly string k_FuelUnits = "Liters of fuel";
+        public const string k_FuelUnits = "Liters of fuel";
         public static readonly string k_FuelTypeKey= "Fuel Type";
 
 
@@ -36,12 +36,12 @@ namespace Ex03.GarageLogic
 
             set
             {
-                if(value + m_CurrentEnergy > m_MaxCapacity)
+                if(value > m_MaxCapacity)
                 {
                     throw new ValueOutOfRangeException("Exceeded max capacity of the fuel system!", m_CurrentEnergy, m_MaxCapacity);
                 }
 
-                m_CurrentEnergy = value;
+                this.CurrentEnergy = value;
             }
         }
         public float MaxFuelAmount
@@ -63,7 +63,10 @@ namespace Ex03.GarageLogic
             {
                 throw new ArgumentException("Wrong fuel type!");
             }
-
+            if(this.CurrentFuelAmount == this.MaxFuelAmount)
+            {
+                throw new ValueOutOfRangeException("Fuel capacity at maximum");
+            }
             this.CurrentFuelAmount += i_FuelAmountToAdd;
         }
 

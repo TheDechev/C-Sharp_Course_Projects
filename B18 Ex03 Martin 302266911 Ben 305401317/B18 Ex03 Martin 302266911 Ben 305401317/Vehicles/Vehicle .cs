@@ -9,17 +9,6 @@ namespace Ex03.GarageLogic
     public abstract class Vehicle
     {
         protected const int k_UniqueAttributesNum = 2;
-
-        public enum eVehicleType
-        {
-            ElectricCar = 1,
-            FuelCar,
-            ElectricMotorcycle,
-            FuelMotorcycle,
-            FuelTruck
-        }
-
-        public const string k_VehicleTypeKey = "Vehicle Type";
         protected readonly string m_LicensePlate;
         protected readonly List<Wheel> m_WheelsList;
         protected string m_ModelName;

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    class ElectricEnergy : Energy
+    public class ElectricEnergy : Energy
     {
 
-        private readonly string k_ElectricUnits = "Battery time in hours";
+        public const string k_ElectricUnits = "Battery time in hours";
 
         public float BatteryTimeLeft
         {
@@ -20,12 +20,12 @@ namespace Ex03.GarageLogic
 
             set
             {
-                if (value + m_CurrentEnergy > m_MaxCapacity)
+                if (value > m_MaxCapacity)
                 {
-                    throw new ValueOutOfRangeException("Exceeded max battery time!", m_CurrentEnergy, m_MaxCapacity);
+                    throw new ValueOutOfRangeException("Exceeded max battery time", m_CurrentEnergy, m_MaxCapacity);
                 }
 
-                m_CurrentEnergy = value;
+                this.CurrentEnergy = value;
             }
         }
 
@@ -51,6 +51,10 @@ namespace Ex03.GarageLogic
 
         public void Charge(float i_ChargeAmount) 
         {
+            if (this.BatteryTimeLeft == this.MaxBatteryTime)
+            {
+                throw new ValueOutOfRangeException("Battery fully charged, can't charge more!");
+            }
             this.BatteryTimeLeft += i_ChargeAmount;
         }
 
