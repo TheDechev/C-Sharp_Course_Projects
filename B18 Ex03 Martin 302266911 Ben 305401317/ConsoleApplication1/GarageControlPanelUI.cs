@@ -109,6 +109,7 @@ namespace Ex03.ConsoleUI
         {
             energyFill(i_PlateNumber, string.Empty);
             Console.WriteLine("The vehicle with license plate: {0} was charged successfuly!", i_PlateNumber);
+
         }
 
         private void energyFill(string i_PlateNumber, string i_EnergyType)
