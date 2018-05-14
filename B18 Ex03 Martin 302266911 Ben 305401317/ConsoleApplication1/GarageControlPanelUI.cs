@@ -56,7 +56,7 @@ namespace Ex03.ConsoleUI
                         updateVehicleStatus(plateNumber);
                         break;
                     case eUserChoice.InflateTieres:
-                        inflateTieres(plateNumber);
+                        inflateTieresToMax(plateNumber);
                         break;
                     case eUserChoice.RefuelVehicle:
                         refuelVehicle(plateNumber);
@@ -70,9 +70,6 @@ namespace Ex03.ConsoleUI
                     case eUserChoice.ExitProgram:
                         exitProgram = true;
                         printExitPorgramMsg();
-                        break;
-                    default:
-                        printInvalidInputMsg();
                         break;
                 }
 
@@ -94,9 +91,10 @@ namespace Ex03.ConsoleUI
             Console.WriteLine();
         }
 
-        private void inflateTieres(string i_PlateNumber)
+        private void inflateTieresToMax(string i_PlateNumber)
         {
-            throw new NotImplementedException();
+            this.m_Garage.InflateTireToMax(i_PlateNumber);
+            Console.WriteLine("The vehicle's tires inflated to maximum air pressure");
         }
 
         private void refuelVehicle(string i_PlateNumber)
@@ -174,25 +172,6 @@ namespace Ex03.ConsoleUI
             Console.Write("Enter your choice: ");
         }
 
-        private void printInvalidInputMsg()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void chargeVehicle()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void refuelVehicle()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void inflateTieres()
-        {
-            throw new NotImplementedException();
-        }
 
         private void updateVehicleStatus(string i_LicensePlate)
         {
