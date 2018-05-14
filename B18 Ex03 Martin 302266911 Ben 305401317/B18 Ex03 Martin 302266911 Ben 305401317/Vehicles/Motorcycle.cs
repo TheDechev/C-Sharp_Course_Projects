@@ -24,7 +24,6 @@ namespace Ex03.GarageLogic
         private eLicenseType m_LicenseType;
 
 
-
         public Motorcycle(string i_LicensePlate, Energy i_EnergyType): base(i_LicensePlate, i_EnergyType)
         {
             base.AddNewWheels(k_MotorcycleNumberOfWheels, k_MotorcycleMaxWheelPressure);

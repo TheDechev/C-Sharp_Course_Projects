@@ -21,17 +21,17 @@ namespace Ex03.GarageLogic
             return userInput;
         }
 
-        public static float NumericValueValidation(string i_UserInput, float i_Maximum)
+        public static float NumericValueValidation(string i_InputValue, float i_Maximum)
         {
             float validator;
 
-            if(!float.TryParse(i_UserInput,out validator))
+            if(!float.TryParse(i_InputValue,out validator))
             {
                 throw new FormatException("Invalid input, not numbers!");
             }
             else if (validator > i_Maximum || validator < 0)
             {
-                throw new ValueOutOfRangeException("Value not in the range ", validator, i_Maximum);
+                throw new ValueOutOfRangeException(String.Format("Value out of range. Maximum amount is {0} ",i_Maximum));
             }
             else
             {

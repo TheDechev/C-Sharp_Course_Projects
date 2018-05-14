@@ -7,14 +7,14 @@ using Ex03.GarageLogic;
 
 namespace Ex03.ConsoleUI
 {
-    class GarageControlPanelUI
+    public class GarageControlPanelUI
     {
         private const string k_VehicleStatusKey = "Vehicle status";
         private const string k_UserChoiceKey = "User choice";
         private const string k_VehicleInGarageStr = "Update to process";
         private const long k_MaxPhoneNumber = 99999999999;
         private Garage  m_Garage = new Garage();
-        
+
         private enum eUserChoice
         {
             InsertNewVehicle = 1,
@@ -27,7 +27,6 @@ namespace Ex03.ConsoleUI
             ExitProgram
         }
 
-
         public void Run()
         {
             bool exitProgram = false;
@@ -38,7 +37,7 @@ namespace Ex03.ConsoleUI
                 string plateNumber = string.Empty;
                 PrintMenu();
                 userChoice = getUserChoice();
-                getLicensePlate(ref plateNumber,ref userChoice);
+                getLicensePlate(ref plateNumber, ref userChoice);
 
                 switch (userChoice)
                 {
@@ -66,14 +65,14 @@ namespace Ex03.ConsoleUI
                     case eUserChoice.ExitProgram:
                         exitProgram = true;
                         printExitPorgramMsg();
-                        break;
+                        return;
                 }
 
-                Console.WriteLine("{0}< Press any key to return to main menu! >",Environment.NewLine);
+                Console.WriteLine("{0}< Press any key to return the main menu! >", Environment.NewLine);
                 Console.ReadLine();
                 Console.Clear();
             }
-    }
+        }
 
         private void insertNewVehicle(string i_userPlateNum)
         {
@@ -86,16 +85,157 @@ vehicle's status was updated to: 'In Process'");
             }
             else
             {
-                Console.Clear();
                 Vehicle newVehicle;
                 newVehicle = CreateNewVehicle(i_userPlateNum);
                 string clientName, clientPhone;
                 Console.Write("Client's name: ");
-                clientName = Console.ReadLine();
+                clientName = Console.ReadLine().Trim();
                 clientPhone = getNumericInput(k_MaxPhoneNumber, "Client's phone number: ").ToString();
                 this.m_Garage.insertVehicle(newVehicle, clientName, clientPhone);
-                Console.WriteLine("Vehicle added successfuly!");
+                Console.WriteLine("{0}Vehicle added successfuly!",Environment.NewLine);
             }
+        }
+
+        private Vehicle CreateNewVehicle(string i_UserPlateNumber)
+        {
+            bool isVehicleTypeValid = false;
+            Vehicle newVehicle;
+            VehicleFactory.eVehicleType newVehicleType = VehicleFactory.eVehicleType.FuelCar; //default value
+            string userChoice;
+            Console.WriteLine("{0}Please Enter the following information: {0}", Environment.NewLine);
+            printMultiChoiceList(VehicleFactory.k_VehicleTypeKey, Enum.GetNames(typeof(VehicleFactory.eVehicleType)));
+            printEnterChoiceMsg();
+            do
+            {
+                try
+                {
+                    userChoice = Console.ReadLine();
+                    newVehicleType = LogicUtils.EnumValidation<VehicleFactory.eVehicleType>(userChoice, VehicleFactory.k_VehicleTypeKey);
+                    isVehicleTypeValid = true;
+                }
+                catch(Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            } while (!isVehicleTypeValid);
+
+            newVehicle = VehicleFactory.CreateVehicle(i_UserPlateNumber, newVehicleType);
+            SetVehicleInfo(newVehicle, newVehicleType);
+
+            return newVehicle;
+
+        }
+
+        private void SetVehicleInfo(Vehicle i_VehicleToUpdate, VehicleFactory.eVehicleType i_vehicleType)
+        {
+            float currentAirPressure;
+            Console.Write("Model: ");
+            i_VehicleToUpdate.ModelName = Console.ReadLine().Trim();
+            i_VehicleToUpdate.Energy.CurrentEnergy = getNumericInput(i_VehicleToUpdate.Energy.MaxCapacity, String.Format("{0}: ", i_VehicleToUpdate.Energy.EnergyUnits()).ToString());
+            currentAirPressure = getNumericInput(i_VehicleToUpdate.TiresList[0].MaxAirPressure, "Tires air pressure: ");
+            Console.Write("Tiers manufacturer's name: ");
+            i_VehicleToUpdate.UpdateWheelsInfo(currentAirPressure, Console.ReadLine().Trim());
+            SetVehicleUniqueInfo(i_VehicleToUpdate, i_vehicleType);
+        }
+
+        private void SetVehicleUniqueInfo(Vehicle i_VehicleToUpdate, VehicleFactory.eVehicleType i_vehicleType)
+        {
+            Dictionary<string, string[]> uniqueAttributesDictionary = i_VehicleToUpdate.GetUniqueAtttributesDictionary();
+            List<string> userInputAttributes = new List<string>(uniqueAttributesDictionary.Count);
+            int attributeValuesNum;
+
+            foreach (string key in uniqueAttributesDictionary.Keys)
+            {
+                attributeValuesNum = uniqueAttributesDictionary[key].Length;
+
+                if (attributeValuesNum > 1)
+                {
+                    printMultiChoiceList(key, uniqueAttributesDictionary[key]);
+                    printEnterChoiceMsg();
+                }
+                else
+                {
+                    Console.Write("Enter {0}: ", key);
+                }
+
+                SetVehicleUniquePropertyInput(i_VehicleToUpdate, key);
+            }
+        }
+
+        private void SetVehicleUniquePropertyInput(Vehicle i_Vehicle, string i_Key)
+        {
+            string userInput;
+            bool isValid = false;
+
+            do
+            {
+                userInput = Console.ReadLine();
+                try
+                {
+                    i_Vehicle.UpdateUniqueProperties(i_Key, userInput);
+                    isValid = true;
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+
+            } while (!isValid);
+
+        }
+
+        private void displayVehiclesLicensePlateList()
+        {
+            bool isStatusValid = false;
+            string filterStr = string.Empty;
+            string[] enumNames = Enum.GetNames(typeof(Garage.eVehicleStatus));
+            printMultiChoiceList(Garage.k_VehicleStatusKey, enumNames);
+            Console.WriteLine("< {0} > None", enumNames.Length + 1);
+            do
+            {
+                try
+                {
+                    printEnterChoiceMsg();
+                    filterStr = Console.ReadLine();
+                    string displayVehicleList = m_Garage.DisplayVehiclesList(filterStr);
+                    Console.WriteLine("{0}Vehicles in garage with the chosen status are: ", Environment.NewLine);
+                    if (displayVehicleList == string.Empty)
+                    {
+                        displayVehicleList = "<No vehicles in garage with this status.>";
+                    }
+                    Console.WriteLine("{0}{1}", Environment.NewLine, displayVehicleList);
+                    isStatusValid = true;
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+
+            } while (!isStatusValid);
+        }
+
+        private void updateVehicleStatus(string i_LicensePlate)
+        {
+            bool isUpdateSuccessful = false;
+            printMultiChoiceList(Garage.k_VehicleStatusKey, Enum.GetNames(typeof(Garage.eVehicleStatus)));
+
+            do
+            {
+                try
+                {
+                    printEnterChoiceMsg();
+                    string statusToUpdateStr = Console.ReadLine();
+                    this.m_Garage.UpdateVehicleStatus(i_LicensePlate, statusToUpdateStr);
+                    isUpdateSuccessful = true;
+                    Console.WriteLine("The vehicle with license plate \"{0}\" status was updated successfuly", i_LicensePlate);
+                }
+
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+
+            } while (!isUpdateSuccessful);
         }
 
         private void inflateTieresToMax(string i_PlateNumber)
@@ -138,28 +278,19 @@ vehicle's status was updated to: 'In Process'");
             }
         }
 
-        private void updateVehicleStatus(string i_LicensePlate)
+        private float GetAmountOfUnitsToAdd(string i_UnitsToAddKey)
         {
-            bool isUpdateSuccessful = false;
-            printMultiChoiceList(Garage.k_VehicleStatusKey, Enum.GetNames(typeof(Garage.eVehicleStatus)));
+            Console.Write("Enter {0} to add: ", i_UnitsToAddKey);
+            float userInput;
+            bool isSuccessful = float.TryParse(Console.ReadLine(), out userInput);
 
-            do
+            while (!isSuccessful)
             {
-                try
-                {
-                    printEnterChoiceMsg();
-                    string statusToUpdateStr = Console.ReadLine();
-                    this.m_Garage.UpdateVehicleStatus(i_LicensePlate, statusToUpdateStr);
-                    isUpdateSuccessful = true;
-                    Console.WriteLine("The vehicle with license plate \"{0}\" status was updated successfuly", i_LicensePlate);
-                }
-                
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception.Message);
-                }
+                Console.WriteLine("Invalid input!");
+                isSuccessful = float.TryParse(Console.ReadLine(), out userInput);
+            }
 
-            } while (!isUpdateSuccessful);
+            return userInput;
         }
 
         private void displayVehicleFullDetails(string i_PlateNumber)
@@ -167,91 +298,6 @@ vehicle's status was updated to: 'In Process'");
             Console.Clear();
             Console.WriteLine("Vehicle Information:");
             Console.WriteLine(m_Garage.DisplayVehicleFullDeatails(i_PlateNumber));
-        }
-
-        private void displayVehiclesLicensePlateList()
-        {
-            bool isStatusValid = false;
-            string filterStr = string.Empty;
-            string[] enumNames = Enum.GetNames(typeof(Garage.eVehicleStatus));
-            printMultiChoiceList(Garage.k_VehicleStatusKey, enumNames);
-            Console.WriteLine("< {0} > None", enumNames.Length + 1);
-            do
-            {
-                try
-                {
-                    printEnterChoiceMsg();
-                    filterStr = Console.ReadLine();
-                    string displayVehicleList = m_Garage.DisplayVehiclesList(filterStr);
-                    Console.WriteLine("{0}Vehicles in garage with the chosen status are: ", Environment.NewLine);
-                    if (displayVehicleList == string.Empty)
-                    {
-                        displayVehicleList = "<No vehicles in garage with this status.>";
-                    }
-                    Console.WriteLine("{0}{1}", Environment.NewLine, displayVehicleList);
-                    isStatusValid = true;
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception.Message);
-                }
-
-            } while (!isStatusValid);
-        }
-
-        private Vehicle CreateNewVehicle(string i_UserPlateNumber)
-        {
-            Vehicle newVehicle;
-            VehicleFactory.eVehicleType newVehicleType;
-            string userChoice;
-
-            printMultiChoiceList(VehicleFactory.k_VehicleTypeKey, Enum.GetNames(typeof(VehicleFactory.eVehicleType)));
-            printEnterChoiceMsg();
-            userChoice = Console.ReadLine();
-            
-            newVehicleType = LogicUtils.EnumValidation<VehicleFactory.eVehicleType>(userChoice, VehicleFactory.k_VehicleTypeKey);
-            newVehicle = VehicleFactory.CreateVehicle(i_UserPlateNumber, newVehicleType);
-
-            SetVehicleInfo(newVehicle,newVehicleType);
-            
-            return newVehicle;
-
-        }
-
-        private void SetVehicleInfo(Vehicle i_VehicleToUpdate, VehicleFactory.eVehicleType i_vehicleType)
-        {
-            float currentAirPressure;
-            Console.WriteLine("Please Enter the following information: {0}", Environment.NewLine);
-            Console.Write("Model: ");
-            i_VehicleToUpdate.ModelName = Console.ReadLine();
-            i_VehicleToUpdate.Energy.CurrentEnergy = getNumericInput(i_VehicleToUpdate.Energy.MaxCapacity,String.Format("{0}: ", i_VehicleToUpdate.Energy.EnergyUnits()).ToString() );
-            currentAirPressure = getNumericInput(i_VehicleToUpdate.TiresList[0].MaxAirPressure, "Tires air pressure: ");
-            Console.Write("Tiers manufacturer's name: ");
-            i_VehicleToUpdate.UpdateWheelsInfo(currentAirPressure , Console.ReadLine());
-            SetVehicleUniqueInfo(i_VehicleToUpdate, i_vehicleType);
-        }
-
-        private void SetVehicleUniqueInfo(Vehicle i_VehicleToUpdate, VehicleFactory.eVehicleType i_vehicleType)
-        {
-            Dictionary<string, string[]> uniqueAttributesDictionary = i_VehicleToUpdate.GetUniqueAtttributesDictionary();
-            List<string> userInputAttributes = new List<string>(uniqueAttributesDictionary.Count);
-            int attributeValuesNum;
-
-            foreach (string key in uniqueAttributesDictionary.Keys)
-            {
-                attributeValuesNum = uniqueAttributesDictionary[key].Length;
-                
-                if (attributeValuesNum > 1)
-                {
-                    printMultiChoiceList(key, uniqueAttributesDictionary[key]);
-                }
-                else
-                {
-                    Console.WriteLine("Enter {0}: ", key);
-                }
-
-                SetVehicleUniquePropertyInput(i_VehicleToUpdate, key);
-            }
         }
 
         private float getNumericInput(float i_MaximumValue, string i_AskUserMsg)
@@ -278,29 +324,6 @@ vehicle's status was updated to: 'In Process'");
             return numericInput;
         }
 
-        private void SetVehicleUniquePropertyInput(Vehicle i_Vehicle, string i_Key)
-        {
-            string userInput;
-            bool isValid = false;
-
-            do
-            {
-                printEnterChoiceMsg();
-                userInput = Console.ReadLine();
-                try
-                {
-                    i_Vehicle.UpdateUniqueProperties(i_Key, userInput);
-                    isValid = true;
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception.Message);
-                }
-
-            } while (!isValid);
-
-        }
-
         private eUserChoice getUserChoice()
         {
             eUserChoice userChoice = eUserChoice.ExitProgram;
@@ -324,6 +347,24 @@ vehicle's status was updated to: 'In Process'");
 
 
             return userChoice;
+        }
+        private void getLicensePlate(ref string io_PlateNumber, ref eUserChoice io_UserChoice)
+        {
+            if (Enum.IsDefined(typeof(eUserChoice), io_UserChoice) && io_UserChoice != eUserChoice.DisplayVehicleList && io_UserChoice != eUserChoice.ExitProgram)
+            {
+                Console.Write("Enter your registration plate number: ");
+                io_PlateNumber = Console.ReadLine().Trim();
+                bool isVehicleInGarage = m_Garage.isVehicleInGarage(io_PlateNumber);
+
+                if (!isVehicleInGarage)
+                {
+                    if (io_UserChoice != eUserChoice.InsertNewVehicle)
+                    {
+                        Console.WriteLine("No matching vehicle with license plate \"{0}\" found in the garage.", io_PlateNumber);
+                        io_UserChoice = 0;
+                    }
+                }
+            }
         }
 
         private void printEnterChoiceMsg()
@@ -369,38 +410,5 @@ Please choose an action to execut:
             Console.WriteLine();
         }
 
-        private void getLicensePlate(ref string io_PlateNumber, ref eUserChoice io_UserChoice)
-        {
-            if(Enum.IsDefined(typeof(eUserChoice), io_UserChoice) && io_UserChoice != eUserChoice.DisplayVehicleList && io_UserChoice != eUserChoice.ExitProgram)
-            {
-                Console.Write("Enter your registration plate number: ");
-                io_PlateNumber = Console.ReadLine();
-                bool isVehicleInGarage = m_Garage.isVehicleInGarage(io_PlateNumber);
-               
-                if (!isVehicleInGarage)
-                {
-                    if (io_UserChoice != eUserChoice.InsertNewVehicle)
-                    {
-                        Console.WriteLine("No matching vehicle with license plate \"{0}\" found in the garage.", io_PlateNumber);
-                        io_UserChoice = 0;
-                    }
-                }
-            }
-        }
-
-        private float GetAmountOfUnitsToAdd(string i_UnitsToAddKey)
-        {
-            Console.Write("Enter {0} to add: ", i_UnitsToAddKey);
-            float userInput;
-            bool isSuccessful = float.TryParse(Console.ReadLine(), out userInput);
-
-            while (!isSuccessful)
-            {
-                Console.WriteLine("Invalid input!");
-                isSuccessful = float.TryParse(Console.ReadLine(), out userInput);
-            }
-
-            return userInput;
-        }
     }
 }
