@@ -17,8 +17,6 @@ namespace Ex03.GarageLogic
         private const float k_ElectricCarMaxEnergyCapacity = 3.2f;
         private const float k_ElectricMotorcycleMaxEnergyCapacity = 1.8f;
 
-        //private List<Vehicle> m_SupportedVeihiclesInSystem;
-
         public static Vehicle CreateVehicle(string i_LicensePlate , Vehicle.eVehicleType i_VehicleType)
         {
             Vehicle newVehicle = null;

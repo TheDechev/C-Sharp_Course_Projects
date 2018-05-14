@@ -60,6 +60,14 @@ namespace Ex03.GarageLogic
             }
         }
 
+        public List<Wheel> TiresList
+        {
+            get
+            {
+                return this.m_WheelsList;
+            }
+        }
+
         public void InflateWheelsToMax()
         {
             foreach(Wheel wheel in m_WheelsList)
@@ -69,14 +77,6 @@ namespace Ex03.GarageLogic
         }
 
         public abstract void UpdateUniqueProperties(string i_Key, string i_Value);
-
-        public List<Wheel> TiresList
-        {
-            get
-            {
-                return this.m_WheelsList;
-            }
-        }
 
         public abstract string GetUniquePropertiesInfo();
 

@@ -80,17 +80,6 @@ namespace Ex03.ConsoleUI
            
     }
 
-        private void printExitPorgramMsg()
-        {
-            Console.Write("Exiting program ");
-            for (int i = 0; i < 10; i++)
-            {
-                Console.Write(" . ");
-                Thread.Sleep(100);
-            }
-            Console.WriteLine();
-        }
-
         private void inflateTieresToMax(string i_PlateNumber)
         {
             this.m_Garage.InflateTireToMax(i_PlateNumber);
@@ -167,12 +156,6 @@ namespace Ex03.ConsoleUI
             return Enum.IsDefined(typeof(eUserChoice), i_UserChoice);
         }
 
-        private void printEnterChoiceMsg()
-        {
-            Console.Write("Enter your choice: ");
-        }
-
-
         private void updateVehicleStatus(string i_LicensePlate)
         {
             string statusToUpdateStr;
@@ -198,16 +181,6 @@ namespace Ex03.ConsoleUI
                 }
             } while (isPlateExist); 
         }
-
-        private void printUpdateStatusSubMenu()
-        {        
-            Console.WriteLine(
-@"Choose the desire status to update:
-< 1 > In process
-< 2 > Repaired
-< 3 > Paid
-");
-    }
 
         private void displayVehiclesList()
         {
@@ -301,14 +274,6 @@ vehicle's status was updated to: 'In Process'");
 
         }
 
-        private void printMultiChoiceList(string i_ListKey, string[] i_List)
-        {
-            Console.WriteLine("Choose from the following {0} list: ", i_ListKey);
-            for (int i = 0; i < i_List.Length; i++)
-            {
-                Console.WriteLine("< {0} > {1}", i + 1, i_List[i]);
-            }
-        }
 
         private float getNumericInput(float i_MaximumValue, string i_AskUserMsg)
         {
@@ -356,17 +321,6 @@ vehicle's status was updated to: 'In Process'");
 
         }
 
-        private void printVehicleTypeSubMenu()
-        {
-            Console.WriteLine(
-@"Enter yours vehicle type:
-< 1 > Electric car
-< 2 > Fuel car
-< 3 > Electric motorcycle
-< 4 > Fuel motorcycle
-< 5 > Fuel truck
-        ");
-        }
 
         private string getRegistrationPlateNumber()
         {
@@ -400,6 +354,42 @@ vehicle's status was updated to: 'In Process'");
             return userChoice;
         }
 
+        private void printEnterChoiceMsg()
+        {
+            Console.Write("Enter your choice: ");
+        }
+
+        private void printUpdateStatusSubMenu()
+        {
+            Console.WriteLine(
+@"Choose the desire status to update:
+< 1 > In process
+< 2 > Repaired
+< 3 > Paid
+");
+        }
+
+        private void printMultiChoiceList(string i_ListKey, string[] i_List)
+        {
+            Console.WriteLine("Choose from the following {0} list: ", i_ListKey);
+            for (int i = 0; i < i_List.Length; i++)
+            {
+                Console.WriteLine("< {0} > {1}", i + 1, i_List[i]);
+            }
+        }
+
+        private void printVehicleTypeSubMenu()
+        {
+            Console.WriteLine(
+@"Enter yours vehicle type:
+< 1 > Electric car
+< 2 > Fuel car
+< 3 > Electric motorcycle
+< 4 > Fuel motorcycle
+< 5 > Fuel truck
+        ");
+        }
+
         private void PrintMenu()
         {
             Console.WriteLine(
@@ -426,6 +416,17 @@ Please choose an action to execut:
 < 3 > Paid
 < 4 > Without fillter
             ");
+        }
+
+        private void printExitPorgramMsg()
+        {
+            Console.Write("Exiting program ");
+            for (int i = 0; i < 10; i++)
+            {
+                Console.Write(" . ");
+                Thread.Sleep(100);
+            }
+            Console.WriteLine();
         }
     }
 }
