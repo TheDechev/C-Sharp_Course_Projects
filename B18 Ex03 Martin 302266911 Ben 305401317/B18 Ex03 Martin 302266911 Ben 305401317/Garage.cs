@@ -49,7 +49,6 @@ namespace Ex03.GarageLogic
         public void InflateTireToMax(string i_LicensePlate)
         {
             CheckLicensePlate(i_LicensePlate);
-
             m_Vehicle[i_LicensePlate].Vehicle.InflateWheelsToMax();
         }
         

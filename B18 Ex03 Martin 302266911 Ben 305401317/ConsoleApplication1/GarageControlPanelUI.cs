@@ -71,9 +71,6 @@ namespace Ex03.ConsoleUI
                         exitProgram = true;
                         printExitPorgramMsg();
                         break;
-                    default:
-                        printInvalidInputMsg();
-                        break;
                 }
 
                 Console.WriteLine("{0}< Press 'Any Key' to return to main menu >",Environment.NewLine);
@@ -96,7 +93,8 @@ namespace Ex03.ConsoleUI
 
         private void inflateTieresToMax(string i_PlateNumber)
         {
-            
+            this.m_Garage.InflateTireToMax(i_PlateNumber);
+            Console.WriteLine("The vehicle's tires inflated to the maximum air pressure.");
         }
 
         private void refuelVehicle(string i_PlateNumber)
@@ -167,22 +165,12 @@ namespace Ex03.ConsoleUI
             Console.Write("Enter your choice: ");
         }
 
-        private void printInvalidInputMsg()
-        {
-            throw new NotImplementedException();
-        }
-
         private void chargeVehicle()
         {
             throw new NotImplementedException();
         }
 
         private void refuelVehicle()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void inflateTieres()
         {
             throw new NotImplementedException();
         }
@@ -197,7 +185,6 @@ namespace Ex03.ConsoleUI
 
             do
             {
-                
                 printEnterChoiceMsg();
                 statusToUpdateStr = Console.ReadLine();
                 statusToUpdate = LogicUtils.EnumValidation<Garage.eVehicleStatus>(statusToUpdateStr, k_VehicleStatusKey);
