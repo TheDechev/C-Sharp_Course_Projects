@@ -10,7 +10,6 @@ namespace Ex03.GarageLogic
     {
 
         private readonly string k_ElectricUnits = "Battery time in hours";
-
         public float BatteryTimeLeft
         {
             get
@@ -20,7 +19,7 @@ namespace Ex03.GarageLogic
 
             set
             {
-                if (value + m_CurrentEnergy > m_MaxCapacity)
+                if (value > m_MaxCapacity)
                 {
                     throw new ValueOutOfRangeException("Exceeded max battery time!", m_CurrentEnergy, m_MaxCapacity);
                 }

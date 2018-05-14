@@ -99,13 +99,25 @@ namespace Ex03.ConsoleUI
 
         private void refuelVehicle(string i_PlateNumber)
         {
-            bool isRefuelSuccessful = false;
+            energyFill(i_PlateNumber, FuelEnergy.k_FuelTypeKey);
+            Console.WriteLine("The vehicle with license plate: {0} was refueled successfuly!", i_PlateNumber);
+        }
+
+        private void chargeVehicle(string i_PlateNumber)
+        {
+            energyFill(i_PlateNumber, string.Empty);
+            Console.WriteLine("The vehicle with license plate: {0} was charged successfuly!", i_PlateNumber);
+        }
+
+        private void energyFill(string i_PlateNumber, string i_EnergyType)
+        {
+            bool isFillSuccessful = false;
             float amountToAdd;
-            Console.WriteLine("Please choose from the following fuel types:");
-            string[] fuelTypeList = Enum.GetNames(typeof(FuelEnergy.eFuelType));
-            for (int i = 0; i < fuelTypeList.Length; i++)
+
+            if(i_EnergyType != string.Empty)
             {
-                Console.WriteLine("< {0} > {1}", i + 1, fuelTypeList[i]);
+                string[] fuelTypeList = Enum.GetNames(typeof(FuelEnergy.eFuelType));
+                printMultiChoiceList(i_EnergyType, fuelTypeList);
             }
             do
             {
@@ -113,32 +125,26 @@ namespace Ex03.ConsoleUI
                 try
                 {
                     FuelEnergy.eFuelType fuelTypeChosen = LogicUtils.EnumValidation<FuelEnergy.eFuelType>(Console.ReadLine(), FuelEnergy.k_FuelTypeKey);
-                    Console.Write("Please enter amount of fuel to add:");
+                    Console.Write("Please enter amount to add: ");
 
                     while (!float.TryParse(Console.ReadLine(), out amountToAdd))
                     {
                         Console.WriteLine("Invalid input!");
-                        Console.Write("Please enter amount of fuel to add:");
+                        Console.Write("Please enter amount to add: ");
                     }
                     m_Garage.RefuelFuelVehicle(i_PlateNumber, fuelTypeChosen, amountToAdd);
-                    isRefuelSuccessful = true;
+                    isFillSuccessful = true;
                 }
                 catch (Exception exception)
                 {
                     if (exception.Message == Garage.k_LicenseNotFound)
                     {
-                        isRefuelSuccessful = true;
+                        isFillSuccessful = true;
                     }
                     Console.WriteLine(exception.Message);
                 }
-                
 
-            } while (!isRefuelSuccessful);
-        }
-
-        private void chargeVehicle(string i_PlateNumber)
-        {
-            throw new NotImplementedException();
+            } while (!isFillSuccessful);
         }
 
         private void displayVehicleFullDetails(string i_PlateNumber)
@@ -286,14 +292,14 @@ vehicle's status was updated to: 'In Process'");
             foreach (string key in uniqueAttributesDictionary.Keys)
             {
                 attributeValuesNum = uniqueAttributesDictionary[key].Length;
-                Console.WriteLine("Enter {0}: ", key);
+                
                 if (attributeValuesNum > 1)
                 {
-                    Console.WriteLine("Choose from the following list {0}: ", key);
-                    for (int i = 0; i < uniqueAttributesDictionary[key].Length; i++)
-                    {
-                        Console.WriteLine("< {0} > {1}", i + 1, uniqueAttributesDictionary[key][i]);
-                    }
+                    printMultiChoiceList(key, uniqueAttributesDictionary[key]);
+                }
+                else
+                {
+                    Console.WriteLine("Enter {0}: ", key);
                 }
 
                 SetVehicleUniquePropertyInput(i_VehicleToUpdate, key);
@@ -302,9 +308,13 @@ vehicle's status was updated to: 'In Process'");
 
         }
 
-        private void printMultiChoiceList()
+        private void printMultiChoiceList(string i_ListKey, string[] i_List)
         {
-
+            Console.WriteLine("Choose from the following {0} list: ", i_ListKey);
+            for (int i = 0; i < i_List.Length; i++)
+            {
+                Console.WriteLine("< {0} > {1}", i + 1, i_List[i]);
+            }
         }
 
         private float getNumericInput(float i_MaximumValue, string i_AskUserMsg)
