@@ -36,7 +36,7 @@ namespace Ex03.GarageLogic
 
             set
             {
-                if(value > m_MaxCapacity)
+                if(value + m_CurrentEnergy > m_MaxCapacity)
                 {
                     throw new ValueOutOfRangeException("Exceeded max capacity of the fuel system!", m_CurrentEnergy, m_MaxCapacity);
                 }
@@ -64,7 +64,7 @@ namespace Ex03.GarageLogic
                 throw new ArgumentException("Wrong fuel type!");
             }
 
-           this.CurrentFuelAmount += i_FuelAmountToAdd;
+            this.CurrentFuelAmount += i_FuelAmountToAdd;
         }
 
         public override string EnergyUnits()
