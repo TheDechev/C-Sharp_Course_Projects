@@ -56,7 +56,7 @@ namespace Ex03.ConsoleUI
                         updateVehicleStatus(plateNumber);
                         break;
                     case eUserChoice.InflateTieres:
-                        inflateTieres(plateNumber);
+                        inflateTieresToMax(plateNumber);
                         break;
                     case eUserChoice.RefuelVehicle:
                         refuelVehicle(plateNumber);
@@ -94,9 +94,9 @@ namespace Ex03.ConsoleUI
             Console.WriteLine();
         }
 
-        private void inflateTieres(string i_PlateNumber)
+        private void inflateTieresToMax(string i_PlateNumber)
         {
-            throw new NotImplementedException();
+            
         }
 
         private void refuelVehicle(string i_PlateNumber)
