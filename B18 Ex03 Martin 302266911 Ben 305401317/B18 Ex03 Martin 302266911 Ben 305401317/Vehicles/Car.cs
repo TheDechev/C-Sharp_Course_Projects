@@ -92,6 +92,5 @@ namespace Ex03.GarageLogic
 Number of doors: {1}", m_Color, m_DoorsNumber);
         }
 
-
     }
 }

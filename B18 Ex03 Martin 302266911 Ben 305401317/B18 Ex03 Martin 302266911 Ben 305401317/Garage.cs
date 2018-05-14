@@ -8,10 +8,15 @@ namespace Ex03.GarageLogic
 {
     public class Garage
     {
+        public enum eVehicleStatus
+        {
+            InProcess = 1,
+            Repaired,
+            Paid
+        }
 
         public const string k_VehicleStatusKey = "Vehicle status";
-        public const string k_LicenseNotFound = "License plate not found!";
-
+        public string k_NoStatusFilter = (Enum.GetNames(typeof(eVehicleStatus)).Length+1).ToString();
         private Dictionary<string, ClientVehicle> m_Vehicle = new Dictionary<string, ClientVehicle>();
 
         public Garage()
@@ -29,13 +34,7 @@ namespace Ex03.GarageLogic
             m_Vehicle.Add("ElectricMotorcycle-Test", new ClientVehicle(testVehicle5, "Be", "050-5123456"));
         }
 
-        public enum eVehicleStatus
-        {
-            InProcess = 1,
-            Repaired,
-            Paid,
-            None
-        }
+
 
         public void insertVehicle(Vehicle i_VehicleToAdd, string i_ClientName, string i_ClientPhoneNumber)
         {
@@ -53,10 +52,10 @@ namespace Ex03.GarageLogic
             m_Vehicle[i_LicensePlate].Vehicle.InflateWheelsToMax();
         }
         
-        public void RefuelFuelVehicle(string i_LicensePlate, FuelEnergy.eFuelType i_FuelType, float i_FuelToAdd)
+        public void RefuelFuelVehicle(string i_LicensePlate, string i_EnergyType , float i_FuelToAdd)
         {
+            FuelEnergy.eFuelType fuelTypeChosen = LogicUtils.EnumValidation<FuelEnergy.eFuelType>(i_EnergyType, FuelEnergy.k_FuelTypeKey);
             CheckLicensePlate(i_LicensePlate);
-
             FuelEnergy currentEnergy = m_Vehicle[i_LicensePlate].Vehicle.Energy as FuelEnergy;
 
             if(currentEnergy == null)
@@ -64,7 +63,7 @@ namespace Ex03.GarageLogic
                 throw new ArgumentException("Vehicle doesn't have fuel type energy!");
             }
 
-            currentEnergy.Refuel(i_FuelToAdd, i_FuelType);
+            currentEnergy.Refuel(i_FuelToAdd, fuelTypeChosen);
         }
 
         public void RechargeElectricVehicle(string i_LicensePlate, float i_MinutesToAdd)
@@ -81,11 +80,18 @@ namespace Ex03.GarageLogic
             currentEnergy.Charge(i_MinutesToAdd);
         }
 
-        public void UpdateVehicleStatus(string i_LicensePlate, eVehicleStatus i_NewStatus)
+        public void UpdateVehicleStatus(string i_LicensePlate, string i_NewStatus)
         {
-            CheckLicensePlate(i_LicensePlate);
-
-            m_Vehicle[i_LicensePlate].Status = i_NewStatus;
+            if (isVehicleInGarage(i_LicensePlate))
+            {
+                m_Vehicle[i_LicensePlate].Status = eVehicleStatus.InProcess;
+            }
+            else
+            {
+                Garage.eVehicleStatus statusToUpdate = LogicUtils.EnumValidation<Garage.eVehicleStatus>(i_NewStatus, k_VehicleStatusKey);
+                CheckLicensePlate(i_LicensePlate);
+                m_Vehicle[i_LicensePlate].Status = statusToUpdate;
+            }
         }
 
         public string DisplayVehicleFullDeatails(string i_LicensePlate)
@@ -124,13 +130,19 @@ Fuel liters remaining percentage: {1}", ((FuelEnergy)vehicleToCheck.Energy).Fuel
             return vehicleInfo.ToString();
         }
 
-        public string DisplayVehiclesList(eVehicleStatus i_FilterByStatus)
+        public string DisplayVehiclesList(string i_FilterByStatus)
         {
+            eVehicleStatus fillter = eVehicleStatus.InProcess;
             StringBuilder licensePlatesStr = new StringBuilder();
+
+            if (i_FilterByStatus != k_NoStatusFilter)
+            {
+                fillter = LogicUtils.EnumValidation<Garage.eVehicleStatus>(i_FilterByStatus, Garage.k_VehicleStatusKey);
+            }
 
             foreach (ClientVehicle client in m_Vehicle.Values)
             {
-                if (i_FilterByStatus == eVehicleStatus.None || client.Status == i_FilterByStatus)
+                if (i_FilterByStatus == k_NoStatusFilter || client.Status == fillter)
                 {
                     licensePlatesStr.Append(string.Format("{0}{1}", client.Vehicle.LicensePlate, Environment.NewLine).ToString());
                 }
@@ -143,7 +155,7 @@ Fuel liters remaining percentage: {1}", ((FuelEnergy)vehicleToCheck.Energy).Fuel
         {
             if (!isVehicleInGarage(i_LicensePlate))
             {
-                throw new ArgumentException(k_LicenseNotFound);
+                throw new ArgumentException("License plate not found!");
             }
         }
 

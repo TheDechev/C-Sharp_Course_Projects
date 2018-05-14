@@ -39,20 +39,21 @@ namespace Ex03.GarageLogic
             }
         }
 
-
         public override void UpdateUniqueProperties(string i_Key, string i_Value)
         {
+            const int trueValue = 1;
+            const int falseValue = 2;
             int trunkCool;
             if (i_Key == k_IsTrunkCooledKey)
             {
                 int.TryParse(i_Value, out trunkCool);
 
-                if(trunkCool > 1 || trunkCool < 0)
+                if(trunkCool > falseValue || trunkCool < trueValue)
                 {
-                    throw new ValueOutOfRangeException(trunkCool, 1);
+                    throw new ValueOutOfRangeException(0, 1);
                 }
 
-                this.m_IsTrunkCooled = (trunkCool == 1);
+                this.m_IsTrunkCooled = (trunkCool == trueValue);
             }
             else if (i_Key == k_TrunkCapacityKey)
             {
