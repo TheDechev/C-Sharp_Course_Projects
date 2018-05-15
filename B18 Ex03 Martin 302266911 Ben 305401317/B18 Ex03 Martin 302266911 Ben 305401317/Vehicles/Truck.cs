@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
@@ -77,7 +74,7 @@ Cooled trunk: {1}",
             Dictionary<string, string[]> stringAttributes = new Dictionary<string, string[]>();
             string[] isCooled = { bool.TrueString, bool.FalseString };
             stringAttributes.Add(k_IsTrunkCooledKey, isCooled);
-            stringAttributes.Add(k_TrunkCapacityKey, new string[] {});
+            stringAttributes.Add(k_TrunkCapacityKey, new string[] { });
 
             return stringAttributes;
         }

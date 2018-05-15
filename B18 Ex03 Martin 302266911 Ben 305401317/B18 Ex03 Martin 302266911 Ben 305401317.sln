@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex03.GarageLogic", "B18 Ex0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex03.ConsoleUI", "ConsoleApplication1\Ex03.ConsoleUI.csproj", "{F0A4711B-E374-4957-ADAD-16B52448336E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8015FAAE-500C-45FB-990F-B1A61F7DF03D}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\לימודים\שנה ב\סמסטר ב\C#\תרגיל 3\להגשה\Garage diagram.docx = ..\..\..\לימודים\שנה ב\סמסטר ב\C#\תרגיל 3\להגשה\Garage diagram.docx
+		SUBMIT DN MTA B18 Ex03 MartinDechev 302266911 BenBublil 305401317.txt = SUBMIT DN MTA B18 Ex03 MartinDechev 302266911 BenBublil 305401317.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
