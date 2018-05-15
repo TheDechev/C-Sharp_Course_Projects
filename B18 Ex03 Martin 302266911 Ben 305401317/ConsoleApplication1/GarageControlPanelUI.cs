@@ -7,9 +7,7 @@ namespace Ex03.ConsoleUI
 {
     public class GarageControlPanelUI
     {
-        private const string k_VehicleStatusKey = "Vehicle status";
         private const string k_UserChoiceKey = "User choice";
-        private const string k_VehicleInGarageStr = "Update to process";
         private const string k_LoadingChar = " . ";
         private const long k_MaxPhoneNumber = 99999999999;
         private Garage m_Garage = new Garage();
