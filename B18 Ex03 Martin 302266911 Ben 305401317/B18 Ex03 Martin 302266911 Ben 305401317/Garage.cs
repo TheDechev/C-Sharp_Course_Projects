@@ -15,7 +15,7 @@ namespace Ex03.GarageLogic
             Paid
         }
 
-        public const string k_VehicleStatusKey = "Vehicle status";
+        public static readonly string k_VehicleStatusKey = "Vehicle status";
         public string k_NoStatusFilter = (Enum.GetNames(typeof(eVehicleStatus)).Length + 1).ToString();
         private Dictionary<string, ClientVehicle> m_Vehicle = new Dictionary<string, ClientVehicle>();
 
@@ -114,7 +114,7 @@ Fuel liters remaining percentage: {1}",
             else if (vehicleToCheck.Energy is ElectricEnergy)
             {
                 vehicleInfo.Append(string.Format(
-@"Battery ramining percentage: {0}", vehicleToCheck.Energy.RemainingEnergyPercentage.ToString("0.##\\%")));
+@"Battery remaining percentage: {0}", vehicleToCheck.Energy.RemainingEnergyPercentage.ToString("0.##\\%")));
             }
 
             vehicleInfo.Append(string.Format("{0}{1}", Environment.NewLine, vehicleToCheck.GetUniquePropertiesInfo()));

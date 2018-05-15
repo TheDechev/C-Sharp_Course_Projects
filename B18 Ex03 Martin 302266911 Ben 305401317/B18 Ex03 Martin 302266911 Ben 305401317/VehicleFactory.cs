@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
         private const float k_FuelMotorcycleMaxEnergyCapacity = 6f;
         private const float k_ElectricCarMaxEnergyCapacity = 3.2f;
         private const float k_ElectricMotorcycleMaxEnergyCapacity = 1.8f;
-        public const string k_VehicleTypeKey = "Vehicle Type";
+        public static readonly string k_VehicleTypeKey = "Vehicle Type";
 
         public enum eVehicleType
         {
