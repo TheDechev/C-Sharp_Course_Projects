@@ -38,7 +38,7 @@ namespace Ex03.GarageLogic
                 maxPressure = k_ElectricCarMaxTirePressure;
             }
 
-            base.AddNewTires(k_CarNumberOfTires, maxPressure);
+            this.AddNewTires(k_CarNumberOfTires, maxPressure);
         }
 
         public override void UpdateUniqueProperties(string i_Key, string i_Value)

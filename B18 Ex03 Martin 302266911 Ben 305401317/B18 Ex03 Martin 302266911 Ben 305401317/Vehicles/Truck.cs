@@ -15,7 +15,7 @@ namespace Ex03.GarageLogic
 
         internal Truck(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType)
         {
-            base.AddNewTires(k_TruckNumberOfTires, k_TruckMaxTirePressure);
+            this.AddNewTires(k_TruckNumberOfTires, k_TruckMaxTirePressure);
         }
 
         public bool isTrunkCooled

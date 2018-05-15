@@ -22,7 +22,7 @@ namespace Ex03.GarageLogic
 
         internal Motorcycle(string i_LicensePlate, Energy i_EnergyType) : base(i_LicensePlate, i_EnergyType)
         {
-            base.AddNewTires(k_MotorcycleNumberOfTires, k_MotorcycleMaxTirePressure);
+            this.AddNewTires(k_MotorcycleNumberOfTires, k_MotorcycleMaxTirePressure);
         }
 
         public override void UpdateUniqueProperties(string i_Key, string i_Value)
