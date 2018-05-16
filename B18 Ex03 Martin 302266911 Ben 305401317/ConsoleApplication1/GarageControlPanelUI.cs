@@ -8,8 +8,7 @@ namespace Ex03.ConsoleUI
     public class GarageControlPanelUI
     {
         private const string k_UserChoiceKey = "User choice";
-        private const string k_LoadingChar = " . ";
-        private const long k_MaxPhoneNumber = 99999999999;
+        private const string k_PhoneNumberMsg = "Client's phone number: ";
         private Garage m_Garage = new Garage();
 
         private enum eUserChoice
@@ -87,7 +86,7 @@ vehicle's status was updated to: 'In Process'");
                 string clientName, clientPhone;
                 Console.Write("Client's name: ");
                 clientName = Console.ReadLine().Trim();
-                clientPhone = this.getNumericInput(k_MaxPhoneNumber, "Client's phone number: ").ToString();
+                clientPhone = this.getNumericInput(0, k_PhoneNumberMsg).ToString().Trim();
                 this.m_Garage.insertVehicle(newVehicle, clientName, clientPhone);
                 Console.WriteLine("{0}Vehicle added successfuly!", Environment.NewLine);
             }
@@ -307,7 +306,15 @@ vehicle's status was updated to: 'In Process'");
                 userInput = Console.ReadLine();
                 try
                 {
-                    numericInput = LogicUtils.NumericValueValidation(userInput, i_MaximumValue);
+                    if(i_AskUserMsg == k_PhoneNumberMsg)
+                    {
+                        numericInput = LogicUtils.NumericValueValidation(userInput);
+                    }
+                    else
+                    {
+                        numericInput = LogicUtils.NumericValueValidation(userInput, i_MaximumValue);
+                    }
+                
                     isValid = true;
                 }
                 catch (Exception exception)
@@ -401,7 +408,7 @@ Please choose an action to execut:
             Console.Write("Exiting program ");
             for (int i = 0; i < 10; i++)
             {
-                Console.Write(k_LoadingChar);
+                Console.Write(" . ");
                 Thread.Sleep(100);
             }
 

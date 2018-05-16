@@ -33,6 +33,20 @@ namespace Ex03.GarageLogic
             {
                 return validator;
             }
-        }        
+        }
+
+        public static float NumericValueValidation(string i_InputValue)
+        {
+            float validator;
+
+            if (!float.TryParse(i_InputValue, out validator))
+            {
+                throw new FormatException("Invalid input, not numbers!");
+            }
+            else
+            {
+                return validator;
+            }
+        }
     }
 }
