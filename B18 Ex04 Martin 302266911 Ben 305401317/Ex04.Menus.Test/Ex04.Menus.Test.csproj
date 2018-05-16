@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EDABC6D5-C50A-43F4-B202-9FCDBEEA4E8E}</ProjectGuid>
+    <ProjectGuid>{7AB9E02F-6535-4B6B-A976-284AB662BED3}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>B18_Ex04_Martin_302266911_Ben_305401317</RootNamespace>
-    <AssemblyName>B18 Ex04 Martin 302266911 Ben 305401317</AssemblyName>
+    <RootNamespace>Ex04.Menus.Test</RootNamespace>
+    <AssemblyName>Ex04.Menus.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -36,11 +36,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainMenu.cs" />
     <Compile Include="Program.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
