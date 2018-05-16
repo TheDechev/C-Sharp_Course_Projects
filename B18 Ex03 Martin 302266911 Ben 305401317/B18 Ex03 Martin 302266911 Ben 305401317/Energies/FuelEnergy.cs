@@ -12,9 +12,9 @@ namespace Ex03.GarageLogic
             Soler
         }
 
-        private eFuelType m_FuelType;
         private const string k_FuelUnits = "Liters of fuel";
         private const string k_FuelTypeKey = "Fuel Type";
+        private eFuelType m_FuelType;
 
         public static string FuelUnits
         {

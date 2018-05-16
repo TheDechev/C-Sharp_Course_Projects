@@ -27,21 +27,6 @@ namespace Ex03.GarageLogic
             }
         }
 
-        ///TODO: DELETE CTOR - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        public Garage()
-        {
-            Vehicle testVehicle1 = VehicleFactory.CreateVehicle("FuelCar-Test", VehicleFactory.eVehicleType.FuelCar);
-            Vehicle testVehicle2 = VehicleFactory.CreateVehicle("ElectricCar-Test", VehicleFactory.eVehicleType.ElectricCar);
-            Vehicle testVehicle3 = VehicleFactory.CreateVehicle("FuelMotorcycle-Test", VehicleFactory.eVehicleType.FuelMotorcycle);
-            Vehicle testVehicle4 = VehicleFactory.CreateVehicle("FuelTruck-Test", VehicleFactory.eVehicleType.FuelTruck);
-            Vehicle testVehicle5 = VehicleFactory.CreateVehicle("ElectricMotorcycle-Test", VehicleFactory.eVehicleType.ElectricMotorcycle);
-            this.m_Vehicle.Add("FuelCar-Test", new ClientVehicle(testVehicle1, "Martin", "050-0125456"));
-            this.m_Vehicle.Add("ElectricCar-Test", new ClientVehicle(testVehicle2, "Ben", "050-7123456"));
-            this.m_Vehicle.Add("FuelMotorcycle-Test", new ClientVehicle(testVehicle3, "Mrt-Ben", "050-0423456"));
-            this.m_Vehicle.Add("FuelTruck-Test", new ClientVehicle(testVehicle4, "MBn", "050-0123456"));
-            this.m_Vehicle.Add("ElectricMotorcycle-Test", new ClientVehicle(testVehicle5, "Be", "050-5123456"));
-        }
-
         public void insertVehicle(Vehicle i_VehicleToAdd, string i_ClientName, string i_ClientPhoneNumber)
         {
             this.m_Vehicle.Add(i_VehicleToAdd.LicensePlate, new ClientVehicle(i_VehicleToAdd, i_ClientName, i_ClientPhoneNumber)); 
