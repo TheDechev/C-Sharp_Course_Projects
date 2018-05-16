@@ -15,9 +15,17 @@ namespace Ex03.GarageLogic
             Paid
         }
 
-        public static readonly string k_VehicleStatusKey = "Vehicle status";
-        public string k_NoStatusFilter = (Enum.GetNames(typeof(eVehicleStatus)).Length + 1).ToString();
+        private const string k_VehicleStatusKey = "Vehicle status";
+        private string k_NoStatusFilter = (Enum.GetNames(typeof(eVehicleStatus)).Length + 1).ToString();
         private Dictionary<string, ClientVehicle> m_Vehicle = new Dictionary<string, ClientVehicle>();
+
+        public static string VehicleStatusKey
+        {
+            get
+            {
+                return k_VehicleStatusKey;
+            }
+        }
 
         ///TODO: DELETE CTOR - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         public Garage()

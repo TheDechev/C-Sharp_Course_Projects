@@ -2,7 +2,15 @@
 {
     public class ElectricEnergy : Energy
     {
-        public const string k_ElectricUnits = "Battery time in hours";
+        private const string k_ElectricUnits = "Battery time in hours";
+
+        public static string ElectricUnits
+        {
+            get
+            {
+                return k_ElectricUnits;
+            }
+        }
 
         public float BatteryTimeLeft
         {

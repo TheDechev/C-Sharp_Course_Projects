@@ -100,14 +100,14 @@ vehicle's status was updated to: 'In Process'");
             VehicleFactory.eVehicleType newVehicleType = VehicleFactory.eVehicleType.FuelCar;
             string userChoice;
             Console.WriteLine("{0}Please Enter the following information: {0}", Environment.NewLine);
-            this.printMultiChoiceList(VehicleFactory.k_VehicleTypeKey, Enum.GetNames(typeof(VehicleFactory.eVehicleType)));
+            this.printMultiChoiceList(VehicleFactory.VehicleTypeKey, Enum.GetNames(typeof(VehicleFactory.eVehicleType)));
             this.printEnterChoiceMsg();
             do
             {
                 try
                 {
                     userChoice = Console.ReadLine();
-                    newVehicleType = LogicUtils.EnumValidation<VehicleFactory.eVehicleType>(userChoice, VehicleFactory.k_VehicleTypeKey);
+                    newVehicleType = LogicUtils.EnumValidation<VehicleFactory.eVehicleType>(userChoice, VehicleFactory.VehicleTypeKey);
                     isVehicleTypeValid = true;
                 }
                 catch(Exception exception)
@@ -185,7 +185,7 @@ vehicle's status was updated to: 'In Process'");
             bool isStatusValid = false;
             string filterStr = string.Empty;
             string[] enumNames = Enum.GetNames(typeof(Garage.eVehicleStatus));
-            this.printMultiChoiceList(Garage.k_VehicleStatusKey, enumNames);
+            this.printMultiChoiceList(Garage.VehicleStatusKey, enumNames);
             Console.WriteLine("< {0} > None", enumNames.Length + 1);
             do
             {
@@ -214,7 +214,7 @@ vehicle's status was updated to: 'In Process'");
         private void updateVehicleStatus(string i_LicensePlate)
         {
             bool isUpdateSuccessful = false;
-            this.printMultiChoiceList(Garage.k_VehicleStatusKey, Enum.GetNames(typeof(Garage.eVehicleStatus)));
+            this.printMultiChoiceList(Garage.VehicleStatusKey, Enum.GetNames(typeof(Garage.eVehicleStatus)));
 
             do
             {
@@ -242,14 +242,14 @@ vehicle's status was updated to: 'In Process'");
 
         private void refuelVehicle(string i_PlateNumber)
         {
-            this.printMultiChoiceList(FuelEnergy.k_FuelTypeKey, Enum.GetNames(typeof(FuelEnergy.eFuelType)));
+            this.printMultiChoiceList(FuelEnergy.FuelTypeKey, Enum.GetNames(typeof(FuelEnergy.eFuelType)));
             this.printEnterChoiceMsg();
             string i_Choice = Console.ReadLine();
 
             try
             {
-                FuelEnergy.eFuelType fuelTypeChosen = LogicUtils.EnumValidation<FuelEnergy.eFuelType>(i_Choice, FuelEnergy.k_FuelTypeKey);
-                float amountToAdd = this.getAmountOfUnitsToAdd(FuelEnergy.k_FuelUnits);
+                FuelEnergy.eFuelType fuelTypeChosen = LogicUtils.EnumValidation<FuelEnergy.eFuelType>(i_Choice, FuelEnergy.FuelTypeKey);
+                float amountToAdd = this.getAmountOfUnitsToAdd(FuelEnergy.FuelUnits);
                 this.m_Garage.RefuelFuelVehicle(i_PlateNumber, fuelTypeChosen, amountToAdd);
                 Console.WriteLine("The vehicle with license plate: {0} was refueled successfuly!", i_PlateNumber);
             }
@@ -261,7 +261,7 @@ vehicle's status was updated to: 'In Process'");
 
         private void chargeVehicle(string i_PlateNumber)
         {
-            float amountToAdd = this.getAmountOfUnitsToAdd(ElectricEnergy.k_ElectricUnits);
+            float amountToAdd = this.getAmountOfUnitsToAdd(ElectricEnergy.ElectricUnits);
 
             try
             {

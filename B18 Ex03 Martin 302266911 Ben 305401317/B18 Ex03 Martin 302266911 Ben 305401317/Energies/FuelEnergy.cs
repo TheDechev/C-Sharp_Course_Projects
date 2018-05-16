@@ -13,8 +13,24 @@ namespace Ex03.GarageLogic
         }
 
         private eFuelType m_FuelType;
-        public const string k_FuelUnits = "Liters of fuel";
-        public static readonly string k_FuelTypeKey = "Fuel Type";
+        private const string k_FuelUnits = "Liters of fuel";
+        private const string k_FuelTypeKey = "Fuel Type";
+
+        public static string FuelUnits
+        {
+            get
+            {
+                return k_FuelUnits;
+            }
+        }
+
+        public static string FuelTypeKey
+        {
+            get
+            {
+                return k_FuelTypeKey;
+            }
+        }
 
         internal FuelEnergy(eFuelType i_FuelType, float i_MaxFuelCapacity) : base(i_MaxFuelCapacity)
         {
