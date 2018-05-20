@@ -36,7 +36,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DelegateMenu.cs" />
+    <Compile Include="InterfaceMenu.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TestFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\B18 Ex04 Martin 302266911 Ben 305401317\Ex04.Menus.Interfaces.csproj">
@@ -47,6 +50,9 @@
       <Project>{c56193d8-09b3-495f-86d3-17d618ea5e0b}</Project>
       <Name>Ex04.Menus.Delegates</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

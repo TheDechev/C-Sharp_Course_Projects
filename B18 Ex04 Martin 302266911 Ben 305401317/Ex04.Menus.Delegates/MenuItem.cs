@@ -15,6 +15,17 @@ namespace Ex04.Menus.Delegates
         protected Menu m_Parent = null;
         private string m_Title;
 
+        public MenuItem(string i_Title)
+        {
+            this.Title = i_Title;
+        }
+
+        public MenuItem(string i_Title, MenuChoiceDelegate i_Function)
+        {
+            this.Title = i_Title;
+            m_ItemChoiceDelegate += i_Function;
+        }
+
         public Menu ParentMenu
         {
             get
