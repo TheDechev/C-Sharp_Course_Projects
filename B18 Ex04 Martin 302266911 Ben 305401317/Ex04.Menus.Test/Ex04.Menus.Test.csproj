@@ -39,7 +39,6 @@
     <Compile Include="CountCapitals.cs" />
     <Compile Include="DelegateMenu.cs" />
     <Compile Include="InterfaceMenu.cs" />
-    <Compile Include="MenuFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ShowDate.cs" />
     <Compile Include="ShowTime.cs" />
