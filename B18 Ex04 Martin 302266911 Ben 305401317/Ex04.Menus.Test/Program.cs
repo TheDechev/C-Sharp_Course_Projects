@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ex04.Menus;
 
 namespace Ex04.Menus.Test
 {
@@ -10,8 +11,9 @@ namespace Ex04.Menus.Test
     {
         public static void Main()
         {
-            Ex04.Menus.Delegates.MainMenu delegatesMenu;
-            Ex04.Menus.Interfaces.MainMenu InterfacesMenu;
+
+            Delegates.MainMenu newMenu = new Delegates.MainMenu();
+            newMenu.Show();
 
         }
     }

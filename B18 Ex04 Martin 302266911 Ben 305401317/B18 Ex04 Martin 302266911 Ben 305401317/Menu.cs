@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ex04.Menus.Interfaces
 {
-    public class MainMenu : Menu
+    public class Menu : MenuItem
     {
-        public void Show()
-        {
-            //something
-        }
     }
 }
