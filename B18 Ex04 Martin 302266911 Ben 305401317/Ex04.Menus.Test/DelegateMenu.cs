@@ -24,18 +24,16 @@ namespace Ex04.Menus.Test
 
         private void initDelegateMenu()
         {
-            TestFunctions newTest = new TestFunctions();
-
             Menu LevelOne_SubOne = new Menu("Show Data/Time");
-            MenuItem LevelTwo_SubOne_ItemOne = new MenuItem("Show Time",newTest.ShowTime);
-            MenuItem LevelTwo_SubOne_ItemTwo = new MenuItem("Show Date", newTest.ShowDate);
+            MenuItem LevelTwo_SubOne_ItemOne = new MenuItem("Show Time",(new ShowTime()).Execute);
+            MenuItem LevelTwo_SubOne_ItemTwo = new MenuItem("Show Date", (new ShowDate()).Execute);
             LevelOne_SubOne.AddItem(LevelTwo_SubOne_ItemOne);
             LevelOne_SubOne.AddItem(LevelTwo_SubOne_ItemTwo);
 
 
             Menu LevelOne_SubTwo = new Menu("Version and Capitals");
-            MenuItem LevelTwo_SubTwo_ItemOne = new MenuItem("Count Capitals",newTest.CapitalCount);
-            MenuItem LevelTwo_SubTwo_ItemTwo = new MenuItem("Show Version", newTest.ShowVersion);
+            MenuItem LevelTwo_SubTwo_ItemOne = new MenuItem("Count Capitals", (new CountCapitals()).Execute);
+            MenuItem LevelTwo_SubTwo_ItemTwo = new MenuItem("Show Version", (new ShowVersion()).Execute);
             LevelOne_SubTwo.AddItem(LevelTwo_SubTwo_ItemOne);
             LevelOne_SubTwo.AddItem(LevelTwo_SubTwo_ItemTwo);
 

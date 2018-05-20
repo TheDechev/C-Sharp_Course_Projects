@@ -8,9 +8,12 @@ namespace Ex04.Menus.Interfaces
 {
     public class MainMenu : Menu
     {
-        public void Show()
+        public MainMenu(string i_Title) : base(i_Title)
         {
-            //something
+        }
+
+        public MainMenu() : base("Main Menu")
+        {
         }
     }
 }

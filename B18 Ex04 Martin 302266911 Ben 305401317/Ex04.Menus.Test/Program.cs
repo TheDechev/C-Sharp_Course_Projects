@@ -11,13 +11,10 @@ namespace Ex04.Menus.Test
     {
         public static void Main()
         {
-
-            DelegateMenu test1 = new DelegateMenu();
-            test1.Show();
-
-            InterfaceMenu test2 = new InterfaceMenu();
-            test2.Show();
-
+            DelegateMenu delegateMenu = new DelegateMenu();
+            delegateMenu.Show();
+            InterfaceMenu interfaceMenu = new InterfaceMenu();
+            interfaceMenu.Show();
         }
     }
 }

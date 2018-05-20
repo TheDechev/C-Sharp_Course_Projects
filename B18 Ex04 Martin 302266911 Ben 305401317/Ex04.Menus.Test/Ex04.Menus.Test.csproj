@@ -36,10 +36,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CountCapitals.cs" />
     <Compile Include="DelegateMenu.cs" />
     <Compile Include="InterfaceMenu.cs" />
+    <Compile Include="MenuFactory.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="TestFunctions.cs" />
+    <Compile Include="ShowDate.cs" />
+    <Compile Include="ShowTime.cs" />
+    <Compile Include="ShowVersion.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\B18 Ex04 Martin 302266911 Ben 305401317\Ex04.Menus.Interfaces.csproj">

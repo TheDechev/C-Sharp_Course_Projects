@@ -39,7 +39,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IButton.cs" />
+    <Compile Include="ILastItem.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuItem.cs" />
