@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace B18_Ex04_Martin_302266911_Ben_305401317
+namespace Ex04.Menus.Test
 {
     class Program
     {
         public static void Main()
         {
-            // ========== ADD PROJECT 4 HERE ================
+            Ex04.Menus.Delegates.MainMenu delegatesMenu;
+            Ex04.Menus.Interfaces.MainMenu InterfacesMenu;
+
         }
     }
 }

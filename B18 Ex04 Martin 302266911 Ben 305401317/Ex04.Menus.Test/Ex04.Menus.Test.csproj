@@ -38,6 +38,16 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\B18 Ex04 Martin 302266911 Ben 305401317\Ex04.Menus.Interfaces.csproj">
+      <Project>{edabc6d5-c50a-43f4-b202-9fcdbeea4e8e}</Project>
+      <Name>Ex04.Menus.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ex04.Menus.Delegates\Ex04.Menus.Delegates.csproj">
+      <Project>{c56193d8-09b3-495f-86d3-17d618ea5e0b}</Project>
+      <Name>Ex04.Menus.Delegates</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

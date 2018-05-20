@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ex04.Menus.Interfaces
+namespace Ex04.Menus.Delegates
 {
-    public class MainMenu
+    public class MenuItem
     {
-        public void Show()
-        {
-            //something
-        }
     }
 }

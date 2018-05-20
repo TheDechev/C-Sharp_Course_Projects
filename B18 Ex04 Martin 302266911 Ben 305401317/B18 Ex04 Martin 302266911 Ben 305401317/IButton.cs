@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Ex04.Menus.Interfaces
 {
-    public class MainMenu
+    public interface IButton
     {
-        public void Show()
-        {
-            //something
-        }
+        void Exectute();
     }
 }
