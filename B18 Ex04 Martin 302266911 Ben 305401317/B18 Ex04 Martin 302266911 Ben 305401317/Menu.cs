@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex04.Menus.Interfaces
 {
@@ -21,7 +18,7 @@ namespace Ex04.Menus.Interfaces
 
             Console.WriteLine("Current Level : {0} {1}", this.Title, Environment.NewLine);
 
-            foreach (MenuItem item in m_MenuItems)
+            foreach (MenuItem item in this.m_MenuItems)
             {
                 Console.WriteLine("{0}. {1}", index++, item.Title);
             }
@@ -32,7 +29,7 @@ namespace Ex04.Menus.Interfaces
             }
 
             Console.WriteLine("0. {0} {1}", zeroChoice, Environment.NewLine);
-            manageUserChoice(getUserChoice());
+            this.manageUserChoice(this.getUserChoice());
         }
 
         public void AddItem(MenuItem i_ItemToAdd)
@@ -52,7 +49,7 @@ namespace Ex04.Menus.Interfaces
             {
                 MenuItem userItemChoice = m_MenuItems[i_UserChoice - 1];
                 
-                if ((userItemChoice is Menu))
+                if (userItemChoice is Menu)
                 {
                     ((Menu)userItemChoice).Show();
                 }
@@ -92,16 +89,15 @@ namespace Ex04.Menus.Interfaces
                     {
                         throw new ArgumentException();
                     }
-
                 }
                 catch (Exception)
                 {
                     Console.WriteLine("<Invalid input. Please enter one of the options above.>");
                 }
-            } while (!isInputValid);
+            }
+            while (!isInputValid);
 
             return userInput;
         }
-
     }
 }

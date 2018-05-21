@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex04.Menus.Delegates
 {
@@ -23,18 +20,19 @@ namespace Ex04.Menus.Delegates
         public MenuItem(string i_Title, MenuChoiceDelegate i_Function)
         {
             this.Title = i_Title;
-            m_ItemChoiceDelegate += i_Function;
+            this.m_ItemChoiceDelegate += i_Function;
         }
 
         public Menu ParentMenu
         {
             get
             {
-                return m_Parent;
+                return this.m_Parent;
             }
+
             set
             {
-                m_Parent = value;
+                this.m_Parent = value;
             }
         }
 
@@ -42,8 +40,9 @@ namespace Ex04.Menus.Delegates
         {
             get
             {
-                return m_Title;
+                return this.m_Title;
             }
+
             set
             {
                 if(value  == string.Empty)
@@ -51,15 +50,15 @@ namespace Ex04.Menus.Delegates
                     throw new ArgumentException("Cannot add empty title name!");
                 }
 
-                m_Title = value;
+                this.m_Title = value;
             }
         }
 
         public void OnChoice()
         {
-            if(m_ItemChoiceDelegate != null)
+            if(this.m_ItemChoiceDelegate != null)
             {
-                m_ItemChoiceDelegate.Invoke();
+                this.m_ItemChoiceDelegate.Invoke();
             }
         }
     }

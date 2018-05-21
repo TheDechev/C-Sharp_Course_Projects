@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex04.Menus.Delegates
 {
     public class Menu : MenuItem
     {
-        
-
         public Menu(string i_Title) : base(i_Title)
         {
             this.m_MenuItems = new List<MenuItem>();
-            this.m_ItemChoiceDelegate += new MenuChoiceDelegate(Show);
+            this.m_ItemChoiceDelegate += new MenuChoiceDelegate(this.Show);
         }
 
         public void Show()
@@ -21,10 +16,9 @@ namespace Ex04.Menus.Delegates
             Console.Clear();
             int index = 1;
             string zeroChoice = "Back";
+            Console.WriteLine("Current Level : {0} {1}", this.Title, Environment.NewLine);
 
-            Console.WriteLine("Current Level : {0} {1}",this.Title , Environment.NewLine);
-
-            foreach (MenuItem item in m_MenuItems)
+            foreach (MenuItem item in this.m_MenuItems)
             {
                 Console.WriteLine("{0}. {1}", index++, item.Title);
             }
@@ -34,8 +28,8 @@ namespace Ex04.Menus.Delegates
                 zeroChoice = "Exit";
             }
 
-            Console.WriteLine("0. {0} {1}",zeroChoice, Environment.NewLine);
-            manageUserChoice(getUserChoice());
+            Console.WriteLine("0. {0} {1}", zeroChoice, Environment.NewLine);
+            this.manageUserChoice(this.getUserChoice());
         }
 
         public void AddItem(MenuItem i_ItemToAdd)
@@ -89,14 +83,14 @@ namespace Ex04.Menus.Delegates
                     else
                     {
                         throw new ArgumentException();
-                    }
-                    
+                    } 
                 }
                 catch (Exception)
                 {
                     Console.WriteLine("<Invalid input. Please enter one of the options above.>");
                 }
-            } while (!isInputValid);
+            }
+            while (!isInputValid);
 
             return userInput;
         }

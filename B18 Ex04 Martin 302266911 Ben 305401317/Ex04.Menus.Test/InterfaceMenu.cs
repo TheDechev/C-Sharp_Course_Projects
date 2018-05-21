@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ex04.Menus.Interfaces;
+﻿using Ex04.Menus.Interfaces;
 
 namespace Ex04.Menus.Test
 {
-    class InterfaceMenu
+    public class InterfaceMenu
     {
-
         private MainMenu m_MainMenu;
 
         public void Show()
         {
-            m_MainMenu.Show();
+            this.m_MainMenu.Show();
         }
 
         public InterfaceMenu()
         {
-            m_MainMenu = new MainMenu("Main Menu (Interface)");
-            initInterfaceMenu();
+            this.m_MainMenu = new MainMenu("Main Menu (Interface)");
+            this.initInterfaceMenu();
         }
 
         private void initInterfaceMenu()
@@ -37,9 +31,8 @@ namespace Ex04.Menus.Test
             LevelOne_SubTwo.AddItem(LevelTwo_SubTwo_ItemOne);
             LevelOne_SubTwo.AddItem(LevelTwo_SubTwo_ItemTwo);
 
-            m_MainMenu.AddItem(LevelOne_SubOne);
-            m_MainMenu.AddItem(LevelOne_SubTwo);
-
+            this.m_MainMenu.AddItem(LevelOne_SubOne);
+            this.m_MainMenu.AddItem(LevelOne_SubTwo);
         }
     }
 }

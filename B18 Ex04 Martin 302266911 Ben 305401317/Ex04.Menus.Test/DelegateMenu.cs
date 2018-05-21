@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ex04.Menus.Delegates;
+﻿using Ex04.Menus.Delegates;
 
 namespace Ex04.Menus.Test
 {
@@ -13,19 +8,19 @@ namespace Ex04.Menus.Test
 
         public void Show()
         {
-           m_MainMenu.Show();
+            this.m_MainMenu.Show();
         }
 
         public DelegateMenu()
         {
-            m_MainMenu = new MainMenu("Main Menu (Delegate)");
-            initDelegateMenu();
+            this.m_MainMenu = new MainMenu("Main Menu (Delegate)");
+            this.initDelegateMenu();
         }
 
         private void initDelegateMenu()
         {
             Menu LevelOne_SubOne = new Menu("Show Data/Time");
-            MenuItem LevelTwo_SubOne_ItemOne = new MenuItem("Show Time",(new ShowTime()).Execute);
+            MenuItem LevelTwo_SubOne_ItemOne = new MenuItem("Show Time", (new ShowTime()).Execute);
             MenuItem LevelTwo_SubOne_ItemTwo = new MenuItem("Show Date", (new ShowDate()).Execute);
             LevelOne_SubOne.AddItem(LevelTwo_SubOne_ItemOne);
             LevelOne_SubOne.AddItem(LevelTwo_SubOne_ItemTwo);
@@ -36,8 +31,8 @@ namespace Ex04.Menus.Test
             LevelOne_SubTwo.AddItem(LevelTwo_SubTwo_ItemOne);
             LevelOne_SubTwo.AddItem(LevelTwo_SubTwo_ItemTwo);
 
-            m_MainMenu.AddItem(LevelOne_SubOne);
-            m_MainMenu.AddItem(LevelOne_SubTwo);
+            this.m_MainMenu.AddItem(LevelOne_SubOne);
+            this.m_MainMenu.AddItem(LevelOne_SubTwo);
         }
     }
 }

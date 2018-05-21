@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex04.Menus.Interfaces
 {
@@ -15,12 +12,12 @@ namespace Ex04.Menus.Interfaces
 
         public void Execute()
         {
-            if(m_LastItem == null)
+            if(this.m_LastItem == null)
             {
                 throw new ArgumentException("Item doesn't have implemented execute function.");
             }
 
-            m_LastItem.Execute();
+            this.m_LastItem.Execute();
         }
 
         public MenuItem(string i_Title)
@@ -31,18 +28,19 @@ namespace Ex04.Menus.Interfaces
         public MenuItem(string i_Title, ILastItem i_LastItemFunction)
         {
             this.Title = i_Title;
-            m_LastItem = i_LastItemFunction;
+            this.m_LastItem = i_LastItemFunction;
         }
 
         public Menu ParentMenu
         {
             get
             {
-                return m_Parent;
+                return this.m_Parent;
             }
+
             set
             {
-                m_Parent = value;
+                this.m_Parent = value;
             }
         }
 
@@ -50,8 +48,9 @@ namespace Ex04.Menus.Interfaces
         {
             get
             {
-                return m_Title;
+                return this.m_Title;
             }
+
             set
             {
                 if (value == string.Empty)
@@ -59,9 +58,8 @@ namespace Ex04.Menus.Interfaces
                     throw new ArgumentException("Cannot add empty title name!");
                 }
 
-                m_Title = value;
+                this.m_Title = value;
             }
         }
-
     }
 }
