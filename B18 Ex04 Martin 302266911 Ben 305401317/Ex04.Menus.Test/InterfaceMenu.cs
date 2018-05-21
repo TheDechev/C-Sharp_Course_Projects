@@ -19,7 +19,7 @@ namespace Ex04.Menus.Test
 
         public InterfaceMenu()
         {
-            m_MainMenu = new MainMenu("Main Menu");
+            m_MainMenu = new MainMenu("Main Menu (Interface)");
             initInterfaceMenu();
         }
 

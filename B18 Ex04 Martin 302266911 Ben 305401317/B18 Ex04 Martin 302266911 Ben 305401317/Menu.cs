@@ -8,7 +8,6 @@ namespace Ex04.Menus.Interfaces
 {
     public class Menu : MenuItem
     {
-
         public Menu(string i_Title) : base(i_Title)
         {
             this.m_MenuItems = new List<MenuItem>();
@@ -47,7 +46,9 @@ namespace Ex04.Menus.Interfaces
 
         private void manageUserChoice(int i_UserChoice)
         {
-            if (i_UserChoice != 0)
+            const int k_BackChoice = 0;
+
+            if (i_UserChoice != k_BackChoice)
             {
                 MenuItem userItemChoice = m_MenuItems[i_UserChoice - 1];
                 

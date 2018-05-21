@@ -18,7 +18,7 @@ namespace Ex04.Menus.Test
 
         public DelegateMenu()
         {
-            m_MainMenu = new MainMenu("Main Menu");
+            m_MainMenu = new MainMenu("Main Menu (Delegate)");
             initDelegateMenu();
         }
 
@@ -30,7 +30,6 @@ namespace Ex04.Menus.Test
             LevelOne_SubOne.AddItem(LevelTwo_SubOne_ItemOne);
             LevelOne_SubOne.AddItem(LevelTwo_SubOne_ItemTwo);
 
-
             Menu LevelOne_SubTwo = new Menu("Version and Capitals");
             MenuItem LevelTwo_SubTwo_ItemOne = new MenuItem("Count Capitals", (new CountCapitals()).Execute);
             MenuItem LevelTwo_SubTwo_ItemTwo = new MenuItem("Show Version", (new ShowVersion()).Execute);
@@ -39,7 +38,6 @@ namespace Ex04.Menus.Test
 
             m_MainMenu.AddItem(LevelOne_SubOne);
             m_MainMenu.AddItem(LevelOne_SubTwo);
-
         }
     }
 }
