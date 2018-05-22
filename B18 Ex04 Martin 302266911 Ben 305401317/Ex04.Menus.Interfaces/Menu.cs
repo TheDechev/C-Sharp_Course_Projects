@@ -88,6 +88,7 @@ namespace Ex04.Menus.Interfaces
                 if (!isInputValid || userInput < 0 || userInput > this.m_MenuItems.Count)
                 {
                     Console.WriteLine("<Invalid input. Please enter one of the options above.>");
+                    isInputValid = false;
                 }
             }
             while (!isInputValid);

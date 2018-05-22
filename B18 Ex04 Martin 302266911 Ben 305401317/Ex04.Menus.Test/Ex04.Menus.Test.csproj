@@ -48,7 +48,7 @@
     <Compile Include="ShowVersion.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\B18 Ex04 Martin 302266911 Ben 305401317\Ex04.Menus.Interfaces.csproj">
+    <ProjectReference Include="..\Ex04.Menus.Interfaces\Ex04.Menus.Interfaces.csproj">
       <Project>{edabc6d5-c50a-43f4-b202-9fcdbeea4e8e}</Project>
       <Name>Ex04.Menus.Interfaces</Name>
     </ProjectReference>
