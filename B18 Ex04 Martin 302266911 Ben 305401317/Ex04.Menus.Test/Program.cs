@@ -5,8 +5,8 @@
         public static void Main()
         {
             DelegateMenu delegateMenu = new DelegateMenu();
-            delegateMenu.Show();
             InterfaceMenu interfaceMenu = new InterfaceMenu();
+            delegateMenu.Show();
             interfaceMenu.Show();
         }
     }

@@ -7,8 +7,9 @@ namespace Ex04.Menus.Interfaces
     {
         protected List<MenuItem> m_MenuItems = null;
         protected Menu m_Parent = null;
-        public string Title { get; set; }
         private ILastItem m_LastItem = null;
+
+        public string Title { get; set; }
 
         public void Execute()
         {

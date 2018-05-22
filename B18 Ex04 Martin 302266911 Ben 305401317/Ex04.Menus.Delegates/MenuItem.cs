@@ -10,6 +10,7 @@ namespace Ex04.Menus.Delegates
         protected MenuChoiceDelegate m_ItemChoiceDelegate;
         protected List<MenuItem> m_MenuItems = null;
         protected Menu m_Parent = null;
+
         public string Title { get; set; }
 
         public MenuItem(string i_Title)
