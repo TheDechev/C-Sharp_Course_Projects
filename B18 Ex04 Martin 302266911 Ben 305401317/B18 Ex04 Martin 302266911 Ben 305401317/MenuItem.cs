@@ -7,7 +7,7 @@ namespace Ex04.Menus.Interfaces
     {
         protected List<MenuItem> m_MenuItems = null;
         protected Menu m_Parent = null;
-        private string m_Title;
+        public string Title { get; set; }
         private ILastItem m_LastItem = null;
 
         public void Execute()
@@ -41,24 +41,6 @@ namespace Ex04.Menus.Interfaces
             set
             {
                 this.m_Parent = value;
-            }
-        }
-
-        public string Title
-        {
-            get
-            {
-                return this.m_Title;
-            }
-
-            set
-            {
-                if (value == string.Empty)
-                {
-                    throw new ArgumentException("Cannot add empty title name!");
-                }
-
-                this.m_Title = value;
             }
         }
     }
