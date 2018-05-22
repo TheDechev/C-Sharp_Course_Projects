@@ -16,7 +16,7 @@ namespace Ex04.Menus.Interfaces
             int index = 1;
             string zeroChoice = "Back";
 
-            Console.WriteLine("Current Level : {0} {1}", this.Title, Environment.NewLine);
+            Console.WriteLine("{0} {1}", this.Title, Environment.NewLine);
 
             foreach (MenuItem item in this.m_MenuItems)
             {

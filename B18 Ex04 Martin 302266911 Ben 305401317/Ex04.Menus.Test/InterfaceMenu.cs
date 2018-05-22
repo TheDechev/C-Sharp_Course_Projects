@@ -13,7 +13,7 @@ namespace Ex04.Menus.Test
 
         public InterfaceMenu()
         {
-            this.m_MainMenu = new MainMenu("Main Menu (Interface)");
+            this.m_MainMenu = new MainMenu("Main Menu");
             this.initInterfaceMenu();
         }
 
