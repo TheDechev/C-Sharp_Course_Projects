@@ -41,11 +41,6 @@ namespace Ex04.Menus.Interfaces
             }
         }
 
-        public void RemoveItem(MenuItem i_ItemToRemove)
-        {
-            this.m_MenuItems.Remove(i_ItemToRemove);
-        }
-
         private void manageUserChoice(int i_UserChoice)
         {
             const int k_BackChoice = 0;
