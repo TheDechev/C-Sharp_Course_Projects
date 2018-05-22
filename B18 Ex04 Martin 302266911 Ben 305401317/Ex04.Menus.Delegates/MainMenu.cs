@@ -78,7 +78,7 @@ namespace Ex04.Menus.Delegates
             do
             {
                 Console.Write("Enter your choice: ");
-                isInputValid = int.TryParse(Console.ReadLine(),out userInput);
+                isInputValid = int.TryParse(Console.ReadLine(), out userInput);
 
                 if (!isInputValid || userInput < 0 || userInput > this.m_MenuItems.Count)
                 {
