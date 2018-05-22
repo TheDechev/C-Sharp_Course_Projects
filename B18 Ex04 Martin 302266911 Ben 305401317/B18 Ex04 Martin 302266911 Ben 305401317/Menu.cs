@@ -82,20 +82,10 @@ namespace Ex04.Menus.Interfaces
 
             do
             {
-                try
-                {
-                    Console.Write("Enter your choice: ");
-                    userInput = int.Parse(Console.ReadLine());
-                    if (userInput >= 0 && userInput <= this.m_MenuItems.Count)
-                    {
-                        isInputValid = true;
-                    }
-                    else
-                    {
-                        throw new ArgumentException();
-                    }
-                }
-                catch (Exception)
+                Console.Write("Enter your choice: ");
+                isInputValid = int.TryParse(Console.ReadLine(), out userInput);
+
+                if (!isInputValid || userInput < 0 || userInput > this.m_MenuItems.Count)
                 {
                     Console.WriteLine("<Invalid input. Please enter one of the options above.>");
                 }

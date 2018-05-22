@@ -10,7 +10,7 @@ namespace Ex04.Menus.Delegates
         protected MenuChoiceDelegate m_ItemChoiceDelegate;
         protected List<MenuItem> m_MenuItems = null;
         protected Menu m_Parent = null;
-        private string m_Title;
+        public string Title { get; set; }
 
         public MenuItem(string i_Title)
         {
@@ -33,24 +33,6 @@ namespace Ex04.Menus.Delegates
             set
             {
                 this.m_Parent = value;
-            }
-        }
-
-        public string Title
-        {
-            get
-            {
-                return this.m_Title;
-            }
-
-            set
-            {
-                if(value  == string.Empty)
-                {
-                    throw new ArgumentException("Cannot add empty title name!");
-                }
-
-                this.m_Title = value;
             }
         }
 
