@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D5F0F36A-37CF-42DE-BE9C-07A345476C72}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Checkers_Logic</RootNamespace>
     <AssemblyName>Checkers_Logic</AssemblyName>
@@ -32,16 +32,17 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Board.cs" />
     <Compile Include="CheckersGame.cs" />
-    <Compile Include="ConsoleInterface.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Square.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

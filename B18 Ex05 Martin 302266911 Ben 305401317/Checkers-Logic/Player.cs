@@ -78,7 +78,8 @@ namespace Checkers_Logic
             set
             {
                 int squaresCount = ((value - 2) / 2) * (value / 2);     // Calculate the player deafult checkers num
-                this.m_Squares = new List<Square>(squaresCount);
+                this.m_Squares.Clear();
+                this.m_Squares.Capacity = squaresCount;
              }
         }
 

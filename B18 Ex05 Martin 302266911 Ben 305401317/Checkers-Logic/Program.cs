@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Checkers_Logic
+namespace B18_Ex02
 {
     public class Program
     {

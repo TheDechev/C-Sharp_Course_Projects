@@ -4,10 +4,10 @@ namespace Checkers_Logic
 {
     public class CheckersGame
     {
-        public const string k_QuitGameChar = "Q";
         private const string k_PcDeafultNameString = "Computer";
         private const int k_KingScoreValue = 4;
         private const int k_RegularCheckerScoreValue = 1;
+ 
 
         public enum eRoundOptions
         {
@@ -25,6 +25,7 @@ namespace Checkers_Logic
 
         private Player m_PlayerOne;
         private Player m_PlayerTwo;
+        private Player m_CurrentPlayer;
         private Board m_Board;
         private int m_TurnCounter = 0;
 
@@ -52,6 +53,14 @@ namespace Checkers_Logic
             }
         }
 
+        public Player CurrentPlayer
+        {
+            get
+            {
+                return m_CurrentPlayer;
+            }
+        }
+
         public void endRoundScoreUpdate(Square.eSquareType i_LosingpPlayer)
         {
             if (i_LosingpPlayer == Square.eSquareType.playerOne)
@@ -70,44 +79,40 @@ namespace Checkers_Logic
 
         public eRoundOptions NewRound(string i_UserMove)
         {
-            Player currentPlayer;
             Move inputMove = Move.Parse(i_UserMove);
             Square.eSquareType weakPlayer;
             bool moveWasSuccessful;
             eRoundOptions roundStatus = eRoundOptions.passRound;
 
-            currentPlayer = this.GetCurrentPlayer();
-            currentPlayer.UpdateObligatoryMoves(this.m_Board);
-            currentPlayer.UpdateAvailableMovesIndicator(this.m_Board);
+            this.m_CurrentPlayer = this.GetCurrentPlayer();
+            this.m_CurrentPlayer.UpdateObligatoryMoves(this.m_Board);
+            this.m_CurrentPlayer.UpdateAvailableMovesIndicator(this.m_Board);
             weakPlayer = this.GetWeakPlayer();
-
             inputMove = Move.Parse(i_UserMove);
 
-            if (i_UserMove.ToUpper() == k_QuitGameChar)
+            //if (this.m_CurrentPlayer.PlayerType == weakPlayer)
+            //{
+            //    this.endRoundScoreUpdate(this.m_CurrentPlayer.PlayerType);
+            //    roundStatus = eRoundOptions.weakPlayerQuits;
+            //}
+            //else
+            //{
+            //    this.m_TurnCounter--;
+            //    roundStatus = eRoundOptions.strongPlayerWantsToQuit;
+            //}
+            
+            if (this.m_CurrentPlayer.ObligatoryMovesCount > Move.k_ZeroObligatoryMoves)
             {
-                if (currentPlayer.PlayerType == weakPlayer)
-                {
-                    this.endRoundScoreUpdate(currentPlayer.PlayerType);
-                    roundStatus = eRoundOptions.weakPlayerQuits;
-                }
-                else
-                {
-                    this.m_TurnCounter--;
-                    roundStatus = eRoundOptions.strongPlayerWantsToQuit;
-                }
-            } 
-            else if (currentPlayer.ObligatoryMovesCount > Move.k_ZeroObligatoryMoves)
-            {
-                roundStatus = this.PlayObligatoryMove(currentPlayer, ref inputMove);
+                roundStatus = this.PlayObligatoryMove(this.m_CurrentPlayer, ref inputMove);
                 if(roundStatus != eRoundOptions.passRound)
                 {
                     this.m_TurnCounter--;
                 }
             }
-            else if (currentPlayer.HasAvailableMove)
+            else if (this.m_CurrentPlayer.HasAvailableMove)
             {
                 bool needToEliminate = true;
-                moveWasSuccessful = this.m_Board.UpdateBoardAfterMove(inputMove, currentPlayer, !needToEliminate);
+                moveWasSuccessful = this.m_Board.UpdateBoardAfterMove(inputMove, this.m_CurrentPlayer, !needToEliminate);
                 if (!moveWasSuccessful)
                 {
                     roundStatus = eRoundOptions.playerEnteredInvalidMove;

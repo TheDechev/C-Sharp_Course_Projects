@@ -8,5 +8,11 @@ namespace WindowsUI_Checkers
 {
     class Program
     {
+
+        static void Main()
+        {
+            LoginForm test = new LoginForm();
+            test.ShowDialog();
+        }
     }
 }
