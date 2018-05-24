@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsUI_Checkers", "WindowsUI-Checkers\WindowsUI_Checkers.csproj", "{C17978D8-9DD9-4088-AF13-31D802CD02F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic_Checkers", "Checkers-Logic\Logic_Checkers.csproj", "{D5F0F36A-37CF-42DE-BE9C-07A345476C72}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C17978D8-9DD9-4088-AF13-31D802CD02F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C17978D8-9DD9-4088-AF13-31D802CD02F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C17978D8-9DD9-4088-AF13-31D802CD02F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C17978D8-9DD9-4088-AF13-31D802CD02F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5F0F36A-37CF-42DE-BE9C-07A345476C72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5F0F36A-37CF-42DE-BE9C-07A345476C72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5F0F36A-37CF-42DE-BE9C-07A345476C72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5F0F36A-37CF-42DE-BE9C-07A345476C72}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
