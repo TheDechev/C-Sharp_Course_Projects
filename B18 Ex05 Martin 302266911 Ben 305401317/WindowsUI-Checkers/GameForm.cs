@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Checkers_Logic;
 using System.Windows.Forms;
 using System.Drawing;
-using Checkers_Logic;
-
 namespace WindowsUI_Checkers
 {
     //class GameForm
@@ -304,8 +303,7 @@ namespace WindowsUI_Checkers
     //    }
 
     //}
-
-    class GameForm : Form
+    class GameForm: Form
     {
         List<Button> m_ButtonsPlayerOne = new List<Button>();
         List<Button> m_ButtonsPlayerTwo = new List<Button>();
@@ -316,12 +314,14 @@ namespace WindowsUI_Checkers
 
         public GameForm()
         {
-            this.Size = new Size(6*60, 6*60);
+            int boardSize = 6;
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "Checkers Game";
             initControls();
-            initButtons(6);
+            initButtons(boardSize);
+            this.Width = boardSize * m_ButtonsPlayerOne[0].Width + boardSize*10;
+            this.Height = boardSize * m_ButtonsPlayerOne[0].Height + boardSize * 20;
         }
 
         private void initControls()
@@ -353,6 +353,7 @@ namespace WindowsUI_Checkers
             {
                 currentButton = new Button();
                 currentButton.Size = new Size(buttonSize, buttonSize);
+                currentButton.AutoSize = true;
                 currentButton.Location = new Point((buttonSize/2) + buttonSize * (i % i_BoardSize), this.Top + 60 + fromTop*buttonSize);
                 this.Controls.AddRange(new Control[] { currentButton });
 
