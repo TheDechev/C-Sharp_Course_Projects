@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,6 +16,7 @@ namespace WindowsUI_Checkers
 
         public SettingsForm()
         {
+            this.DialogResult = DialogResult.No;
             InitializeComponent();
         }
 
@@ -28,9 +28,14 @@ namespace WindowsUI_Checkers
             }
         }
 
-        public Board.eBoardSize BoardSize
+        public int BoardSize
         {
-            get { return m_BoardSize; }
+            get { return (int)m_BoardSize; }
+        }
+
+        public bool IsComputer
+        {
+            get { return !checkBoxPlayer2.Enabled; }
         }
 
         private void radioButtonSmallBoard_CheckedChanged(object sender, EventArgs e)
@@ -66,8 +71,10 @@ namespace WindowsUI_Checkers
             }
             else
             {
-                this.Visible = false;
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
         }
+
     }
 }

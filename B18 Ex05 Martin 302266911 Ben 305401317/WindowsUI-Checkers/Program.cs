@@ -11,8 +11,8 @@ namespace WindowsUI_Checkers
 
         static void Main()
         {
-            GameForm test = new GameForm();
-            test.ShowDialog();
+            GameForm terst = new GameForm();
+            terst.ShowDialog();
         }
     }
 }

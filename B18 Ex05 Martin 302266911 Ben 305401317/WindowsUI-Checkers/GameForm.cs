@@ -278,29 +278,16 @@ namespace WindowsUI_Checkers
     //}
     class GameForm: Form
     {
+        private const int k_ButtonSize = 40;
         Label labelPlayerOneName = new Label();
         Label labelPlayerTwoName = new Label();
         Label labelPlayerOneScore = new Label();
         Label labelPlayerTwoScore = new Label();
         CheckersGame m_Game = new CheckersGame();
-
+        SettingsForm formSettings = new SettingsForm();
         public GameForm()
         {
-            string firstPlayerName, secondPlayerName;
-            int boardSize = 10;
-            const int buttonSize = 40;
-            firstPlayerName = "Martin";
-            m_Game.AddNewPlayer(firstPlayerName, Square.eSquareType.playerOne);
-            secondPlayerName = "Ben";
-            m_Game.AddNewPlayer(secondPlayerName, Square.eSquareType.playerTwo);
-            m_Game.CreateGameBoard(boardSize);
-            this.Size = new Size(boardSize * buttonSize + 35, boardSize * buttonSize + buttonSize * 3);
-            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = "Checkers Game";
-            initButtons(boardSize, buttonSize);
-            initControls(boardSize, buttonSize);
-            this.Font = new Font(this.Font, FontStyle.Bold);
+            this.Hide();
         }
 
         private void initControls(int i_BoardSize, int i_ButtonSize)
@@ -356,6 +343,45 @@ namespace WindowsUI_Checkers
                     this.Controls.Add(currentButton);
                 }
             }
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            if (ensureSettingsValid())
+            {
+                base.OnShown(e);
+            }
+        }
+
+        private bool ensureSettingsValid()
+        {
+            bool isValid = false;
+            if (formSettings.ShowDialog() == DialogResult.OK)
+            {
+                int boardSize = formSettings.BoardSize;
+                m_Game.AddNewPlayer(formSettings.PlayerOneName, Square.eSquareType.playerOne);
+                if (formSettings.IsComputer)
+                {
+                    m_Game.AddNewPlayer(formSettings.PlayerTwoName, Square.eSquareType.playerPC);
+                }
+                else
+                {
+                    m_Game.AddNewPlayer(formSettings.PlayerTwoName, Square.eSquareType.playerTwo);
+                }
+                m_Game.CreateGameBoard(boardSize);
+                this.Size = new Size(boardSize * k_ButtonSize + 35, boardSize * k_ButtonSize + k_ButtonSize * 3);
+                this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+                this.StartPosition = FormStartPosition.CenterScreen;
+                this.Text = "Checkers Game";
+                initButtons(boardSize, k_ButtonSize);
+                initControls(boardSize, k_ButtonSize);
+                this.Font = new Font(this.Font, FontStyle.Bold);
+                isValid =  true;
+                this.Show();
+            }
+
+            return isValid;
+
         }
     }
 }
