@@ -65,59 +65,7 @@ namespace WindowsUI_Checkers
     //        }
     //    }
 
-    //    private void handleRound(ref string io_PreviousMove, ref string io_UserMove, ref CheckersGame.eRoundOptions io_CurrentRound, Player i_CurrentPlayer, CheckersGame i_Game)
-    //    {
-    //        bool iswinnigPlayer = false;
-
-    //        if (io_CurrentRound == CheckersGame.eRoundOptions.weakPlayerQuits)
-    //        {
-    //            this.endOfRoundScreen(i_Game, i_CurrentPlayer.PlayerType, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
-    //        }
-    //        else if (io_CurrentRound == CheckersGame.eRoundOptions.strongPlayerWantsToQuit)
-    //        {
-    //            // another round - Quit
-    //            Console.WriteLine("You are not the weak player! Enter a valid move. . .");
-    //            Thread.Sleep(800);
-    //        }
-    //        else if (io_CurrentRound == CheckersGame.eRoundOptions.playerDidntEnterObligatoryMove)
-    //        {
-    //            // another round - Wrong move
-    //            Console.WriteLine("Invalid move, you must eliminate your opponnent!");
-    //            Thread.Sleep(800);
-    //        }
-    //        else if (io_CurrentRound == CheckersGame.eRoundOptions.currentPlayerHasAnotherRound)
-    //        {
-    //            // another round 
-    //            Console.WriteLine("{0} {1} has another turn", Environment.NewLine, i_CurrentPlayer.Name);
-    //            Thread.Sleep(800);
-    //        }
-    //        else if (io_CurrentRound == CheckersGame.eRoundOptions.playerOneWon)
-    //        {
-    //            iswinnigPlayer = true;
-    //            i_Game.endRoundScoreUpdate(Square.eSquareType.playerTwo);
-    //            this.endOfRoundScreen(i_Game, Square.eSquareType.playerOne, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
-    //        }
-    //        else if (io_CurrentRound == CheckersGame.eRoundOptions.playerTwoWon)
-    //        {
-    //            iswinnigPlayer = true;
-    //            i_Game.endRoundScoreUpdate(Square.eSquareType.playerOne);
-    //            this.endOfRoundScreen(i_Game, Square.eSquareType.playerTwo, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
-    //        }
-    //        else if (io_CurrentRound == CheckersGame.eRoundOptions.gameIsATie)
-    //        {
-    //            this.endOfRoundScreen(i_Game, Square.eSquareType.none, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
-    //        }
-    //        else if (io_CurrentRound == CheckersGame.eRoundOptions.playerEnteredInvalidMove)
-    //        {
-    //            Console.WriteLine("Invalid move, try again . . .");
-    //            Thread.Sleep(800);
-    //        }
-    //        else
-    //        {
-    //            string shape = i_Game.Board.SquareToString(i_Game.Board.GetSquareStatus(Move.Parse(io_UserMove).SquareTo));
-    //            io_PreviousMove = i_CurrentPlayer.Name + "'s move was (" + shape + "): " + io_UserMove;
-    //        }
-    //    }
+    
 
     //    private void printBoard(Board i_Board)
     //    {
@@ -279,6 +227,8 @@ namespace WindowsUI_Checkers
     class GameForm: Form
     {
         private const int k_ButtonSize = 40;
+        private string m_CurrentMove = string.Empty;
+        private CheckersGame.eRoundOptions m_RoundStatus;
         Label labelPlayerOneName = new Label();
         Label labelPlayerTwoName = new Label();
         Label labelPlayerOneScore = new Label();
@@ -322,10 +272,10 @@ namespace WindowsUI_Checkers
             Button currentButton;
             for (int i = 0; i < i_BoardSize ; i++) 
             {
-                capitalLetter = Convert.ToChar(i + (int)'A');
+                smallLetter = Convert.ToChar(i + (int)'a');
                 for (int j = 0; j < i_BoardSize; j++)
                 {
-                    smallLetter = Convert.ToChar(j + (int)'a');
+                    capitalLetter = Convert.ToChar(j + (int)'A');
                     currentButton = new Button();
                     currentButton.Size = new Size(i_ButtonSize, i_ButtonSize);
                     currentButton.AutoSize = true;
@@ -333,6 +283,7 @@ namespace WindowsUI_Checkers
                     currentButton.Location = new Point( 10 + i_ButtonSize * j , this.Height - this.ClientSize.Height + 35 + i_ButtonSize * i);
                     currentSquareType = m_Game.Board.GetSquareStatus(i, j);
                     currentButton.BackColor = Color.White;
+                    currentButton.Click += new System.EventHandler(this.button_Click);
                     if (currentSquareType == Square.eSquareType.invalid)
                     {
                         currentButton.BackColor = Color.Gray;
@@ -345,11 +296,16 @@ namespace WindowsUI_Checkers
             }
         }
 
-        protected override void OnShown(EventArgs e)
+
+        protected override void OnLoad(EventArgs e)
         {
             if (ensureSettingsValid())
             {
-                base.OnShown(e);
+                base.OnLoad(e);
+            }
+            else
+            {
+                this.Close();
             }
         }
 
@@ -377,11 +333,79 @@ namespace WindowsUI_Checkers
                 initControls(boardSize, k_ButtonSize);
                 this.Font = new Font(this.Font, FontStyle.Bold);
                 isValid =  true;
-                this.Show();
             }
 
             return isValid;
 
+        }
+
+
+       private void button_Click(object obj, EventArgs ev)
+        {
+            this.m_CurrentMove += (obj as Button).Name;
+            if (this.m_CurrentMove.Length == 2)
+            {
+                this.m_CurrentMove += ">";
+            }
+            else
+            {
+                m_RoundStatus = m_Game.NewRound(this.m_CurrentMove);
+                handleRound();
+                this.m_CurrentMove = string.Empty;
+            }
+        }
+
+
+        private void handleRound()
+        {
+            bool iswinnigPlayer = false;
+
+            if (m_RoundStatus == CheckersGame.eRoundOptions.weakPlayerQuits)
+            {
+                //this.endOfRoundScreen(i_Game, i_CurrentPlayer.PlayerType, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
+            }
+            else if (m_RoundStatus == CheckersGame.eRoundOptions.strongPlayerWantsToQuit)
+            {
+                // another round - Quit
+                MessageBox.Show("You are not the weak player! Enter a valid move.", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (m_RoundStatus == CheckersGame.eRoundOptions.playerDidntEnterObligatoryMove)
+            {
+                // another round - Wrong move
+                MessageBox.Show("Invalid move, you must eliminate your opponnent!", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            else if (m_RoundStatus == CheckersGame.eRoundOptions.currentPlayerHasAnotherRound)
+            {
+                string warningMsg = string.Format("{0} has another turn.", m_Game.CurrentPlayer.Name);
+                // another round 
+                MessageBox.Show(warningMsg, "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (m_RoundStatus == CheckersGame.eRoundOptions.playerOneWon)
+            {
+                //iswinnigPlayer = true;
+                //i_Game.endRoundScoreUpdate(Square.eSquareType.playerTwo);
+                //this.endOfRoundScreen(i_Game, Square.eSquareType.playerOne, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
+            }
+            else if (m_RoundStatus == CheckersGame.eRoundOptions.playerTwoWon)
+            {
+                //iswinnigPlayer = true;
+                //i_Game.endRoundScoreUpdate(Square.eSquareType.playerOne);
+                //this.endOfRoundScreen(i_Game, Square.eSquareType.playerTwo, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
+            }
+            else if (m_RoundStatus == CheckersGame.eRoundOptions.gameIsATie)
+            {
+                //this.endOfRoundScreen(i_Game, Square.eSquareType.none, iswinnigPlayer, ref io_CurrentRound, ref io_PreviousMove);
+            }
+            else if (m_RoundStatus == CheckersGame.eRoundOptions.playerEnteredInvalidMove)
+            {
+                MessageBox.Show("Invalid move! Try again.", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                //string shape = i_Game.Board.SquareToString(i_Game.Board.GetSquareStatus(Move.Parse(io_UserMove).SquareTo));
+                //io_PreviousMove = i_CurrentPlayer.Name + "'s move was (" + shape + "): " + io_UserMove;
+            }
         }
     }
 }
