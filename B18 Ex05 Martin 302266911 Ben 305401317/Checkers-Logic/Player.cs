@@ -9,7 +9,7 @@ namespace Checkers_Logic
         private string m_Name;
         private int m_Score;
         private int m_BonusScore;
-        private readonly List<Square> m_Squares;
+        private readonly List<Square> m_Squares = new List<Square>();
         private List<Move> m_ObligatoryMoves;
         private bool m_HasAvailableMoves = true;
         

@@ -26,33 +26,6 @@ namespace WindowsUI_Checkers
 
 
 
-    //    public void CreateNewGame()
-    //    {
-    //        string firstPlayerName, secondPlayerName;
-    //        int boardSize;
-    //        int opponentChoice;
-    //        CheckersGame newGame = new CheckersGame();
-
-    //        //this.printWelcomeMsg();
-    //        firstPlayerName = this.getPlayerName();
-    //        newGame.AddNewPlayer(firstPlayerName, Square.eSquareType.playerOne);
-    //        boardSize = this.getBoardSizeFromUser();
-    //        opponentChoice = this.getOpponnetOptions();
-
-    //        if (opponentChoice == int.Parse(k_AgainstAnothePlayerChar))
-    //        {
-    //            secondPlayerName = this.getPlayerName();
-    //            newGame.AddNewPlayer(secondPlayerName, Square.eSquareType.playerTwo);
-    //        }
-    //        else
-    //        {
-    //            secondPlayerName = k_ComputerNameString;
-    //            newGame.AddNewPlayer(string.Empty, Square.eSquareType.playerPC);
-    //        }
-
-    //        newGame.CreateGameBoard(boardSize);
-    //        this.runGame(newGame, boardSize);
-    //    }
 
     //    private void runGame(CheckersGame i_Game, int i_BoardSize)
     //    {
@@ -305,91 +278,84 @@ namespace WindowsUI_Checkers
     //}
     class GameForm: Form
     {
-        List<Button> m_ButtonsPlayerOne = new List<Button>();
-        List<Button> m_ButtonsPlayerTwo = new List<Button>();
-        Label m_LevelPlayerOneName = new Label();
-        Label m_LevelPlayerTwoName = new Label();
-        Label m_LevelPlayerOneScore = new Label();
-        Label m_LevelPlayerTwoScore = new Label();
+        Label labelPlayerOneName = new Label();
+        Label labelPlayerTwoName = new Label();
+        Label labelPlayerOneScore = new Label();
+        Label labelPlayerTwoScore = new Label();
+        CheckersGame m_Game = new CheckersGame();
 
         public GameForm()
         {
-            int boardSize = 6;
+            string firstPlayerName, secondPlayerName;
+            int boardSize = 10;
+            const int buttonSize = 40;
+            firstPlayerName = "Martin";
+            m_Game.AddNewPlayer(firstPlayerName, Square.eSquareType.playerOne);
+            secondPlayerName = "Ben";
+            m_Game.AddNewPlayer(secondPlayerName, Square.eSquareType.playerTwo);
+            m_Game.CreateGameBoard(boardSize);
+            this.Size = new Size(boardSize * buttonSize + 35, boardSize * buttonSize + buttonSize * 3);
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "Checkers Game";
-            initControls();
-            initButtons(boardSize);
-            this.Width = boardSize * m_ButtonsPlayerOne[0].Width + boardSize*10;
-            this.Height = boardSize * m_ButtonsPlayerOne[0].Height + boardSize * 20;
+            initButtons(boardSize, buttonSize);
+            initControls(boardSize, buttonSize);
+            this.Font = new Font(this.Font, FontStyle.Bold);
         }
 
-        private void initControls()
+        private void initControls(int i_BoardSize, int i_ButtonSize)
         {
-            m_LevelPlayerOneName.Text = "Player 1:"; // add real name
-            m_LevelPlayerOneName.Location = new Point(this.Width / 5, 20);
-            m_LevelPlayerOneName.Width = m_LevelPlayerOneName.Text.Length * 6;
+            labelPlayerOneName.Text = "Martin:"; // TODO: add real name
+            labelPlayerOneName.Width = labelPlayerOneName.Text.Length * 6;
+            labelPlayerOneName.Location = new Point((this.Width - this.ClientSize.Width) / 2 + i_ButtonSize, 20);
 
-            m_LevelPlayerTwoName.Text = "Player 2:";
-            m_LevelPlayerTwoName.Width = m_LevelPlayerTwoName.Text.Length * 6;
-            m_LevelPlayerTwoName.Location = new Point(this.Width / 3 + m_LevelPlayerOneName.Left + m_LevelPlayerOneName.Width, 20);
 
-            m_LevelPlayerOneScore.Text = "0";
-            m_LevelPlayerOneScore.Location = new Point(m_LevelPlayerOneName.Left + m_LevelPlayerOneName.Width, 20);
+            labelPlayerOneScore.Text = "0";
+            labelPlayerOneScore.Width = labelPlayerOneScore.Text.Length * 10;
+            labelPlayerOneScore.Location = new Point(labelPlayerOneName.Right, labelPlayerOneName.Top);
 
-            m_LevelPlayerTwoScore.Text = "0";
-            m_LevelPlayerTwoScore.Location = new Point(m_LevelPlayerTwoName.Left + m_LevelPlayerTwoName.Width, 20);
 
-            this.Controls.AddRange(new Control[] { m_LevelPlayerOneName, m_LevelPlayerTwoName, m_LevelPlayerOneScore, m_LevelPlayerTwoScore});
+            labelPlayerTwoScore.Text = "0";
+            labelPlayerTwoScore.Width = labelPlayerTwoScore.Text.Length * 10;
+            labelPlayerTwoScore.Location = new Point(this.ClientSize.Width - 20 - i_ButtonSize, 20);
+
+            labelPlayerTwoName.Text = "Ben:";
+            labelPlayerTwoName.Width = labelPlayerTwoName.Text.Length * 7;
+            labelPlayerTwoName.Location = new Point(labelPlayerTwoScore.Left - labelPlayerTwoName.Width, 20);
+
+
+            this.Controls.AddRange(new Control[] { labelPlayerOneName, labelPlayerTwoName, labelPlayerOneScore, labelPlayerTwoScore});
         }
 
-        private void initButtons(int i_BoardSize)
+        private void initButtons(int i_BoardSize, int i_ButtonSize)
         {
-            i_BoardSize = 6; // TODO: DELETE
-            int fromTop = 0;
-            const int buttonSize = 40;
+            Square.eSquareType currentSquareType;
+            char smallLetter, capitalLetter;
+
             Button currentButton;
-            for (int i = 0; i < i_BoardSize * i_BoardSize; i++) 
+            for (int i = 0; i < i_BoardSize ; i++) 
             {
-                currentButton = new Button();
-                currentButton.Size = new Size(buttonSize, buttonSize);
-                currentButton.AutoSize = true;
-                currentButton.Location = new Point((buttonSize/2) + buttonSize * (i % i_BoardSize), this.Top + 60 + fromTop*buttonSize);
-                this.Controls.AddRange(new Control[] { currentButton });
-
-                if (i % i_BoardSize == 0 && i != 0)
+                capitalLetter = Convert.ToChar(i + (int)'A');
+                for (int j = 0; j < i_BoardSize; j++)
                 {
-                    fromTop++;
-                }
-
-                if(fromTop % 2 != 0)
-                {
-                    currentButton.BackColor = Color.Gray;
-                    if (i % 2 == 0)
-                    {
-                        currentButton.BackColor = Color.White;
-                    }
-                }
-                else
-                {
+                    smallLetter = Convert.ToChar(j + (int)'a');
+                    currentButton = new Button();
+                    currentButton.Size = new Size(i_ButtonSize, i_ButtonSize);
+                    currentButton.AutoSize = true;
+                    currentButton.Name = new string(new char[]{capitalLetter,smallLetter});
+                    currentButton.Location = new Point( 10 + i_ButtonSize * j , this.Height - this.ClientSize.Height + 35 + i_ButtonSize * i);
+                    currentSquareType = m_Game.Board.GetSquareStatus(i, j);
                     currentButton.BackColor = Color.White;
-                    if (i % 2 == 0)
+                    if (currentSquareType == Square.eSquareType.invalid)
                     {
                         currentButton.BackColor = Color.Gray;
+                        currentButton.Enabled = false;
                     }
-                }
-
-                if(i<i_BoardSize * (i_BoardSize / 2))
-                {
-                    m_ButtonsPlayerOne.Add(currentButton);
-                }
-                else
-                {
-                    m_ButtonsPlayerTwo.Add(currentButton);
-
+                    string shapeText = m_Game.Board.SquareToString(currentSquareType);
+                    currentButton.Text = shapeText;
+                    this.Controls.Add(currentButton);
                 }
             }
-
         }
     }
 }
