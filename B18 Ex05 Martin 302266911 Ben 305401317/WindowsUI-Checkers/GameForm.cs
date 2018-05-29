@@ -332,6 +332,7 @@ namespace WindowsUI_Checkers
                 initButtons(boardSize, k_ButtonSize);
                 initControls(boardSize, k_ButtonSize);
                 this.Font = new Font(this.Font, FontStyle.Bold);
+                m_Game.Board.SquareUpdate += OnSquareUpdate;
                 isValid =  true;
             }
 
@@ -339,6 +340,12 @@ namespace WindowsUI_Checkers
 
         }
 
+
+        private void OnSquareUpdate(int i_Row, int i_Col, string i_SquareType)
+        {
+            string ButtonToUpdate = string.Format("{0}{1}", i_Row.ToString() + i_Col.ToString());
+            this.Controls[ButtonToUpdate].Text = i_SquareType;
+        }
 
        private void button_Click(object obj, EventArgs ev)
         {

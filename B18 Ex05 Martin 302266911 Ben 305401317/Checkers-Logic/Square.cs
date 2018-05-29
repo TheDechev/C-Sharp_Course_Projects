@@ -2,6 +2,7 @@
 
 namespace Checkers_Logic
 {
+
     public class Square
     {
         private int m_Row;
@@ -47,7 +48,6 @@ namespace Checkers_Logic
             {
                 return this.m_IsKing;
             }
-
             set
             {
                 this.m_IsKing = value;

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace Checkers_Logic
 {
+    public delegate void SquareUpdateDelegate(int Row, int Col, string SquareType);
     public class Board
     {
         private int m_BoardSize = (int)eBoardSize.Medium;
         private int[,] m_BoardGame;
-
+        private event SquareUpdateDelegate m_SquareUpdate;
         public enum eDirection
         {
             TopLeft,
@@ -21,6 +22,18 @@ namespace Checkers_Logic
             Small = 6,
             Medium = 8,
             Large = 10,
+        }
+
+        public SquareUpdateDelegate SquareUpdate
+        {
+            get
+            {
+                return m_SquareUpdate;
+            }
+            set
+            {
+                m_SquareUpdate = value;
+            }
         }
 
         public Board(int i_BoardSize)
@@ -54,7 +67,6 @@ namespace Checkers_Logic
                    resStatus = (Square.eSquareType)this.m_BoardGame[i_Square.Row, i_Square.Col];
                 }
             }
-
             return resStatus;
         }
 
@@ -230,6 +242,11 @@ namespace Checkers_Logic
                 {
                     this.m_BoardGame[i_Row, i_Col] = (int)i_UpdateSquare;
                     updateRes = true;
+                }
+
+                if(this.m_SquareUpdate != null)
+                {
+                    this.m_SquareUpdate.Invoke(i_Row,i_Col,this.SquareToString(GetSquareStatus(i_Row,i_Col)));
                 }
             }
 
