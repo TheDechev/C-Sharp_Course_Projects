@@ -67,6 +67,7 @@ namespace WindowsUI_Checkers
             else
             {
                 this.Visible = false;
+
             }
         }
     }
