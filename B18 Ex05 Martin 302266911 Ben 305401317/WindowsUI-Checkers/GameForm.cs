@@ -305,8 +305,91 @@ namespace WindowsUI_Checkers
 
     //}
 
-    class GlassForm
+    class GameForm : Form
     {
+        List<Button> m_ButtonsPlayerOne = new List<Button>();
+        List<Button> m_ButtonsPlayerTwo = new List<Button>();
+        Label m_LevelPlayerOneName = new Label();
+        Label m_LevelPlayerTwoName = new Label();
+        Label m_LevelPlayerOneScore = new Label();
+        Label m_LevelPlayerTwoScore = new Label();
 
+        public GameForm()
+        {
+            this.Size = new Size(6*60, 6*60);
+            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.Text = "Checkers Game";
+            initControls();
+            initButtons(6);
+        }
+
+        private void initControls()
+        {
+            m_LevelPlayerOneName.Text = "Player 1:"; // add real name
+            m_LevelPlayerOneName.Location = new Point(this.Width / 5, 20);
+            m_LevelPlayerOneName.Width = m_LevelPlayerOneName.Text.Length * 6;
+
+            m_LevelPlayerTwoName.Text = "Player 2:";
+            m_LevelPlayerTwoName.Width = m_LevelPlayerTwoName.Text.Length * 6;
+            m_LevelPlayerTwoName.Location = new Point(this.Width / 3 + m_LevelPlayerOneName.Left + m_LevelPlayerOneName.Width, 20);
+
+            m_LevelPlayerOneScore.Text = "0";
+            m_LevelPlayerOneScore.Location = new Point(m_LevelPlayerOneName.Left + m_LevelPlayerOneName.Width, 20);
+
+            m_LevelPlayerTwoScore.Text = "0";
+            m_LevelPlayerTwoScore.Location = new Point(m_LevelPlayerTwoName.Left + m_LevelPlayerTwoName.Width, 20);
+
+            this.Controls.AddRange(new Control[] { m_LevelPlayerOneName, m_LevelPlayerTwoName, m_LevelPlayerOneScore, m_LevelPlayerTwoScore});
+        }
+
+        private void initButtons(int i_BoardSize)
+        {
+            i_BoardSize = 6; // TODO: DELETE
+            int fromTop = 0;
+            const int buttonSize = 40;
+            Button currentButton;
+            for (int i = 0; i < i_BoardSize * i_BoardSize; i++) 
+            {
+                currentButton = new Button();
+                currentButton.Size = new Size(buttonSize, buttonSize);
+                currentButton.Location = new Point((buttonSize/2) + buttonSize * (i % i_BoardSize), this.Top + 60 + fromTop*buttonSize);
+                this.Controls.AddRange(new Control[] { currentButton });
+
+                if (i % i_BoardSize == 0 && i != 0)
+                {
+                    fromTop++;
+                }
+
+                if(fromTop % 2 != 0)
+                {
+                    currentButton.BackColor = Color.Gray;
+                    if (i % 2 == 0)
+                    {
+                        currentButton.BackColor = Color.White;
+                    }
+                }
+                else
+                {
+                    currentButton.BackColor = Color.White;
+                    if (i % 2 == 0)
+                    {
+                        currentButton.BackColor = Color.Gray;
+                    }
+                }
+
+                if(i<i_BoardSize * (i_BoardSize / 2))
+                {
+                    m_ButtonsPlayerOne.Add(currentButton);
+                }
+                else
+                {
+                    m_ButtonsPlayerTwo.Add(currentButton);
+
+                }
+            }
+
+        }
     }
 }
+
