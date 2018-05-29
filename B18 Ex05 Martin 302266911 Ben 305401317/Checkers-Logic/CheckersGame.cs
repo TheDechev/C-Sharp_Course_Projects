@@ -121,7 +121,12 @@ namespace Checkers_Logic
             }
             else
             {
-                roundStatus = eRoundOptions.passRound;
+                roundStatus = eRoundOptions.playerOneWon;
+
+                if (CurrentPlayer == this.m_PlayerOne)
+                {
+                    roundStatus = eRoundOptions.playerTwoWon;
+                }
             }
 
             this.m_TurnCounter++;
@@ -262,7 +267,14 @@ namespace Checkers_Logic
 
         public void CreateGameBoard(int i_BoardSize)
         {
-            this.m_Board = new Board(i_BoardSize);
+            if(this.m_Board != null)
+            {
+                this.m_Board.ClearBoard();
+            }
+            else
+            {
+                this.m_Board = new Board(i_BoardSize);
+            }
             this.m_PlayerOne.InitPlayer(i_BoardSize);
             this.m_PlayerTwo.InitPlayer(i_BoardSize);
             this.m_Board.AddPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);

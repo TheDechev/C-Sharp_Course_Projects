@@ -43,6 +43,12 @@ namespace Checkers_Logic
             this.InitBoard();
         }
 
+        public void ClearBoard()
+        {
+            m_BoardGame = new int[Convert.ToInt16(Math.Sqrt(m_BoardGame.Length)), Convert.ToInt16(Math.Sqrt(m_BoardGame.Length))];
+            this.InitBoard();
+        }
+
         public int Size
         {
             get
@@ -87,11 +93,19 @@ namespace Checkers_Logic
             for (int i = 0; i < i_PlayerOne.SquaresNum; i++)
             {
                 this.m_BoardGame[i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col] = (int)i_PlayerOne.PlayerType;
+                if(m_SquareUpdate != null)
+                {
+                    m_SquareUpdate.Invoke(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col, SquareToString(GetSquareStatus(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col)));
+                }
             }
 
             for (int i = 0; i < i_PlayerTwo.SquaresNum; i++)
             {    
-                    this.m_BoardGame[i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col] = (int)i_PlayerTwo.PlayerType;
+                this.m_BoardGame[i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col] = (int)i_PlayerTwo.PlayerType;
+                if (m_SquareUpdate != null)
+                {
+                    m_SquareUpdate.Invoke(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col, SquareToString(GetSquareStatus(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col)));
+                }
             }
         }
 
@@ -108,6 +122,10 @@ namespace Checkers_Logic
                 while(currentCol < this.m_BoardSize)
                 {
                     this.m_BoardGame[currentRow, currentCol] = (int)Square.eSquareType.invalid;
+                    if(this.m_SquareUpdate != null)
+                    {
+                        this.m_SquareUpdate.Invoke(currentRow, currentCol, SquareToString(GetSquareStatus(currentRow, currentCol)));
+                    }
                     currentCol += 2;
                 }
 
