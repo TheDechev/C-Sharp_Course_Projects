@@ -34,17 +34,33 @@ namespace WindowsUI_Checkers
 
         private void GameForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (this.m_Game.CurrentPlayer != null && !(this.m_Game.CurrentPlayer.PlayerType == this.m_Game.GetWeakPlayer()) && m_GameWasCreated)
+            if (this.m_Game.CurrentPlayer != null && this.m_GameWasCreated)
             {
-                switch (MessageBox.Show("You are not the weak player, are you sure you want to quit?", "Checkers Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                if(!(this.m_Game.CurrentPlayer.PlayerType == this.m_Game.GetWeakPlayer()) && m_GameWasCreated)
                 {
-                    case DialogResult.No:
-                        e.Cancel = true;
-                        break;
-                    default:
-                        break;
+                    switch (MessageBox.Show("You are not the weak player, are you sure you want to quit?", "Checkers Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                    {
+                        case DialogResult.No:
+                            e.Cancel = true;
+
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            }
+                else
+                {
+                    switch (MessageBox.Show("Game over. Would you like to play another round?", "Checkers Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                    {
+                        case DialogResult.Yes:
+                            m_Game.CreateGameBoard(formSettings.BoardSize);
+                            e.Cancel = true;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            } 
         }
 
         private void initControls(int i_BoardSize, int i_ButtonSize)
