@@ -93,43 +93,32 @@ namespace Checkers_Logic
             for (int i = 0; i < i_PlayerOne.SquaresNum; i++)
             {
                 this.m_BoardGame[i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col] = (int)i_PlayerOne.PlayerType;
-                if(m_SquareUpdate != null)
-                {
-                    m_SquareUpdate.Invoke(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col, SquareToString(GetSquareStatus(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col)));
-                }
+                OnSquareUpdate(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col, SquareToString(GetSquareStatus(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col)));
             }
 
             for (int i = 0; i < i_PlayerTwo.SquaresNum; i++)
             {    
                 this.m_BoardGame[i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col] = (int)i_PlayerTwo.PlayerType;
-                if (m_SquareUpdate != null)
-                {
-                    m_SquareUpdate.Invoke(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col, SquareToString(GetSquareStatus(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col)));
-                }
+                OnSquareUpdate(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col, SquareToString(GetSquareStatus(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col)));
             }
         }
 
         public void InitBoard()
         {
-            int currentCol = 0;
             for (int currentRow = 0; currentRow < this.m_BoardSize; currentRow++)
             {
-                if(currentRow % 2 != 0)
+                for(int currentCol = 0; currentCol < this.m_BoardSize; currentCol++)
                 {
-                    currentCol++;
-                }
-
-                while(currentCol < this.m_BoardSize)
-                {
-                    this.m_BoardGame[currentRow, currentCol] = (int)Square.eSquareType.invalid;
-                    if(this.m_SquareUpdate != null)
+                    if ((currentRow % 2 != 0 && currentCol % 2 != 0) || (currentRow % 2 == 0 && currentCol % 2 == 0))
                     {
-                        this.m_SquareUpdate.Invoke(currentRow, currentCol, SquareToString(GetSquareStatus(currentRow, currentCol)));
+                        this.m_BoardGame[currentRow, currentCol] = (int)Square.eSquareType.invalid;
                     }
-                    currentCol += 2;
+                    else
+                    {
+                        this.m_BoardGame[currentRow, currentCol] = (int)Square.eSquareType.none;
+                    }
+                    OnSquareUpdate(currentRow, currentCol, SquareToString(GetSquareStatus(currentRow, currentCol)));
                 }
-
-                currentCol = 0;
             }
         }
 
@@ -263,10 +252,7 @@ namespace Checkers_Logic
                     updateRes = true;
                 }
 
-                if(this.m_SquareUpdate != null)
-                {
-                    this.m_SquareUpdate.Invoke(i_Row,i_Col,this.SquareToString(GetSquareStatus(i_Row,i_Col)));
-                }
+                OnSquareUpdate(i_Row,i_Col,this.SquareToString(GetSquareStatus(i_Row,i_Col)));
             }
 
             return updateRes;
@@ -361,6 +347,14 @@ namespace Checkers_Logic
             }
 
             return isValid;
+        }
+
+        private void OnSquareUpdate(int i_Row, int i_Col , string i_SquareType)
+        {
+            if(this.m_SquareUpdate != null)
+            {
+                this.m_SquareUpdate.Invoke(i_Row, i_Col, i_SquareType);
+            }
         }
     }
 }

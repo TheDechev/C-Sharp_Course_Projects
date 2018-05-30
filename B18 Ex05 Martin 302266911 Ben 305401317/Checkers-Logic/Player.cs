@@ -12,6 +12,7 @@ namespace Checkers_Logic
         private readonly List<Square> m_Squares = new List<Square>();
         private List<Move> m_ObligatoryMoves;
         private bool m_HasAvailableMoves = true;
+        private bool m_IsComputer = false;
         
         public int BonusScore
         {
@@ -23,6 +24,18 @@ namespace Checkers_Logic
             set
             {
                 this.m_BonusScore = value;
+            }
+        }
+
+        public bool IsComputer
+        {
+            get
+            {
+                return this.m_IsComputer;
+            }
+            set
+            {
+                this.m_IsComputer = value;
             }
         }
 
@@ -179,8 +192,9 @@ namespace Checkers_Logic
 
         public Square AvailableMove(Square i_CurrentSquare, Board i_GameBoard)
         {
-            Square leftSqr, rightSqr;
+            Square leftSqr, rightSqr, resSqr = null;
             Square.eSquareType squareType;
+
             squareType = i_GameBoard.GetSquareStatus(i_CurrentSquare);
 
             if (squareType == Square.eSquareType.playerOneKing || squareType == Square.eSquareType.playerTwoKing)
@@ -204,18 +218,28 @@ namespace Checkers_Logic
                 rightSqr = i_GameBoard.GetSquareInDirection(i_CurrentSquare, Board.eDirection.BottomRight);
             }
 
-            if (i_GameBoard.GetSquareStatus(leftSqr) == Square.eSquareType.none)
+
+            if (i_GameBoard.GetSquareStatus(leftSqr) == Square.eSquareType.none && i_GameBoard.GetSquareStatus(rightSqr) == Square.eSquareType.none)
             {
-                return leftSqr;
+                resSqr = leftSqr;
+                if((new Random()).Next(2) == 0){
+                    resSqr = rightSqr;
+                }
+            }
+            else if (i_GameBoard.GetSquareStatus(leftSqr) == Square.eSquareType.none)
+            {
+                resSqr = leftSqr;
             }
             else if (i_GameBoard.GetSquareStatus(rightSqr) == Square.eSquareType.none)
             {
-                return rightSqr;
+                resSqr = rightSqr;
             }
             else
             {
-                return null;
+                resSqr = null;
             }
+
+            return resSqr;
         }
 
         public void UpdateAvailableMovesIndicator(Board i_GameBoard)
@@ -291,12 +315,12 @@ namespace Checkers_Logic
         {
             Random rand = new Random();
             int randIndx = rand.Next(this.m_Squares.Count); 
-            Square nextSquare = this.AvailableMove(this.m_Squares[randIndx], i_GameBoard);
             string computerMove = string.Empty;
             Square fromSquare;
 
             if (this.m_HasAvailableMoves)
             {
+                Square nextSquare = this.AvailableMove(this.m_Squares[randIndx], i_GameBoard);
                 this.UpdateObligatoryMoves(i_GameBoard);
                 if(this.ObligatoryMovesCount > Move.k_ZeroObligatoryMoves)
                 {

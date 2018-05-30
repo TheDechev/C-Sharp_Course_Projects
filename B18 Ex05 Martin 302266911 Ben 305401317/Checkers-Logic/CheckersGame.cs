@@ -89,17 +89,6 @@ namespace Checkers_Logic
             this.m_CurrentPlayer.UpdateAvailableMovesIndicator(this.m_Board);
             weakPlayer = this.GetWeakPlayer();
             inputMove = Move.Parse(i_UserMove);
-
-            //if (this.m_CurrentPlayer.PlayerType == weakPlayer)
-            //{
-            //    this.endRoundScoreUpdate(this.m_CurrentPlayer.PlayerType);
-            //    roundStatus = eRoundOptions.weakPlayerQuits;
-            //}
-            //else
-            //{
-            //    this.m_TurnCounter--;
-            //    roundStatus = eRoundOptions.strongPlayerWantsToQuit;
-            //}
             
             if (this.m_CurrentPlayer.ObligatoryMovesCount > Move.k_ZeroObligatoryMoves)
             {
@@ -119,18 +108,11 @@ namespace Checkers_Logic
                     this.m_TurnCounter--;
                 }
             }
-            else
-            {
-                roundStatus = eRoundOptions.playerOneWon;
 
-                if (CurrentPlayer == this.m_PlayerOne)
-                {
-                    roundStatus = eRoundOptions.playerTwoWon;
-                }
-            }
+            roundStatus = CheckGameStatus(roundStatus);
 
             this.m_TurnCounter++;
-
+            this.m_CurrentPlayer = this.GetCurrentPlayer();
             return roundStatus;
     }
 
@@ -167,6 +149,7 @@ namespace Checkers_Logic
                 }
                 else 
                 {
+                    this.m_PlayerTwo.IsComputer = true;
                     this.m_PlayerTwo.Name = k_PcDeafultNameString;
                 }
 
@@ -280,11 +263,11 @@ namespace Checkers_Logic
             this.m_Board.AddPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);
         }
 
-        public eRoundOptions CheckGameStatus()
+        public eRoundOptions CheckGameStatus(eRoundOptions i_CurrentStatus)
         {
-            eRoundOptions gameStatus = eRoundOptions.passRound;
+            eRoundOptions gameStatus = i_CurrentStatus;
 
-            if(!this.m_PlayerOne.HasAvailableMove && !this.m_PlayerTwo.HasAvailableMove)
+            if (!this.m_PlayerOne.HasAvailableMove && !this.m_PlayerTwo.HasAvailableMove)
             {
                 gameStatus = eRoundOptions.gameIsATie;
             }
