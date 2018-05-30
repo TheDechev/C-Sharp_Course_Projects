@@ -36,6 +36,12 @@ namespace Checkers_Logic
             this.m_Col = i_Col;
         }
 
+        public Square(string i_RowCol)
+        {
+            this.Col = i_RowCol[0] - 'A';
+            this.Row = i_RowCol[1] - 'a';
+        }
+        
         public Square()
         {
             this.m_Row = -1;

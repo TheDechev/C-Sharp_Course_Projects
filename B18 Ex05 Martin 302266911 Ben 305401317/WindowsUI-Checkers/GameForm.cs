@@ -28,7 +28,23 @@ namespace WindowsUI_Checkers
 
         public GameForm()
         {
+            this.FormClosing += GameForm_FormClosing;
             this.Hide();
+        }
+
+        private void GameForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (this.m_Game.CurrentPlayer != null && !(this.m_Game.CurrentPlayer.PlayerType == this.m_Game.GetWeakPlayer()) && m_GameWasCreated)
+            {
+                switch (MessageBox.Show("You are not the weak player, are you sure you want to quit?", "Checkers Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                {
+                    case DialogResult.No:
+                        e.Cancel = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         private void initControls(int i_BoardSize, int i_ButtonSize)
@@ -146,7 +162,8 @@ namespace WindowsUI_Checkers
             this.m_CurrentMove += clickedButton.Name;
             if (this.m_CurrentMove.Length == 2)
             {
-                if(clickedButton.Text != string.Empty)
+                if (clickedButton.Text != string.Empty && (clickedButton.Text == this.m_Game.Board.SquareToString(this.m_Game.CurrentPlayer.PlayerType) ||
+                     this.m_Game.CurrentPlayer.IsMyKing(this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString())))))
                 {
                     this.m_CurrentMove += ">";
                     buttonCurrentlyClicked = clickedButton;
@@ -156,11 +173,17 @@ namespace WindowsUI_Checkers
                 {
                     this.m_CurrentMove = string.Empty;
                 }
-
             }
             else
             {
-                playRound();
+                if (this.buttonCurrentlyClicked != null && this.buttonCurrentlyClicked.Text == clickedButton.Text)
+                {
+                    this.buttonCurrentlyClicked.BackColor = Color.White;
+                }
+                else
+                {
+                    playRound();
+                }
                 this.m_CurrentMove = string.Empty;
             }
         }

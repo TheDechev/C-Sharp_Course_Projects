@@ -35,7 +35,7 @@ namespace WindowsUI_Checkers
 
         public bool IsComputer
         {
-            get { return checkBoxPlayer2.Enabled; }
+            get { return !checkBoxPlayer2.Checked; }
         }
 
         private void radioButtonSmallBoard_CheckedChanged(object sender, EventArgs e)

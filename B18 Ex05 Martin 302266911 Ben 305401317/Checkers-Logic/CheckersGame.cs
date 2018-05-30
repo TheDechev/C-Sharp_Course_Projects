@@ -137,6 +137,7 @@ namespace Checkers_Logic
             if (playerType == Square.eSquareType.playerOne)
             {
                 this.m_PlayerOne = new Player();
+                this.m_CurrentPlayer = this.m_PlayerOne;
                 this.m_PlayerOne.Name = i_PlayerName;
                 this.m_PlayerOne.PlayerType = Square.eSquareType.playerOne;
             }
