@@ -89,6 +89,7 @@ namespace WindowsUI_Checkers
             }
             else
             {
+                this.Opacity = 0;
                 this.Close();
             }
         }

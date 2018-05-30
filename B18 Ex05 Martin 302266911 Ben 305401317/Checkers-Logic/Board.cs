@@ -209,7 +209,8 @@ namespace Checkers_Logic
             if(Math.Abs(i_UserMove.SquareFrom.Row - i_UserMove.SquareTo.Row) <= areaCheck &&
                Math.Abs(i_UserMove.SquareFrom.Col - i_UserMove.SquareTo.Col) <= areaCheck)
             {
-                if (this.GetSquareStatus(i_UserMove.SquareTo) == Square.eSquareType.none && squareType == i_CurrentPlayer.PlayerType)
+                if (this.GetSquareStatus(i_UserMove.SquareTo) == Square.eSquareType.none && squareType == i_CurrentPlayer.PlayerType &&
+                    isDestinationValid(i_UserMove,this.GetSquareStatus(i_UserMove.SquareFrom)))
                 {
                     this.UpdateBoard(i_UserMove.SquareTo.Row, i_UserMove.SquareTo.Col, this.GetSquareStatus(i_UserMove.SquareFrom), i_CurrentPlayer);
                     this.UpdateBoard(i_UserMove.SquareFrom.Row, i_UserMove.SquareFrom.Col, Square.eSquareType.none, i_CurrentPlayer);
@@ -338,6 +339,28 @@ namespace Checkers_Logic
             }
 
             return resString;
+        }
+
+        private bool isDestinationValid(Move i_UserMove, Square.eSquareType i_SquareType)
+        {
+            bool isValid = true;
+
+            if(i_SquareType == Square.eSquareType.playerOne)
+            {
+                if(i_UserMove.SquareTo.Row - i_UserMove.SquareFrom.Row > 0)
+                {
+                    isValid = false;
+                }
+            }
+            else if (i_SquareType == Square.eSquareType.playerTwo)
+            {
+                if (i_UserMove.SquareTo.Row - i_UserMove.SquareFrom.Row < 0)
+                {
+                    isValid = false;
+                }
+            }
+
+            return isValid;
         }
     }
 }
