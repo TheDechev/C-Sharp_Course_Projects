@@ -55,12 +55,24 @@ namespace WindowsUI_Checkers
 
         public string PlayerOneName
         {
-            get { return textBoxPlayer1.Text; }
+            get
+            {
+                return string.Format("{0}:", textBoxPlayer1.Text);
+            }
         }
    
         public string PlayerTwoName
         {
-            get { return textBoxPlayer2.Text; }
+            get
+            {
+                string player2Name = textBoxPlayer2.Text;
+
+                if(this.IsComputer)
+                {
+                    player2Name = textBoxPlayer2.Text.Substring(1, textBoxPlayer2.Text.Length - 2);
+                }
+                return string.Format("{0}:", player2Name);
+            }
         }
 
         private void buttonDone_Click(object sender, EventArgs e)

@@ -40,7 +40,6 @@ namespace WindowsUI_Checkers
 
             labelPlayerOneScore.Text = "0";
             labelPlayerOneScore.AutoSize = true;
-            labelPlayerOneScore.TextAlign = ContentAlignment.MiddleLeft;
             labelPlayerOneScore.Location = new Point(labelPlayerOneName.Left + labelPlayerOneName.PreferredWidth + 7, labelPlayerOneName.Top);
 
 
