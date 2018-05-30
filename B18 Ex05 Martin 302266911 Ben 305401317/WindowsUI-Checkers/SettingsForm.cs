@@ -65,7 +65,17 @@ namespace WindowsUI_Checkers
 
         private void buttonDone_Click(object sender, EventArgs e)
         {
-            if (textBoxPlayer1.Text == string.Empty)
+            if (textBoxPlayer1.Text.Length > 10)
+            {
+                textBoxPlayer1.Text = textBoxPlayer1.Text.Substring(0, 9);
+            }
+
+            if (textBoxPlayer2.Text.Length > 10)
+            {
+                textBoxPlayer2.Text = textBoxPlayer2.Text.Substring(0, 9);
+            }
+
+            if (textBoxPlayer1.Text == string.Empty || textBoxPlayer2.Text == string.Empty)
             {
                 MessageBox.Show("Please fill all the fields", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }

@@ -19,7 +19,7 @@ namespace Checkers_Logic
 
         public enum eBoardSize
         {
-            Small = 6,
+            Small = 6,                
             Medium = 8,
             Large = 10,
         }

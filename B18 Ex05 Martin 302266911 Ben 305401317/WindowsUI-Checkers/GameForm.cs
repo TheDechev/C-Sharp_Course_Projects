@@ -20,6 +20,8 @@ namespace WindowsUI_Checkers
         Label labelPlayerTwoName = new Label();
         Label labelPlayerOneScore = new Label();
         Label labelPlayerTwoScore = new Label();
+       
+
         Button buttonCurrentlyClicked;
         SettingsForm formSettings = new SettingsForm();
         CheckersGame m_Game = new CheckersGame();
@@ -31,23 +33,25 @@ namespace WindowsUI_Checkers
 
         private void initControls(int i_BoardSize, int i_ButtonSize)
         {
+            int sideMargin = (this.Width - this.ClientSize.Width) / 2;
             labelPlayerOneName.Text = this.formSettings.PlayerOneName;
-            labelPlayerOneName.Width = labelPlayerOneName.Text.Length * 6;
-            labelPlayerOneName.Location = new Point((this.Width - this.ClientSize.Width) / 2 + i_ButtonSize, 20);
-
+            labelPlayerOneName.AutoSize = true;
+            labelPlayerOneName.Location = new Point(sideMargin + i_ButtonSize, 20);
 
             labelPlayerOneScore.Text = "0";
-            labelPlayerOneScore.Width = labelPlayerOneScore.Text.Length * 10;
-            labelPlayerOneScore.Location = new Point(labelPlayerOneName.Right, labelPlayerOneName.Top);
+            labelPlayerOneScore.AutoSize = true;
+            labelPlayerOneScore.TextAlign = ContentAlignment.MiddleLeft;
+            labelPlayerOneScore.Location = new Point(labelPlayerOneName.Left + labelPlayerOneName.PreferredWidth + 7, labelPlayerOneName.Top);
 
 
             labelPlayerTwoScore.Text = "0";
-            labelPlayerTwoScore.Width = labelPlayerTwoScore.Text.Length * 10;
-            labelPlayerTwoScore.Location = new Point(this.ClientSize.Width - 20 - i_ButtonSize, 20);
+            labelPlayerTwoScore.AutoSize = true;
+            labelPlayerTwoScore.Location = new Point(this.ClientSize.Width - sideMargin - i_ButtonSize, 20);
+
 
             labelPlayerTwoName.Text = this.formSettings.PlayerTwoName;
-            labelPlayerTwoName.Width = labelPlayerTwoName.Text.Length * 7;
-            labelPlayerTwoName.Location = new Point(labelPlayerTwoScore.Left - labelPlayerTwoName.Width, 20);
+            labelPlayerTwoName.AutoSize = true;
+            labelPlayerTwoName.Location = new Point(labelPlayerTwoScore.Left - labelPlayerTwoName.PreferredWidth - 7, 20);
 
 
             this.Controls.AddRange(new Control[] { labelPlayerOneName, labelPlayerTwoName, labelPlayerOneScore, labelPlayerTwoScore});
@@ -99,9 +103,10 @@ namespace WindowsUI_Checkers
             }
             m_Game.CreateGameBoard(boardSize);
             m_Game.Board.SquareUpdate += OnSquareUpdate;
+            this.Size = new Size(boardSize * k_ButtonSize + 35, boardSize * k_ButtonSize + k_ButtonSize * 3);
             initButtons(boardSize, k_ButtonSize);
             initControls(boardSize, k_ButtonSize);
-            this.Size = new Size(boardSize * k_ButtonSize + 35, boardSize * k_ButtonSize + k_ButtonSize * 3);
+            
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "Checkers Game";
