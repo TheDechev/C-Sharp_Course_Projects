@@ -142,9 +142,17 @@ namespace WindowsUI_Checkers
             this.m_CurrentMove += clickedButton.Name;
             if (this.m_CurrentMove.Length == 2)
             {
-                this.m_CurrentMove += ">";
-                buttonCurrentlyClicked = clickedButton;
-                clickedButton.BackColor = Color.CadetBlue;
+                if(clickedButton.Text != string.Empty)
+                {
+                    this.m_CurrentMove += ">";
+                    buttonCurrentlyClicked = clickedButton;
+                    clickedButton.BackColor = Color.CadetBlue;
+                }
+                else
+                {
+                    this.m_CurrentMove = string.Empty;
+                }
+
             }
             else
             {
@@ -217,8 +225,6 @@ namespace WindowsUI_Checkers
                 this.Controls[ButtonToUpdate].Text = i_SquareType;
             }
         }
-
-
 
         private void playRound()
         {

@@ -305,7 +305,7 @@ namespace Checkers_Logic
 
         public string SquareToString(Square.eSquareType i_CurrentSquare)
         {
-            string resString = "   ";
+            string resString = string.Empty;
 
             if (i_CurrentSquare == Square.eSquareType.playerOne)
             {
