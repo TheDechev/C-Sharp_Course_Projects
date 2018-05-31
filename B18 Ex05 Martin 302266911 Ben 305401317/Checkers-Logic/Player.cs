@@ -259,13 +259,20 @@ namespace Checkers_Logic
             this.m_HasAvailableMoves = false;
         }
 
-        public void UpdateObligatoryMoves(Board i_GameBoard)
+        public void UpdateObligatoryMoves(Board i_GameBoard, Square i_EliminatingSquare)
         {
             this.m_ObligatoryMoves = new List<Move>();
-            
-            foreach (Square currSquare in this.m_Squares)
+
+            if (object.ReferenceEquals(i_EliminatingSquare, null))
             {
-                this.m_ObligatoryMoves.AddRange(i_GameBoard.EliminationAvailable(currSquare, this));
+                foreach (Square currSquare in this.m_Squares)
+                {
+                    this.m_ObligatoryMoves.AddRange(i_GameBoard.EliminationAvailable(currSquare, this));
+                }
+            }
+            else
+            {
+                this.m_ObligatoryMoves.AddRange(i_GameBoard.EliminationAvailable(i_EliminatingSquare, this));
             }
         }
 
@@ -321,7 +328,7 @@ namespace Checkers_Logic
             if (this.m_HasAvailableMoves)
             {
                 Square nextSquare = this.AvailableMove(this.m_Squares[randIndx], i_GameBoard);
-                this.UpdateObligatoryMoves(i_GameBoard);
+                this.UpdateObligatoryMoves(i_GameBoard,null);
                 if(this.ObligatoryMovesCount > Move.k_ZeroObligatoryMoves)
                 {
                     computerMove = this.RandomObligatoryMove().ToString();

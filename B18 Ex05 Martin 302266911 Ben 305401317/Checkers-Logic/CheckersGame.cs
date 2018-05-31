@@ -79,17 +79,18 @@ namespace Checkers_Logic
 
         public eRoundOptions NewRound(string i_UserMove)
         {
+            
             Move inputMove = Move.Parse(i_UserMove);
             Square.eSquareType weakPlayer;
             bool moveWasSuccessful;
             eRoundOptions roundStatus = eRoundOptions.passRound;
 
             this.m_CurrentPlayer = this.GetCurrentPlayer();
-            this.m_CurrentPlayer.UpdateObligatoryMoves(this.m_Board);
+            this.m_CurrentPlayer.UpdateObligatoryMoves(this.m_Board,null);
             this.m_CurrentPlayer.UpdateAvailableMovesIndicator(this.m_Board);
             weakPlayer = this.GetWeakPlayer();
             inputMove = Move.Parse(i_UserMove);
-            
+
             if (this.m_CurrentPlayer.ObligatoryMovesCount > Move.k_ZeroObligatoryMoves)
             {
                 roundStatus = this.PlayObligatoryMove(this.m_CurrentPlayer, ref inputMove);
@@ -111,10 +112,25 @@ namespace Checkers_Logic
 
             roundStatus = CheckGameStatus(roundStatus);
 
-            this.m_TurnCounter++;
+            // TODO: test
+            if (roundStatus == eRoundOptions.playerTwoWon)
+            {
+                this.endRoundScoreUpdate(Square.eSquareType.playerOne);
+                //roundStatus = eRoundOptions.weakPlayerQuits;
+            }
+            else if (roundStatus == eRoundOptions.playerOneWon)
+            {
+                this.endRoundScoreUpdate(Square.eSquareType.playerTwo);
+                //roundStatus = eRoundOptions.weakPlayerQuits;
+            }
+            else
+            {
+                this.m_TurnCounter++;
+            }
+
             this.m_CurrentPlayer = this.GetCurrentPlayer();
             return roundStatus;
-    }
+        }
 
         public Player GetCurrentPlayer()
         {
@@ -213,7 +229,7 @@ namespace Checkers_Logic
             {   // Move was one of the obligatory options
                 if (this.EliminateOpponent(io_InputMove, i_CurrentPlayer))
                 {
-                    i_CurrentPlayer.UpdateObligatoryMoves(this.m_Board);
+                    i_CurrentPlayer.UpdateObligatoryMoves(this.m_Board, io_InputMove.SquareTo);
                     if (i_CurrentPlayer.ObligatoryMovesCount > Move.k_ZeroObligatoryMoves)
                     {
                         obligitoryMoveRes = eRoundOptions.currentPlayerHasAnotherRound;
@@ -267,6 +283,8 @@ namespace Checkers_Logic
         public eRoundOptions CheckGameStatus(eRoundOptions i_CurrentStatus)
         {
             eRoundOptions gameStatus = i_CurrentStatus;
+            this.PlayerOne.UpdateAvailableMovesIndicator(this.m_Board);
+            this.PlayerTwo.UpdateAvailableMovesIndicator(this.m_Board);
 
             if (!this.m_PlayerOne.HasAvailableMove && !this.m_PlayerTwo.HasAvailableMove)
             {

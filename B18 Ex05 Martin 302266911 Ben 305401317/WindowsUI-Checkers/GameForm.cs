@@ -141,8 +141,8 @@ namespace WindowsUI_Checkers
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "Checkers Game";
-            this.labelPlayerOneScore.Text = m_Game.PlayerOne.Score.ToString();
-            this.labelPlayerTwoScore.Text = m_Game.PlayerTwo.Score.ToString();
+            this.labelPlayerOneScore.Text = m_Game.PlayerOne.BonusScore.ToString();
+            this.labelPlayerTwoScore.Text = m_Game.PlayerTwo.BonusScore.ToString();
             m_GameWasCreated = true;
             this.Font = new Font(this.Font, FontStyle.Bold);
         }
@@ -252,7 +252,7 @@ namespace WindowsUI_Checkers
             }
             else if (m_RoundStatus == CheckersGame.eRoundOptions.gameIsATie)
             {
-
+                MessageBox.Show("It's a tie!", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (m_RoundStatus == CheckersGame.eRoundOptions.playerEnteredInvalidMove)
             {
@@ -276,9 +276,9 @@ namespace WindowsUI_Checkers
 
             do
             {
-                this.labelPlayerOneScore.Text = m_Game.PlayerOne.Score.ToString();
-                this.labelPlayerTwoScore.Text = m_Game.PlayerTwo.Score.ToString();
                 handleRound();
+                this.labelPlayerOneScore.Text = m_Game.PlayerOne.BonusScore.ToString();
+                this.labelPlayerTwoScore.Text = m_Game.PlayerTwo.BonusScore.ToString();
                 isComputerDone = true;
                 if (m_Game.CurrentPlayer.IsComputer)
                 {
