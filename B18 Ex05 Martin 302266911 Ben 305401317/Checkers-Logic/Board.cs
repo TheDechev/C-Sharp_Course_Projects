@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Checkers_Logic
 {
-    public delegate void SquareUpdateDelegate(int Row, int Col, string SquareType);
+    public delegate void SquareUpdateDelegate(int Row, int Col, Square.eSquareType i_SquareType);
     public class Board
     {
         private int m_BoardSize = (int)eBoardSize.Medium;
@@ -93,13 +93,13 @@ namespace Checkers_Logic
             for (int i = 0; i < i_PlayerOne.SquaresNum; i++)
             {
                 this.m_BoardGame[i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col] = (int)i_PlayerOne.PlayerType;
-                OnSquareUpdate(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col, SquareToString(GetSquareStatus(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col)));
+                OnSquareUpdate(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col, GetSquareStatus(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col));
             }
 
             for (int i = 0; i < i_PlayerTwo.SquaresNum; i++)
             {    
                 this.m_BoardGame[i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col] = (int)i_PlayerTwo.PlayerType;
-                OnSquareUpdate(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col, SquareToString(GetSquareStatus(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col)));
+                OnSquareUpdate(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col, GetSquareStatus(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col));
             }
         }
 
@@ -117,7 +117,7 @@ namespace Checkers_Logic
                     {
                         this.m_BoardGame[currentRow, currentCol] = (int)Square.eSquareType.none;
                     }
-                    OnSquareUpdate(currentRow, currentCol, SquareToString(GetSquareStatus(currentRow, currentCol)));
+                    OnSquareUpdate(currentRow, currentCol, GetSquareStatus(currentRow, currentCol));
                 }
             }
         }
@@ -252,7 +252,7 @@ namespace Checkers_Logic
                     updateRes = true;
                 }
 
-                OnSquareUpdate(i_Row,i_Col,this.SquareToString(GetSquareStatus(i_Row,i_Col)));
+                OnSquareUpdate(i_Row,i_Col,GetSquareStatus(i_Row,i_Col));
             }
 
             return updateRes;
@@ -349,7 +349,7 @@ namespace Checkers_Logic
             return isValid;
         }
 
-        private void OnSquareUpdate(int i_Row, int i_Col , string i_SquareType)
+        private void OnSquareUpdate(int i_Row, int i_Col , Square.eSquareType i_SquareType)
         {
             if(this.m_SquareUpdate != null)
             {

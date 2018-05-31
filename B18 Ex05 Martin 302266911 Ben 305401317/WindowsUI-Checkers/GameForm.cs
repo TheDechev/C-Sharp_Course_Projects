@@ -13,7 +13,7 @@ namespace WindowsUI_Checkers
     class GameForm: Form
     {
         private bool m_GameWasCreated = false;
-        private const int k_ButtonSize = 40;
+        private const int k_ButtonSize = 50;
         private string m_CurrentMove = string.Empty;
         private CheckersGame.eRoundOptions m_RoundStatus;
         Label labelPlayerOneName = new Label();
@@ -106,15 +106,23 @@ namespace WindowsUI_Checkers
                     currentButton.Name = new string(new char[]{capitalLetter,smallLetter});
                     currentButton.Location = new Point( 10 + i_ButtonSize * j , this.Height - this.ClientSize.Height + 35 + i_ButtonSize * i);
                     currentSquareType = m_Game.Board.GetSquareStatus(i, j);
-                    currentButton.BackColor = Color.White;
+                    currentButton.BackgroundImage = Resource1.lightBackground;
+                    currentButton.BackgroundImageLayout = ImageLayout.Stretch;
+                    currentButton.FlatStyle = FlatStyle.Flat;
                     currentButton.Click += new EventHandler(this.button_Click);
                     if (currentSquareType == Square.eSquareType.invalid)
                     {
-                        currentButton.BackColor = Color.Gray;
+                        currentButton.BackgroundImage = Resource1.darkBackground;
                         currentButton.Enabled = false;
                     }
-                    string shapeText = m_Game.Board.SquareToString(currentSquareType);
-                    currentButton.Text = shapeText;
+                    else if ( currentSquareType == Square.eSquareType.playerOne)
+                    {
+                        currentButton.Image = Resource1.PlayerOne;
+                    }
+                    else if(currentSquareType == Square.eSquareType.playerTwo || currentSquareType == Square.eSquareType.playerPC)
+                    {
+                        currentButton.Image = Resource1.PlayerTwo;
+                    }
                     this.Controls.Add(currentButton);
                 }
             }
@@ -137,7 +145,6 @@ namespace WindowsUI_Checkers
             this.Size = new Size(boardSize * k_ButtonSize + 35, boardSize * k_ButtonSize + k_ButtonSize * 3);
             initButtons(boardSize, k_ButtonSize);
             initControls(boardSize, k_ButtonSize);
-            
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "Checkers Game";
@@ -178,12 +185,12 @@ namespace WindowsUI_Checkers
             this.m_CurrentMove += clickedButton.Name;
             if (this.m_CurrentMove.Length == 2)
             {
-                if (clickedButton.Text != string.Empty && (clickedButton.Text == this.m_Game.Board.SquareToString(this.m_Game.CurrentPlayer.PlayerType) ||
+                if (clickedButton.Enabled == true && (this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString())) == this.m_Game.CurrentPlayer.PlayerType ||
                      this.m_Game.CurrentPlayer.IsMyKing(this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString())))))
                 {
                     this.m_CurrentMove += ">";
                     buttonCurrentlyClicked = clickedButton;
-                    clickedButton.BackColor = Color.CadetBlue;
+                    clickedButton.BackgroundImage = Resource1.SelectedBackground;
                 }
                 else
                 {
@@ -192,14 +199,12 @@ namespace WindowsUI_Checkers
             }
             else
             {
-                if (this.buttonCurrentlyClicked != null && this.buttonCurrentlyClicked.Text == clickedButton.Text)
-                {
-                    this.buttonCurrentlyClicked.BackColor = Color.White;
-                }
-                else
+                if (!(this.buttonCurrentlyClicked != null && this.m_Game.Board.GetSquareStatus(new Square(buttonCurrentlyClicked.Name.ToString())) == this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString()))))
                 {
                     playRound();
                 }
+
+                buttonCurrentlyClicked.BackgroundImage = Resource1.lightBackground;
                 this.m_CurrentMove = string.Empty;
             }
         }
@@ -260,12 +265,35 @@ namespace WindowsUI_Checkers
             }   
         }
 
-        private void OnSquareUpdate(int i_Row, int i_Col, string i_SquareType)
+        private void OnSquareUpdate(int i_Row, int i_Col, Square.eSquareType i_SquareType)
         {
             if (m_GameWasCreated)
             {
+
                 string ButtonToUpdate = string.Format("{0}{1}", Convert.ToChar(i_Col + (int)'A'), Convert.ToChar(i_Row + (int)'a'));
-                this.Controls[ButtonToUpdate].Text = i_SquareType;
+                Button currentButton = (this.Controls[ButtonToUpdate] as Button);
+                currentButton.BackgroundImage = Resource1.lightBackground;
+
+                if (i_SquareType == Square.eSquareType.playerOne)
+                {
+                    currentButton.Image = Resource1.PlayerOne;
+                }
+                else if (i_SquareType == Square.eSquareType.playerTwo || i_SquareType == Square.eSquareType.playerPC)
+                {
+                    currentButton.Image = Resource1.PlayerTwo;
+                }
+                else if (i_SquareType == Square.eSquareType.playerOneKing)
+                {
+                    currentButton.Image = Resource1.PlayerOneKing;
+                }
+                else if (i_SquareType == Square.eSquareType.playerTwoKing)
+                {
+                    currentButton.Image = Resource1.PlayerTwoKing;
+                }
+                else
+                {
+                    currentButton.Image = null;
+                }
             }
         }
 
