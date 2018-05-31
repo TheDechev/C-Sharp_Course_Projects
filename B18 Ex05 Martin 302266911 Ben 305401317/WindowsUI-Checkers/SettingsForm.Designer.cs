@@ -2,9 +2,8 @@
 
 namespace WindowsUI_Checkers
 {
-    partial class SettingsForm
+    public partial class SettingsForm
     {
-
         private Label labelPlayers;
         private RadioButton radioButtonSmallBoard;
         private RadioButton radioButtonMediumBoard;
@@ -27,10 +26,11 @@ namespace WindowsUI_Checkers
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (this.components != null))
             {
-                components.Dispose();
+                this.components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 

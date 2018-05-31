@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WindowsUI_Checkers
 {
-    class Program
+    public class Program
     {
-        static void Main()
+        public static void Main()
         {
             GameForm terst = new GameForm();
             terst.ShowDialog();

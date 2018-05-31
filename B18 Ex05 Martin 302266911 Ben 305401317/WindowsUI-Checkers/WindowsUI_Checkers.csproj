@@ -54,7 +54,6 @@
     <Compile Include="SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinFormsCheckersUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

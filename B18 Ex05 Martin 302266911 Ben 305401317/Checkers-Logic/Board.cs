@@ -4,11 +4,9 @@ using System.Collections.Generic;
 namespace Checkers_Logic
 {
     public delegate void SquareUpdateDelegate(int Row, int Col, Square.eSquareType i_SquareType);
+
     public class Board
     {
-        private int m_BoardSize = (int)eBoardSize.Medium;
-        private int[,] m_BoardGame;
-        private event SquareUpdateDelegate m_SquareUpdate;
         public enum eDirection
         {
             TopLeft,
@@ -19,20 +17,26 @@ namespace Checkers_Logic
 
         public enum eBoardSize
         {
-            Small = 6,                
+            Small = 6,
             Medium = 8,
             Large = 10,
         }
+
+        private int m_BoardSize = (int)eBoardSize.Medium;
+        private int[,] m_BoardGame;
+
+        private event SquareUpdateDelegate m_SquareUpdate;
 
         public SquareUpdateDelegate SquareUpdate
         {
             get
             {
-                return m_SquareUpdate;
+                return this.m_SquareUpdate;
             }
+
             set
             {
-                m_SquareUpdate = value;
+                this.m_SquareUpdate = value;
             }
         }
 
@@ -45,7 +49,7 @@ namespace Checkers_Logic
 
         public void ClearBoard()
         {
-            m_BoardGame = new int[Convert.ToInt16(Math.Sqrt(m_BoardGame.Length)), Convert.ToInt16(Math.Sqrt(m_BoardGame.Length))];
+            this.m_BoardGame = new int[Convert.ToInt16(Math.Sqrt(this.m_BoardGame.Length)), Convert.ToInt16(Math.Sqrt(this.m_BoardGame.Length))];
             this.InitBoard();
         }
 
@@ -73,6 +77,7 @@ namespace Checkers_Logic
                    resStatus = (Square.eSquareType)this.m_BoardGame[i_Square.Row, i_Square.Col];
                 }
             }
+
             return resStatus;
         }
 
@@ -93,13 +98,13 @@ namespace Checkers_Logic
             for (int i = 0; i < i_PlayerOne.SquaresNum; i++)
             {
                 this.m_BoardGame[i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col] = (int)i_PlayerOne.PlayerType;
-                OnSquareUpdate(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col, GetSquareStatus(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col));
+                this.OnSquareUpdate(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col, this.GetSquareStatus(i_PlayerOne.GetSquare(i).Row, i_PlayerOne.GetSquare(i).Col));
             }
 
             for (int i = 0; i < i_PlayerTwo.SquaresNum; i++)
             {    
                 this.m_BoardGame[i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col] = (int)i_PlayerTwo.PlayerType;
-                OnSquareUpdate(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col, GetSquareStatus(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col));
+                this.OnSquareUpdate(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col, this.GetSquareStatus(i_PlayerTwo.GetSquare(i).Row, i_PlayerTwo.GetSquare(i).Col));
             }
         }
 
@@ -117,7 +122,8 @@ namespace Checkers_Logic
                     {
                         this.m_BoardGame[currentRow, currentCol] = (int)Square.eSquareType.none;
                     }
-                    OnSquareUpdate(currentRow, currentCol, GetSquareStatus(currentRow, currentCol));
+
+                    this.OnSquareUpdate(currentRow, currentCol, this.GetSquareStatus(currentRow, currentCol));
                 }
             }
         }
@@ -199,7 +205,7 @@ namespace Checkers_Logic
                Math.Abs(i_UserMove.SquareFrom.Col - i_UserMove.SquareTo.Col) <= areaCheck)
             {
                 if (this.GetSquareStatus(i_UserMove.SquareTo) == Square.eSquareType.none && squareType == i_CurrentPlayer.PlayerType &&
-                    isDestinationValid(i_UserMove,this.GetSquareStatus(i_UserMove.SquareFrom)))
+                   this.isDestinationValid(i_UserMove, this.GetSquareStatus(i_UserMove.SquareFrom)))
                 {
                     this.UpdateBoard(i_UserMove.SquareTo.Row, i_UserMove.SquareTo.Col, this.GetSquareStatus(i_UserMove.SquareFrom), i_CurrentPlayer);
                     this.UpdateBoard(i_UserMove.SquareFrom.Row, i_UserMove.SquareFrom.Col, Square.eSquareType.none, i_CurrentPlayer);
@@ -252,7 +258,7 @@ namespace Checkers_Logic
                     updateRes = true;
                 }
 
-                OnSquareUpdate(i_Row,i_Col,GetSquareStatus(i_Row,i_Col));
+                this.OnSquareUpdate(i_Row, i_Col, this.GetSquareStatus(i_Row, i_Col));
             }
 
             return updateRes;
@@ -349,7 +355,7 @@ namespace Checkers_Logic
             return isValid;
         }
 
-        private void OnSquareUpdate(int i_Row, int i_Col , Square.eSquareType i_SquareType)
+        private void OnSquareUpdate(int i_Row, int i_Col, Square.eSquareType i_SquareType)
         {
             if(this.m_SquareUpdate != null)
             {

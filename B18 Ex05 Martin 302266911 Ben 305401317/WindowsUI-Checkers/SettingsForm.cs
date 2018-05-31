@@ -17,47 +17,53 @@ namespace WindowsUI_Checkers
         public SettingsForm()
         {
             this.DialogResult = DialogResult.No;
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void checkBoxPlayer2_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxPlayer2.Enabled)
+            if (this.checkBoxPlayer2.Enabled)
             {
-                textBoxPlayer2.Enabled = true;
+                this.textBoxPlayer2.Enabled = true;
             }
         }
 
         public int BoardSize
         {
-            get { return (int)m_BoardSize; }
+            get
+            {
+                return (int)this.m_BoardSize;
+            }
         }
 
         public bool IsComputer
         {
-            get { return !checkBoxPlayer2.Checked; }
+            get
+            {
+                return !this.checkBoxPlayer2.Checked;
+            }
         }
 
         private void radioButtonSmallBoard_CheckedChanged(object sender, EventArgs e)
         {
-            m_BoardSize = Board.eBoardSize.Small;
+            this.m_BoardSize = Board.eBoardSize.Small;
         }
 
         private void radioButtonMediumBoard_CheckedChanged(object sender, EventArgs e)
         {
-            m_BoardSize = Board.eBoardSize.Medium;
+            this.m_BoardSize = Board.eBoardSize.Medium;
         }
 
         private void radioButtonLargeBoard_CheckedChanged(object sender, EventArgs e)
         {
-            m_BoardSize = Board.eBoardSize.Large;
+            this.m_BoardSize = Board.eBoardSize.Large;
         }
 
         public string PlayerOneName
         {
             get
             {
-                return string.Format("{0}:", textBoxPlayer1.Text);
+                return string.Format("{0}:", this.textBoxPlayer1.Text);
             }
         }
    
@@ -65,29 +71,23 @@ namespace WindowsUI_Checkers
         {
             get
             {
-                string player2Name = textBoxPlayer2.Text;
-
-                if(this.IsComputer)
-                {
-                    player2Name = textBoxPlayer2.Text.Substring(1, textBoxPlayer2.Text.Length - 2);
-                }
-                return string.Format("{0}:", player2Name);
+               return this.textBoxPlayer2.Text;
             }
         }
 
         private void buttonDone_Click(object sender, EventArgs e)
         {
-            if (textBoxPlayer1.Text.Length > 10)
+            if (this.textBoxPlayer1.Text.Length > 10)
             {
-                textBoxPlayer1.Text = textBoxPlayer1.Text.Substring(0, 9);
+                this.textBoxPlayer1.Text = this.textBoxPlayer1.Text.Substring(0, 9);
             }
 
-            if (textBoxPlayer2.Text.Length > 10)
+            if (this.textBoxPlayer2.Text.Length > 10)
             {
-                textBoxPlayer2.Text = textBoxPlayer2.Text.Substring(0, 9);
+                this.textBoxPlayer2.Text = this.textBoxPlayer2.Text.Substring(0, 9);
             }
 
-            if (textBoxPlayer1.Text == string.Empty || textBoxPlayer2.Text == string.Empty)
+            if (this.textBoxPlayer1.Text == string.Empty || this.textBoxPlayer2.Text == string.Empty)
             {
                 MessageBox.Show("Please fill all the fields", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -97,6 +97,5 @@ namespace WindowsUI_Checkers
                 this.Close();
             }
         }
-
     }
 }

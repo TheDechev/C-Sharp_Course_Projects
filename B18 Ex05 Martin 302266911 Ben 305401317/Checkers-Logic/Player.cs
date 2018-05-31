@@ -5,11 +5,11 @@ namespace Checkers_Logic
 {
     public class Player
     {
+        private readonly List<Square> m_Squares = new List<Square>();
         private Square.eSquareType m_PlayerType;
         private string m_Name;
         private int m_Score;
         private int m_BonusScore;
-        private readonly List<Square> m_Squares = new List<Square>();
         private List<Move> m_ObligatoryMoves;
         private bool m_HasAvailableMoves = true;
         private bool m_IsComputer = false;
@@ -33,6 +33,7 @@ namespace Checkers_Logic
             {
                 return this.m_IsComputer;
             }
+
             set
             {
                 this.m_IsComputer = value;
@@ -218,11 +219,11 @@ namespace Checkers_Logic
                 rightSqr = i_GameBoard.GetSquareInDirection(i_CurrentSquare, Board.eDirection.BottomRight);
             }
 
-
             if (i_GameBoard.GetSquareStatus(leftSqr) == Square.eSquareType.none && i_GameBoard.GetSquareStatus(rightSqr) == Square.eSquareType.none)
             {
                 resSqr = leftSqr;
-                if((new Random()).Next(2) == 0){
+                if((new Random()).Next(2) == 0)
+                {
                     resSqr = rightSqr;
                 }
             }
@@ -328,7 +329,7 @@ namespace Checkers_Logic
             if (this.m_HasAvailableMoves)
             {
                 Square nextSquare = this.AvailableMove(this.m_Squares[randIndx], i_GameBoard);
-                this.UpdateObligatoryMoves(i_GameBoard,null);
+                this.UpdateObligatoryMoves(i_GameBoard, null);
                 if(this.ObligatoryMovesCount > Move.k_ZeroObligatoryMoves)
                 {
                     computerMove = this.RandomObligatoryMove().ToString();

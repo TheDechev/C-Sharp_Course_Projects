@@ -1,34 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Checkers_Logic;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.Drawing;
-using System.Threading;
+using System;
+using Checkers_Logic;
 
 namespace WindowsUI_Checkers
 {
-    class GameForm: Form
+    public class GameForm : Form
     {
-        private bool m_GameWasCreated = false;
         private const int k_ButtonSize = 50;
+        private bool m_GameWasCreated = false;
         private string m_CurrentMove = string.Empty;
         private CheckersGame.eRoundOptions m_RoundStatus;
-        Label labelPlayerOneName = new Label();
-        Label labelPlayerTwoName = new Label();
-        Label labelPlayerOneScore = new Label();
-        Label labelPlayerTwoScore = new Label();
-       
-
-        Button buttonCurrentlyClicked;
-        SettingsForm formSettings = new SettingsForm();
-        CheckersGame m_Game = new CheckersGame();
+        private Label labelPlayerOneName = new Label();
+        private Label labelPlayerTwoName = new Label();
+        private Label labelPlayerOneScore = new Label();
+        private Label labelPlayerTwoScore = new Label();
+        private Button buttonCurrentlyClicked;
+        private SettingsForm formSettings = new SettingsForm();
+        private CheckersGame m_Game = new CheckersGame();
 
         public GameForm()
         {
-            this.FormClosing += GameForm_FormClosing;
+            this.FormClosing += this.GameForm_FormClosing;
             this.Hide();
         }
 
@@ -36,7 +29,7 @@ namespace WindowsUI_Checkers
         {
             if (this.m_Game.CurrentPlayer != null && this.m_GameWasCreated)
             {
-                if(!(this.m_Game.CurrentPlayer.PlayerType == this.m_Game.GetWeakPlayer()) && m_GameWasCreated)
+                if(!(this.m_Game.CurrentPlayer.PlayerType == this.m_Game.GetWeakPlayer()) && this.m_GameWasCreated)
                 {
                     switch (MessageBox.Show("You are not the weak player, are you sure you want to quit?", "Checkers Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                     {
@@ -53,7 +46,7 @@ namespace WindowsUI_Checkers
                     switch (MessageBox.Show("Game over. Would you like to play another round?", "Checkers Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                     {
                         case DialogResult.Yes:
-                            m_Game.CreateGameBoard(formSettings.BoardSize);
+                            this.m_Game.CreateGameBoard(this.formSettings.BoardSize);
                             e.Cancel = true;
                             break;
                         default:
@@ -66,26 +59,23 @@ namespace WindowsUI_Checkers
         private void initControls(int i_BoardSize, int i_ButtonSize)
         {
             int sideMargin = (this.Width - this.ClientSize.Width) / 2;
-            labelPlayerOneName.Text = this.formSettings.PlayerOneName;
-            labelPlayerOneName.AutoSize = true;
-            labelPlayerOneName.Location = new Point(sideMargin + i_ButtonSize, 20);
+            this.labelPlayerOneName.Text = this.formSettings.PlayerOneName;
+            this.labelPlayerOneName.AutoSize = true;
+            this.labelPlayerOneName.Location = new Point(sideMargin + i_ButtonSize, 20);
 
-            labelPlayerOneScore.Text = "0";
-            labelPlayerOneScore.AutoSize = true;
-            labelPlayerOneScore.Location = new Point(labelPlayerOneName.Left + labelPlayerOneName.PreferredWidth + 7, labelPlayerOneName.Top);
+            this.labelPlayerOneScore.Text = "0";
+            this.labelPlayerOneScore.AutoSize = true;
+            this.labelPlayerOneScore.Location = new Point(this.labelPlayerOneName.Left + this.labelPlayerOneName.PreferredWidth + 7, this.labelPlayerOneName.Top);
 
+            this.labelPlayerTwoScore.Text = "0";
+            this.labelPlayerTwoScore.AutoSize = true;
+            this.labelPlayerTwoScore.Location = new Point(this.ClientSize.Width - sideMargin - i_ButtonSize, 20);
 
-            labelPlayerTwoScore.Text = "0";
-            labelPlayerTwoScore.AutoSize = true;
-            labelPlayerTwoScore.Location = new Point(this.ClientSize.Width - sideMargin - i_ButtonSize, 20);
+            this.labelPlayerTwoName.Text = this.formSettings.PlayerTwoName;
+            this.labelPlayerTwoName.AutoSize = true;
+            this.labelPlayerTwoName.Location = new Point(this.labelPlayerTwoScore.Left - this.labelPlayerTwoName.PreferredWidth - 7, 20);
 
-
-            labelPlayerTwoName.Text = this.formSettings.PlayerTwoName;
-            labelPlayerTwoName.AutoSize = true;
-            labelPlayerTwoName.Location = new Point(labelPlayerTwoScore.Left - labelPlayerTwoName.PreferredWidth - 7, 20);
-
-
-            this.Controls.AddRange(new Control[] { labelPlayerOneName, labelPlayerTwoName, labelPlayerOneScore, labelPlayerTwoScore});
+            this.Controls.AddRange(new Control[] { this.labelPlayerOneName, this.labelPlayerTwoName, this.labelPlayerOneScore, this.labelPlayerTwoScore });
         }
 
         private void initButtons(int i_BoardSize, int i_ButtonSize)
@@ -94,7 +84,7 @@ namespace WindowsUI_Checkers
             char smallLetter, capitalLetter;
 
             Button currentButton;
-            for (int i = 0; i < i_BoardSize ; i++) 
+            for (int i = 0; i < i_BoardSize; i++) 
             {
                 smallLetter = Convert.ToChar(i + (int)'a');
                 for (int j = 0; j < i_BoardSize; j++)
@@ -103,9 +93,10 @@ namespace WindowsUI_Checkers
                     currentButton = new Button();
                     currentButton.Size = new Size(i_ButtonSize, i_ButtonSize);
                     currentButton.AutoSize = true;
-                    currentButton.Name = new string(new char[]{capitalLetter,smallLetter});
-                    currentButton.Location = new Point( 10 + i_ButtonSize * j , this.Height - this.ClientSize.Height + 35 + i_ButtonSize * i);
-                    currentSquareType = m_Game.Board.GetSquareStatus(i, j);
+                    currentButton.Name = new string(new char[] { capitalLetter, smallLetter });
+
+                    currentButton.Location = new Point(10 + (i_ButtonSize * j), ((this.Height - this.ClientSize.Height) + 35) + (i_ButtonSize * i));
+                    currentSquareType = this.m_Game.Board.GetSquareStatus(i, j);
                     currentButton.BackgroundImage = Resource1.lightBackground;
                     currentButton.BackgroundImageLayout = ImageLayout.Stretch;
                     currentButton.FlatStyle = FlatStyle.Flat;
@@ -115,7 +106,7 @@ namespace WindowsUI_Checkers
                         currentButton.BackgroundImage = Resource1.darkBackground;
                         currentButton.Enabled = false;
                     }
-                    else if ( currentSquareType == Square.eSquareType.playerOne)
+                    else if (currentSquareType == Square.eSquareType.playerOne)
                     {
                         currentButton.Image = Resource1.PlayerOne;
                     }
@@ -123,6 +114,7 @@ namespace WindowsUI_Checkers
                     {
                         currentButton.Image = Resource1.PlayerTwo;
                     }
+
                     this.Controls.Add(currentButton);
                 }
             }
@@ -130,33 +122,35 @@ namespace WindowsUI_Checkers
 
         private void InitGameForm()
         {
-            int boardSize = formSettings.BoardSize;
-            m_Game.AddNewPlayer(formSettings.PlayerOneName, Square.eSquareType.playerOne);
-            if (formSettings.IsComputer)
+            int boardSize = this.formSettings.BoardSize;
+            this.m_Game.AddNewPlayer(this.formSettings.PlayerOneName, Square.eSquareType.playerOne);
+
+            if (this.formSettings.IsComputer)
             {
-                m_Game.AddNewPlayer(formSettings.PlayerTwoName, Square.eSquareType.playerPC);
+                this.m_Game.AddNewPlayer(this.formSettings.PlayerTwoName, Square.eSquareType.playerPC);
             }
             else
             {
-                m_Game.AddNewPlayer(formSettings.PlayerTwoName, Square.eSquareType.playerTwo);
+                this.m_Game.AddNewPlayer(this.formSettings.PlayerTwoName, Square.eSquareType.playerTwo);
             }
-            m_Game.CreateGameBoard(boardSize);
-            m_Game.Board.SquareUpdate += OnSquareUpdate;
-            this.Size = new Size(boardSize * k_ButtonSize + 35, boardSize * k_ButtonSize + k_ButtonSize * 3);
-            initButtons(boardSize, k_ButtonSize);
-            initControls(boardSize, k_ButtonSize);
+
+            this.m_Game.CreateGameBoard(boardSize);
+            this.m_Game.Board.SquareUpdate += this.OnSquareUpdate;
+            this.Size = new Size((boardSize * k_ButtonSize) + 35, (boardSize * k_ButtonSize) + (k_ButtonSize * 3));
+            this.initButtons(boardSize, k_ButtonSize);
+            this.initControls(boardSize, k_ButtonSize);
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "Checkers Game";
-            this.labelPlayerOneScore.Text = m_Game.PlayerOne.BonusScore.ToString();
-            this.labelPlayerTwoScore.Text = m_Game.PlayerTwo.BonusScore.ToString();
-            m_GameWasCreated = true;
+            this.labelPlayerOneScore.Text = this.m_Game.PlayerOne.BonusScore.ToString();
+            this.labelPlayerTwoScore.Text = this.m_Game.PlayerTwo.BonusScore.ToString();
+            this.m_GameWasCreated = true;
             this.Font = new Font(this.Font, FontStyle.Bold);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            if (ensureSettingsValid())
+            if (this.ensureSettingsValid())
             {
                 base.OnLoad(e);
             }
@@ -170,10 +164,10 @@ namespace WindowsUI_Checkers
         private bool ensureSettingsValid()
         {
             bool isValid = false;
-            if (formSettings.ShowDialog() == DialogResult.OK)
+            if (this.formSettings.ShowDialog() == DialogResult.OK)
             {
-                InitGameForm();
-                isValid =  true;
+                this.InitGameForm();
+                isValid = true;
             }
 
             return isValid;
@@ -189,7 +183,7 @@ namespace WindowsUI_Checkers
                      this.m_Game.CurrentPlayer.IsMyKing(this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString())))))
                 {
                     this.m_CurrentMove += ">";
-                    buttonCurrentlyClicked = clickedButton;
+                    this.buttonCurrentlyClicked = clickedButton;
                     clickedButton.BackgroundImage = Resource1.SelectedBackground;
                 }
                 else
@@ -199,67 +193,67 @@ namespace WindowsUI_Checkers
             }
             else
             {
-                if (!(this.buttonCurrentlyClicked != null && this.m_Game.Board.GetSquareStatus(new Square(buttonCurrentlyClicked.Name.ToString())) == this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString()))))
+                if (!(this.buttonCurrentlyClicked != null && this.m_Game.Board.GetSquareStatus(new Square(this.buttonCurrentlyClicked.Name.ToString())) == this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString()))))
                 {
-                    playRound();
+                    this.playRound();
                 }
 
-                buttonCurrentlyClicked.BackgroundImage = Resource1.lightBackground;
+                this.buttonCurrentlyClicked.BackgroundImage = Resource1.lightBackground;
                 this.m_CurrentMove = string.Empty;
             }
         }
 
         private void handleRound()
         {
-            buttonCurrentlyClicked.BackColor = Color.White;
+            this.buttonCurrentlyClicked.BackColor = Color.White;
 
-            if (m_RoundStatus == CheckersGame.eRoundOptions.playerDidntEnterObligatoryMove)
+            if (this.m_RoundStatus == CheckersGame.eRoundOptions.playerDidntEnterObligatoryMove)
             {
                 MessageBox.Show("Invalid move, you must eliminate your opponnent!", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else if (m_RoundStatus == CheckersGame.eRoundOptions.currentPlayerHasAnotherRound)
+            else if (this.m_RoundStatus == CheckersGame.eRoundOptions.currentPlayerHasAnotherRound)
             {
-                if (!m_Game.CurrentPlayer.IsComputer)
+                if (!this.m_Game.CurrentPlayer.IsComputer)
                 {
-                    string warningMsg = string.Format("{0} has another turn.", m_Game.CurrentPlayer.Name);
+                    string warningMsg = string.Format("{0} has another turn.", this.m_Game.CurrentPlayer.Name);
                     MessageBox.Show(warningMsg, "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            else if (m_RoundStatus == CheckersGame.eRoundOptions.playerOneWon)
+            else if (this.m_RoundStatus == CheckersGame.eRoundOptions.playerOneWon)
             {
-                string gameOverMsg = string.Format("{0} won the game! {0} Another round?.", m_Game.PlayerOne.Name,Environment.NewLine);
+                string gameOverMsg = string.Format("{0} won the game! {0} Another round?.", this.m_Game.PlayerOne.Name, Environment.NewLine);
                 DialogResult continueGame;
                 continueGame  = MessageBox.Show(gameOverMsg, "Checkers Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (continueGame == DialogResult.Yes)
                 {
-                    m_Game.CreateGameBoard(formSettings.BoardSize);
+                    this.m_Game.CreateGameBoard(this.formSettings.BoardSize);
                 }
                 else if (continueGame == DialogResult.No)
                 {
                     this.Close();
                 }
             }
-            else if (m_RoundStatus == CheckersGame.eRoundOptions.playerTwoWon)
+            else if (this.m_RoundStatus == CheckersGame.eRoundOptions.playerTwoWon)
             {
-                string gameOverMsg = string.Format("{0} won the game! {0} Another round?.", m_Game.PlayerTwo.Name, Environment.NewLine);
+                string gameOverMsg = string.Format("{0} won the game! {0} Another round?.", this.m_Game.PlayerTwo.Name, Environment.NewLine);
                 DialogResult continueGame;
 
                 continueGame = MessageBox.Show(gameOverMsg, "Checkers Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (continueGame == DialogResult.Yes)
                 {
-                    m_Game.CreateGameBoard(formSettings.BoardSize);
+                    this.m_Game.CreateGameBoard(this.formSettings.BoardSize);
                 }
                 else if (continueGame == DialogResult.No)
                 {
                     this.Close();
                 }
             }
-            else if (m_RoundStatus == CheckersGame.eRoundOptions.gameIsATie)
+            else if (this.m_RoundStatus == CheckersGame.eRoundOptions.gameIsATie)
             {
                 MessageBox.Show("It's a tie!", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else if (m_RoundStatus == CheckersGame.eRoundOptions.playerEnteredInvalidMove)
+            else if (this.m_RoundStatus == CheckersGame.eRoundOptions.playerEnteredInvalidMove)
             {
                 MessageBox.Show("Invalid move! Try again.", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }   
@@ -267,11 +261,11 @@ namespace WindowsUI_Checkers
 
         private void OnSquareUpdate(int i_Row, int i_Col, Square.eSquareType i_SquareType)
         {
-            if (m_GameWasCreated)
+            if (this.m_GameWasCreated)
             {
-
                 string ButtonToUpdate = string.Format("{0}{1}", Convert.ToChar(i_Col + (int)'A'), Convert.ToChar(i_Row + (int)'a'));
-                Button currentButton = (this.Controls[ButtonToUpdate] as Button);
+                Button currentButton = this.Controls[ButtonToUpdate] as Button;
+
                 if (i_SquareType == Square.eSquareType.invalid)
                 {
                     currentButton.BackgroundImage = Resource1.darkBackground;
@@ -307,22 +301,22 @@ namespace WindowsUI_Checkers
         private void playRound()
         {
             bool isComputerDone;
-            m_RoundStatus = m_Game.NewRound(this.m_CurrentMove);
+            this.m_RoundStatus = this.m_Game.NewRound(this.m_CurrentMove);
 
             do
             {
-                handleRound();
-                this.labelPlayerOneScore.Text = m_Game.PlayerOne.BonusScore.ToString();
-                this.labelPlayerTwoScore.Text = m_Game.PlayerTwo.BonusScore.ToString();
+                this.handleRound();
+                this.labelPlayerOneScore.Text = this.m_Game.PlayerOne.BonusScore.ToString();
+                this.labelPlayerTwoScore.Text = this.m_Game.PlayerTwo.BonusScore.ToString();
                 isComputerDone = true;
-                if (m_Game.CurrentPlayer.IsComputer)
+
+                if (this.m_Game.CurrentPlayer.IsComputer)
                 {
-                    m_RoundStatus = m_Game.NewRound(m_Game.CurrentPlayer.ComputerMove(m_Game.Board));
+                    this.m_RoundStatus = this.m_Game.NewRound(this.m_Game.CurrentPlayer.ComputerMove(this.m_Game.Board));
                     isComputerDone = false;
                 }
-
-            } while (!isComputerDone);
+            }
+            while (!isComputerDone);
         }
     }
 }
-

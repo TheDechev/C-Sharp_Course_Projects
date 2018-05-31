@@ -8,7 +8,6 @@ namespace Checkers_Logic
         private const int k_KingScoreValue = 4;
         private const int k_RegularCheckerScoreValue = 1;
  
-
         public enum eRoundOptions
         {
             passRound,
@@ -57,7 +56,7 @@ namespace Checkers_Logic
         {
             get
             {
-                return m_CurrentPlayer;
+                return this.m_CurrentPlayer;
             }
         }
 
@@ -79,14 +78,13 @@ namespace Checkers_Logic
 
         public eRoundOptions NewRound(string i_UserMove)
         {
-            
             Move inputMove = Move.Parse(i_UserMove);
             Square.eSquareType weakPlayer;
             bool moveWasSuccessful;
             eRoundOptions roundStatus = eRoundOptions.passRound;
 
             this.m_CurrentPlayer = this.GetCurrentPlayer();
-            this.m_CurrentPlayer.UpdateObligatoryMoves(this.m_Board,null);
+            this.m_CurrentPlayer.UpdateObligatoryMoves(this.m_Board, null);
             this.m_CurrentPlayer.UpdateAvailableMovesIndicator(this.m_Board);
             weakPlayer = this.GetWeakPlayer();
             inputMove = Move.Parse(i_UserMove);
@@ -110,18 +108,15 @@ namespace Checkers_Logic
                 }
             }
 
-            roundStatus = CheckGameStatus(roundStatus);
+            roundStatus = this.CheckGameStatus(roundStatus);
 
-            // TODO: test
             if (roundStatus == eRoundOptions.playerTwoWon)
             {
                 this.endRoundScoreUpdate(Square.eSquareType.playerOne);
-                //roundStatus = eRoundOptions.weakPlayerQuits;
             }
             else if (roundStatus == eRoundOptions.playerOneWon)
             {
                 this.endRoundScoreUpdate(Square.eSquareType.playerTwo);
-                //roundStatus = eRoundOptions.weakPlayerQuits;
             }
             else
             {
@@ -137,11 +132,13 @@ namespace Checkers_Logic
             Player whichPlayer;
 
             if (this.m_TurnCounter % 2 == 0)
-            {   // first players turn
+            {   
+                // first players turn
                 whichPlayer = this.m_PlayerOne;
             }
             else
-            {   // second players turn
+            {   
+                // second players turn
                 whichPlayer = this.m_PlayerTwo;
             }
 
@@ -275,6 +272,7 @@ namespace Checkers_Logic
             {
                 this.m_Board = new Board(i_BoardSize);
             }
+
             this.m_PlayerOne.InitPlayer(i_BoardSize);
             this.m_PlayerTwo.InitPlayer(i_BoardSize);
             this.m_Board.AddPlayersToBoard(this.m_PlayerOne, this.m_PlayerTwo);
