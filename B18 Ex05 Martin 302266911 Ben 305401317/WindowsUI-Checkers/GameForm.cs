@@ -272,7 +272,14 @@ namespace WindowsUI_Checkers
 
                 string ButtonToUpdate = string.Format("{0}{1}", Convert.ToChar(i_Col + (int)'A'), Convert.ToChar(i_Row + (int)'a'));
                 Button currentButton = (this.Controls[ButtonToUpdate] as Button);
-                currentButton.BackgroundImage = Resource1.lightBackground;
+                if (i_SquareType == Square.eSquareType.invalid)
+                {
+                    currentButton.BackgroundImage = Resource1.darkBackground;
+                }
+                else
+                {
+                    currentButton.BackgroundImage = Resource1.lightBackground;
+                }
 
                 if (i_SquareType == Square.eSquareType.playerOne)
                 {
@@ -290,7 +297,7 @@ namespace WindowsUI_Checkers
                 {
                     currentButton.Image = Resource1.PlayerTwoKing;
                 }
-                else
+                else if (i_SquareType == Square.eSquareType.none)
                 {
                     currentButton.Image = null;
                 }
