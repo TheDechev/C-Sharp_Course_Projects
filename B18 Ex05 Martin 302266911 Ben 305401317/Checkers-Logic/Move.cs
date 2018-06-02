@@ -89,5 +89,10 @@ namespace Checkers_Logic
 
             return moveString;
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode(); 
+        }
     }
 }

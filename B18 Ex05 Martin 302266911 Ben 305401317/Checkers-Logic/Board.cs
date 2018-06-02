@@ -25,20 +25,7 @@ namespace Checkers_Logic
         private int m_BoardSize = (int)eBoardSize.Medium;
         private int[,] m_BoardGame;
 
-        private event SquareUpdateDelegate m_SquareUpdate;
-
-        public SquareUpdateDelegate SquareUpdate
-        {
-            get
-            {
-                return this.m_SquareUpdate;
-            }
-
-            set
-            {
-                this.m_SquareUpdate = value;
-            }
-        }
+        public event SquareUpdateDelegate SquareUpdate;
 
         public Board(int i_BoardSize)
         {
@@ -357,9 +344,9 @@ namespace Checkers_Logic
 
         private void OnSquareUpdate(int i_Row, int i_Col, Square.eSquareType i_SquareType)
         {
-            if(this.m_SquareUpdate != null)
+            if(this.SquareUpdate != null)
             {
-                this.m_SquareUpdate.Invoke(i_Row, i_Col, i_SquareType);
+                this.SquareUpdate.Invoke(i_Row, i_Col, i_SquareType);
             }
         }
     }

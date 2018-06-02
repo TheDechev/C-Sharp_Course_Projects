@@ -29,6 +29,11 @@ namespace Checkers_Logic
             return i_SquareOne.Row != i_SquareTwo.Row || i_SquareOne.Col != i_SquareTwo.Col;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();  
+        }
+
         public Square(int i_Row, int i_Col)
         {
             this.m_Row = i_Row;
