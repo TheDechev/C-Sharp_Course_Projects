@@ -132,22 +132,22 @@ namespace WindowsUI_Checkers
 
                     currentButton.Location = new Point(10 + (i_ButtonSize * j), ((this.Height - this.ClientSize.Height) + 35) + (i_ButtonSize * i));
                     currentSquareType = this.m_Game.Board.GetSquareStatus(i, j);
-                    currentButton.BackgroundImage = Resource1.lightBackground;
+                    currentButton.BackgroundImage = Resource.lightBackground;
                     currentButton.BackgroundImageLayout = ImageLayout.Stretch;
                     currentButton.FlatStyle = FlatStyle.Flat;
                     currentButton.Click += new EventHandler(this.button_Click);
                     if (currentSquareType == Square.eSquareType.invalid)
                     {
-                        currentButton.BackgroundImage = Resource1.darkBackground;
+                        currentButton.BackgroundImage = Resource.darkBackground;
                         currentButton.Enabled = false;
                     }
                     else if (currentSquareType == Square.eSquareType.playerOne)
                     {
-                        currentButton.Image = Resource1.PlayerOne;
+                        currentButton.Image = Resource.PlayerOne;
                     }
                     else if(currentSquareType == Square.eSquareType.playerTwo || currentSquareType == Square.eSquareType.playerPC)
                     {
-                        currentButton.Image = Resource1.PlayerTwo;
+                        currentButton.Image = Resource.PlayerTwo;
                     }
 
                     this.Controls.Add(currentButton);
@@ -166,7 +166,7 @@ namespace WindowsUI_Checkers
                 {
                     this.m_CurrentMove += ">";
                     this.buttonCurrentlyClicked = clickedButton;
-                    clickedButton.BackgroundImage = Resource1.SelectedBackground;
+                    clickedButton.BackgroundImage = Resource.SelectedBackground;
                 }
                 else
                 {
@@ -180,7 +180,7 @@ namespace WindowsUI_Checkers
                     this.playRound();
                 }
 
-                this.buttonCurrentlyClicked.BackgroundImage = Resource1.lightBackground;
+                this.buttonCurrentlyClicked.BackgroundImage = Resource.lightBackground;
                 this.m_CurrentMove = string.Empty;
             }
         }
@@ -213,6 +213,7 @@ namespace WindowsUI_Checkers
                 }
                 else if (continueGame == DialogResult.No)
                 {
+                    this.m_GameWasCreated = false;
                     this.Close();
                 }
             }
@@ -236,28 +237,28 @@ namespace WindowsUI_Checkers
 
                 if (i_SquareType == Square.eSquareType.invalid)
                 {
-                    currentButton.BackgroundImage = Resource1.darkBackground;
+                    currentButton.BackgroundImage = Resource.darkBackground;
                 }
                 else
                 {
-                    currentButton.BackgroundImage = Resource1.lightBackground;
+                    currentButton.BackgroundImage = Resource.lightBackground;
                 }
 
                 if (i_SquareType == Square.eSquareType.playerOne)
                 {
-                    currentButton.Image = Resource1.PlayerOne;
+                    currentButton.Image = Resource.PlayerOne;
                 }
                 else if (i_SquareType == Square.eSquareType.playerTwo || i_SquareType == Square.eSquareType.playerPC)
                 {
-                    currentButton.Image = Resource1.PlayerTwo;
+                    currentButton.Image = Resource.PlayerTwo;
                 }
                 else if (i_SquareType == Square.eSquareType.playerOneKing)
                 {
-                    currentButton.Image = Resource1.PlayerOneKing;
+                    currentButton.Image = Resource.PlayerOneKing;
                 }
                 else if (i_SquareType == Square.eSquareType.playerTwoKing)
                 {
-                    currentButton.Image = Resource1.PlayerTwoKing;
+                    currentButton.Image = Resource.PlayerTwoKing;
                 }
                 else if (i_SquareType == Square.eSquareType.none)
                 {
@@ -278,7 +279,7 @@ namespace WindowsUI_Checkers
                 this.labelPlayerTwoScore.Text = this.m_Game.PlayerTwo.BonusScore.ToString();
                 isComputerDone = true;
 
-                if (this.m_Game.CurrentPlayer.IsComputer)
+                if (this.m_Game.CurrentPlayer.IsComputer && m_GameWasCreated == true)
                 {
                     this.m_RoundStatus = this.m_Game.NewRound(this.m_Game.CurrentPlayer.ComputerMove(this.m_Game.Board));
                     isComputerDone = false;

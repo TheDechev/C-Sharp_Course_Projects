@@ -112,18 +112,19 @@ namespace Checkers_Logic
 
             if (roundStatus == eRoundOptions.playerTwoWon)
             {
+                this.m_CurrentPlayer = this.m_PlayerTwo;
                 this.endRoundScoreUpdate(Square.eSquareType.playerOne);
             }
             else if (roundStatus == eRoundOptions.playerOneWon)
             {
+                this.m_CurrentPlayer = this.m_PlayerOne;
                 this.endRoundScoreUpdate(Square.eSquareType.playerTwo);
             }
             else
             {
                 this.m_TurnCounter++;
+                this.m_CurrentPlayer = this.GetCurrentPlayer();
             }
-
-            this.m_CurrentPlayer = this.GetCurrentPlayer();
             return roundStatus;
         }
 
