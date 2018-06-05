@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\darkBackground.jpg" />
+    <None Include="Resources\GameIcon.ico" />
     <None Include="Resources\SelectedBackground.png" />
     <None Include="Resources\PlayerTwoKing.png" />
     <None Include="Resources\PlayerOneKing.png" />

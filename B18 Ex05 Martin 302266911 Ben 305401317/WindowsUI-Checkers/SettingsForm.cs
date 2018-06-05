@@ -13,11 +13,13 @@ namespace WindowsUI_Checkers
     public partial class SettingsForm : Form
     {
         private Board.eBoardSize m_BoardSize = Board.eBoardSize.Small;
-
+        public const string k_DefaultComputerName = "[Computer]";
         public SettingsForm()
         {
             this.DialogResult = DialogResult.No;
             this.InitializeComponent();
+            this.textBoxPlayer2.Text = k_DefaultComputerName;
+
         }
 
         private void checkBoxPlayer2_CheckedChanged(object sender, EventArgs e)
@@ -63,8 +65,9 @@ namespace WindowsUI_Checkers
         {
             get
             {
-                return string.Format("{0}:", this.textBoxPlayer1.Text);
+                return string.Format("{0}", this.textBoxPlayer1.Text);
             }
+
         }
    
         public string PlayerTwoName
@@ -77,25 +80,28 @@ namespace WindowsUI_Checkers
 
         private void buttonDone_Click(object sender, EventArgs e)
         {
-            if (this.textBoxPlayer1.Text.Length > 10)
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            if (this.PlayerOneName == string.Empty)
             {
-                this.textBoxPlayer1.Text = this.textBoxPlayer1.Text.Substring(0, 9);
+                this.textBoxPlayer1.Text = "Player1";
             }
 
-            if (this.textBoxPlayer2.Text.Length > 10)
+            if (this.PlayerTwoName == k_DefaultComputerName)
             {
-                this.textBoxPlayer2.Text = this.textBoxPlayer2.Text.Substring(0, 9);
+                this.textBoxPlayer2.Text = "Computer";
             }
 
-            if (this.textBoxPlayer1.Text == string.Empty || this.textBoxPlayer2.Text == string.Empty)
-            {
-                MessageBox.Show("Please fill all the fields", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                this.DialogResult = DialogResult.OK;
-                this.Close();
-            }
+            base.OnClosed(e);
+        }
+
+        private void textBoxPlayer2_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

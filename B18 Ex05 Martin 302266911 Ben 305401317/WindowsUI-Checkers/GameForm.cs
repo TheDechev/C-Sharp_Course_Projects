@@ -65,7 +65,9 @@ namespace WindowsUI_Checkers
         private void InitGameForm()
         {
             int boardSize = this.formSettings.BoardSize;
+
             this.m_Game.AddNewPlayer(this.formSettings.PlayerOneName, Square.eSquareType.playerOne);
+
 
             if (this.formSettings.IsComputer)
             {
@@ -81,7 +83,9 @@ namespace WindowsUI_Checkers
             this.Size = new Size((boardSize * k_ButtonSize) + 35, (boardSize * k_ButtonSize) + (k_ButtonSize * 3));
             this.initButtons(boardSize, k_ButtonSize);
             this.initControls(boardSize, k_ButtonSize);
-            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = Color.BurlyWood;
             this.Text = "Checkers Game";
@@ -89,12 +93,13 @@ namespace WindowsUI_Checkers
             this.labelPlayerTwoScore.Text = this.m_Game.PlayerTwo.BonusScore.ToString();
             this.m_GameWasCreated = true;
             this.Font = new Font(this.Font, FontStyle.Bold);
+            this.Icon = Resource.GameIcon;
         }
 
         private void initControls(int i_BoardSize, int i_ButtonSize)
         {
             int sideMargin = (this.Width - this.ClientSize.Width) / 2;
-            this.labelPlayerOneName.Text = this.formSettings.PlayerOneName;
+            this.labelPlayerOneName.Text = string.Format("{0}:", this.formSettings.PlayerOneName);
             this.labelPlayerOneName.AutoSize = true;
             this.labelPlayerOneName.Location = new Point(sideMargin + i_ButtonSize, 20);
 
@@ -106,7 +111,7 @@ namespace WindowsUI_Checkers
             this.labelPlayerTwoScore.AutoSize = true;
             this.labelPlayerTwoScore.Location = new Point(this.ClientSize.Width - sideMargin - i_ButtonSize, 20);
 
-            this.labelPlayerTwoName.Text = this.formSettings.PlayerTwoName;
+            this.labelPlayerTwoName.Text = string.Format("{0}:", this.formSettings.PlayerTwoName);
             this.labelPlayerTwoName.AutoSize = true;
             this.labelPlayerTwoName.Location = new Point(this.labelPlayerTwoScore.Left - this.labelPlayerTwoName.PreferredWidth - 7, 20);
 

@@ -42,6 +42,7 @@ namespace WindowsUI_Checkers
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.labelBoardSize = new System.Windows.Forms.Label();
             this.labelPlayers = new System.Windows.Forms.Label();
             this.radioButtonSmallBoard = new System.Windows.Forms.RadioButton();
@@ -57,6 +58,7 @@ namespace WindowsUI_Checkers
             // labelBoardSize
             // 
             this.labelBoardSize.AutoSize = true;
+            this.labelBoardSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelBoardSize.Location = new System.Drawing.Point(12, 9);
             this.labelBoardSize.Name = "labelBoardSize";
             this.labelBoardSize.Size = new System.Drawing.Size(61, 13);
@@ -111,6 +113,7 @@ namespace WindowsUI_Checkers
             // labelPlayer1
             // 
             this.labelPlayer1.AutoSize = true;
+            this.labelPlayer1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPlayer1.Location = new System.Drawing.Point(34, 85);
             this.labelPlayer1.Name = "labelPlayer1";
             this.labelPlayer1.Size = new System.Drawing.Size(48, 13);
@@ -120,6 +123,7 @@ namespace WindowsUI_Checkers
             // checkBoxPlayer2
             // 
             this.checkBoxPlayer2.AutoSize = true;
+            this.checkBoxPlayer2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxPlayer2.Location = new System.Drawing.Point(37, 111);
             this.checkBoxPlayer2.Name = "checkBoxPlayer2";
             this.checkBoxPlayer2.Size = new System.Drawing.Size(67, 17);
@@ -142,11 +146,12 @@ namespace WindowsUI_Checkers
             this.textBoxPlayer2.Name = "textBoxPlayer2";
             this.textBoxPlayer2.Size = new System.Drawing.Size(124, 20);
             this.textBoxPlayer2.TabIndex = 8;
-            this.textBoxPlayer2.Text = "[Computer]";
+            this.textBoxPlayer2.TextChanged += new System.EventHandler(this.textBoxPlayer2_TextChanged);
             // 
             // buttonDone
             // 
             this.buttonDone.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonDone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDone.Location = new System.Drawing.Point(168, 146);
             this.buttonDone.Name = "buttonDone";
             this.buttonDone.Size = new System.Drawing.Size(75, 23);
@@ -157,6 +162,7 @@ namespace WindowsUI_Checkers
             // 
             // SettingsForm
             // 
+            this.BackColor = System.Drawing.SystemColors.MenuBar;
             this.ClientSize = new System.Drawing.Size(257, 179);
             this.Controls.Add(this.buttonDone);
             this.Controls.Add(this.textBoxPlayer2);
@@ -168,9 +174,11 @@ namespace WindowsUI_Checkers
             this.Controls.Add(this.radioButtonSmallBoard);
             this.Controls.Add(this.labelPlayers);
             this.Controls.Add(this.labelBoardSize);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "SettingsForm";
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Settings";
             this.ResumeLayout(false);
