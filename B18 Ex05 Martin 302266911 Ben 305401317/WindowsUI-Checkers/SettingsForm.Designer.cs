@@ -58,19 +58,20 @@ namespace WindowsUI_Checkers
             // labelBoardSize
             // 
             this.labelBoardSize.AutoSize = true;
-            this.labelBoardSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelBoardSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelBoardSize.Location = new System.Drawing.Point(12, 9);
             this.labelBoardSize.Name = "labelBoardSize";
-            this.labelBoardSize.Size = new System.Drawing.Size(61, 13);
+            this.labelBoardSize.Size = new System.Drawing.Size(72, 13);
             this.labelBoardSize.TabIndex = 0;
             this.labelBoardSize.Text = "Board Size:";
             // 
             // labelPlayers
             // 
             this.labelPlayers.AutoSize = true;
+            this.labelPlayers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPlayers.Location = new System.Drawing.Point(12, 61);
             this.labelPlayers.Name = "labelPlayers";
-            this.labelPlayers.Size = new System.Drawing.Size(44, 13);
+            this.labelPlayers.Size = new System.Drawing.Size(52, 13);
             this.labelPlayers.TabIndex = 1;
             this.labelPlayers.Text = "Players:";
             // 
@@ -114,6 +115,7 @@ namespace WindowsUI_Checkers
             // 
             this.labelPlayer1.AutoSize = true;
             this.labelPlayer1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPlayer1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelPlayer1.Location = new System.Drawing.Point(34, 85);
             this.labelPlayer1.Name = "labelPlayer1";
             this.labelPlayer1.Size = new System.Drawing.Size(48, 13);

@@ -18,10 +18,58 @@ namespace WindowsUI_Checkers
         private Button buttonCurrentlyClicked;
         private SettingsForm formSettings = new SettingsForm();
         private CheckersGame m_Game = new CheckersGame();
+        private Timer m_ComputerTimer = new Timer();
+        private Timer m_CurrentPlayerTimer = new Timer();
 
         public GameForm()
         {
+            this.m_CurrentPlayerTimer.Interval = 350;
+            this.m_ComputerTimer.Interval = 600;
+            this.m_CurrentPlayerTimer.Start();
+            this.m_CurrentPlayerTimer.Tick += this.CurrentPlayer_Tick;
+            this.m_ComputerTimer.Tick += this.ComputerTimer_Tick;
             this.FormClosing += this.GameForm_FormClosing;
+        }
+
+        private void CurrentPlayer_Tick(object sender, EventArgs e)
+        {
+            if(this.m_Game.CurrentPlayer == this.m_Game.PlayerOne)
+            {
+                if(this.labelPlayerOneName.ForeColor == Color.Black)
+                {
+                    this.labelPlayerOneName.ForeColor = Color.DarkRed;
+                }
+                else
+                {
+                    this.labelPlayerOneName.ForeColor = Color.Black;
+                }
+                this.labelPlayerTwoName.ForeColor = Color.Black;
+            }
+            else
+            {
+                if (this.labelPlayerTwoName.ForeColor == Color.Black)
+                {
+                    this.labelPlayerTwoName.ForeColor = Color.DarkRed;
+                }
+                else
+                {
+                    this.labelPlayerTwoName.ForeColor = Color.Black;
+                }
+                this.labelPlayerOneName.ForeColor = Color.Black;
+            }
+        }
+
+        private void ComputerTimer_Tick(object sender, EventArgs e)
+        {
+            Timer computerTimer = sender as Timer;
+            this.m_RoundStatus = this.m_Game.NewRound(this.m_Game.CurrentPlayer.ComputerMove(this.m_Game.Board));
+            m_ComputerTimer.Stop();
+            this.handleRound();
+
+            if (this.m_Game.CurrentPlayer.IsComputer)
+            {
+                m_ComputerTimer.Start();
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -41,7 +89,6 @@ namespace WindowsUI_Checkers
                     {
                         case DialogResult.No:
                             e.Cancel = true;
-
                             break;
                         default:
                             break;
@@ -162,31 +209,34 @@ namespace WindowsUI_Checkers
 
         private void button_Click(object obj, EventArgs ev)
         {
-            Button clickedButton = obj as Button;
-            this.m_CurrentMove += clickedButton.Name;
-            if (this.m_CurrentMove.Length == 2)
+            if (!this.m_Game.CurrentPlayer.IsComputer)
             {
-                if (clickedButton.Enabled == true && (this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString())) == this.m_Game.CurrentPlayer.PlayerType ||
-                     this.m_Game.CurrentPlayer.IsMyKing(this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString())))))
+                Button clickedButton = obj as Button;
+                this.m_CurrentMove += clickedButton.Name;
+                if (this.m_CurrentMove.Length == 2)
                 {
-                    this.m_CurrentMove += ">";
-                    this.buttonCurrentlyClicked = clickedButton;
-                    clickedButton.BackgroundImage = Resource.SelectedBackground;
+                    if (clickedButton.Enabled == true && (this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString())) == this.m_Game.CurrentPlayer.PlayerType ||
+                         this.m_Game.CurrentPlayer.IsMyKing(this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString())))))
+                    {
+                        this.m_CurrentMove += ">";
+                        this.buttonCurrentlyClicked = clickedButton;
+                        clickedButton.BackgroundImage = Resource.SelectedBackground;
+                    }
+                    else
+                    {
+                        this.m_CurrentMove = string.Empty;
+                    }
                 }
                 else
                 {
+                    if (!(this.buttonCurrentlyClicked != null && this.m_Game.Board.GetSquareStatus(new Square(this.buttonCurrentlyClicked.Name.ToString())) == this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString()))))
+                    {
+                        this.playRound();
+                    }
+
+                    this.buttonCurrentlyClicked.BackgroundImage = Resource.lightBackground;
                     this.m_CurrentMove = string.Empty;
                 }
-            }
-            else
-            {
-                if (!(this.buttonCurrentlyClicked != null && this.m_Game.Board.GetSquareStatus(new Square(this.buttonCurrentlyClicked.Name.ToString())) == this.m_Game.Board.GetSquareStatus(new Square(clickedButton.Name.ToString()))))
-                {
-                    this.playRound();
-                }
-
-                this.buttonCurrentlyClicked.BackgroundImage = Resource.lightBackground;
-                this.m_CurrentMove = string.Empty;
             }
         }
 
@@ -230,7 +280,9 @@ namespace WindowsUI_Checkers
             else if (this.m_RoundStatus == CheckersGame.eRoundOptions.playerEnteredInvalidMove)
             {
                 MessageBox.Show("Invalid move! Try again.", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }   
+            }
+            this.labelPlayerOneScore.Text = this.m_Game.PlayerOne.BonusScore.ToString();
+            this.labelPlayerTwoScore.Text = this.m_Game.PlayerTwo.BonusScore.ToString();
         }
 
         private void OnSquareUpdate(int i_Row, int i_Col, Square.eSquareType i_SquareType)
@@ -274,23 +326,14 @@ namespace WindowsUI_Checkers
 
         private void playRound()
         {
-            bool isComputerDone;
             this.m_RoundStatus = this.m_Game.NewRound(this.m_CurrentMove);
+            this.handleRound();
 
-            do
+            if (this.m_Game.CurrentPlayer.IsComputer && m_GameWasCreated == true)
             {
-                this.handleRound();
-                this.labelPlayerOneScore.Text = this.m_Game.PlayerOne.BonusScore.ToString();
-                this.labelPlayerTwoScore.Text = this.m_Game.PlayerTwo.BonusScore.ToString();
-                isComputerDone = true;
-
-                if (this.m_Game.CurrentPlayer.IsComputer && m_GameWasCreated == true)
-                {
-                    this.m_RoundStatus = this.m_Game.NewRound(this.m_Game.CurrentPlayer.ComputerMove(this.m_Game.Board));
-                    isComputerDone = false;
-                }
+                this.m_ComputerTimer.Start();
             }
-            while (!isComputerDone);
+
         }
     }
 }
