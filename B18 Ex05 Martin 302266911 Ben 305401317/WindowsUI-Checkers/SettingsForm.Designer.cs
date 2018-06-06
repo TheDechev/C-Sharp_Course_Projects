@@ -148,7 +148,6 @@ namespace WindowsUI_Checkers
             this.textBoxPlayer2.Name = "textBoxPlayer2";
             this.textBoxPlayer2.Size = new System.Drawing.Size(124, 20);
             this.textBoxPlayer2.TabIndex = 8;
-            this.textBoxPlayer2.TextChanged += new System.EventHandler(this.textBoxPlayer2_TextChanged);
             // 
             // buttonDone
             // 

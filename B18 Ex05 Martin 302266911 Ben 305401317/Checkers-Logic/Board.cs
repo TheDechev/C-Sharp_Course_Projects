@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Checkers_Logic
 {
-    public delegate void SquareUpdateDelegate(int Row, int Col, Square.eSquareType i_SquareType);
+    public delegate void SquareUpdateDelegate(int i_Row, int i_Col, Square.eSquareType i_SquareType);
 
     public class Board
     {

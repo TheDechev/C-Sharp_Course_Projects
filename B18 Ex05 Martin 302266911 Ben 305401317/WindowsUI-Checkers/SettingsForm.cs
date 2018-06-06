@@ -14,12 +14,12 @@ namespace WindowsUI_Checkers
     {
         private Board.eBoardSize m_BoardSize = Board.eBoardSize.Small;
         public const string k_DefaultComputerName = "[Computer]";
+
         public SettingsForm()
         {
             this.DialogResult = DialogResult.No;
             this.InitializeComponent();
             this.textBoxPlayer2.Text = k_DefaultComputerName;
-
         }
 
         private void checkBoxPlayer2_CheckedChanged(object sender, EventArgs e)
@@ -67,7 +67,6 @@ namespace WindowsUI_Checkers
             {
                 return string.Format("{0}", this.textBoxPlayer1.Text);
             }
-
         }
    
         public string PlayerTwoName
@@ -90,18 +89,21 @@ namespace WindowsUI_Checkers
             {
                 this.textBoxPlayer1.Text = "Player1";
             }
+            else if(this.PlayerOneName.Length > 15)
+            {
+                this.textBoxPlayer1.Text = this.textBoxPlayer1.Text.Substring(0, 14);
+            }
 
             if (this.PlayerTwoName == k_DefaultComputerName)
             {
                 this.textBoxPlayer2.Text = "Computer";
             }
+            else if (this.PlayerTwoName.Length > 15)
+            {
+                this.textBoxPlayer2.Text = this.textBoxPlayer2.Text.Substring(0, 14);
+            }
 
             base.OnClosed(e);
-        }
-
-        private void textBoxPlayer2_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

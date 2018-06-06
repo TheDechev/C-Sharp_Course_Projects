@@ -27,10 +27,10 @@ namespace Checkers_Logic
             return parseMove;
         }
 
-        public Move(Square from, Square to)
+        public Move(Square i_From, Square i_To)
         {
-            this.m_squareFrom = from;
-            this.m_squareTo = to;
+            this.m_squareFrom = i_From;
+            this.m_squareTo = i_To;
         }
 
         public Move()

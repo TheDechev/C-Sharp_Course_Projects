@@ -125,6 +125,7 @@ namespace Checkers_Logic
                 this.m_TurnCounter++;
                 this.m_CurrentPlayer = this.GetCurrentPlayer();
             }
+
             return roundStatus;
         }
 
@@ -146,9 +147,9 @@ namespace Checkers_Logic
             return whichPlayer;
         }
 
-        public void AddNewPlayer(string i_PlayerName, Square.eSquareType playerType)
+        public void AddNewPlayer(string i_PlayerName, Square.eSquareType i_PlayerType)
         {
-            if (playerType == Square.eSquareType.playerOne)
+            if (i_PlayerType == Square.eSquareType.playerOne)
             {
                 this.m_PlayerOne = new Player();
                 this.m_CurrentPlayer = this.m_PlayerOne;
@@ -158,7 +159,7 @@ namespace Checkers_Logic
             else
             {
                 this.m_PlayerTwo = new Player();
-                if(playerType == Square.eSquareType.playerTwo)
+                if(i_PlayerType == Square.eSquareType.playerTwo)
                 {
                     this.m_PlayerTwo.Name = i_PlayerName;
                 }
@@ -168,7 +169,7 @@ namespace Checkers_Logic
                     this.m_PlayerTwo.Name = k_PcDeafultNameString;
                 }
 
-                this.m_PlayerTwo.PlayerType = playerType;
+                this.m_PlayerTwo.PlayerType = i_PlayerType;
             }
         }
 

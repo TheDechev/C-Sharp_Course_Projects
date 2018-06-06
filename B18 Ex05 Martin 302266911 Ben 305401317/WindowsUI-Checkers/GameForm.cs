@@ -43,6 +43,7 @@ namespace WindowsUI_Checkers
                 {
                     this.labelPlayerOneName.ForeColor = Color.Black;
                 }
+
                 this.labelPlayerTwoName.ForeColor = Color.Black;
             }
             else
@@ -55,6 +56,7 @@ namespace WindowsUI_Checkers
                 {
                     this.labelPlayerTwoName.ForeColor = Color.Black;
                 }
+
                 this.labelPlayerOneName.ForeColor = Color.Black;
             }
         }
@@ -63,12 +65,12 @@ namespace WindowsUI_Checkers
         {
             Timer computerTimer = sender as Timer;
             this.m_RoundStatus = this.m_Game.NewRound(this.m_Game.CurrentPlayer.ComputerMove(this.m_Game.Board));
-            m_ComputerTimer.Stop();
+            this.m_ComputerTimer.Stop();
             this.handleRound();
 
             if (this.m_Game.CurrentPlayer.IsComputer)
             {
-                m_ComputerTimer.Start();
+                this.m_ComputerTimer.Start();
             }
         }
 
@@ -114,7 +116,6 @@ namespace WindowsUI_Checkers
             int boardSize = this.formSettings.BoardSize;
 
             this.m_Game.AddNewPlayer(this.formSettings.PlayerOneName, Square.eSquareType.playerOne);
-
 
             if (this.formSettings.IsComputer)
             {
@@ -207,11 +208,11 @@ namespace WindowsUI_Checkers
             }
         }
 
-        private void button_Click(object obj, EventArgs ev)
+        private void button_Click(object sender, EventArgs e)
         {
             if (!this.m_Game.CurrentPlayer.IsComputer)
             {
-                Button clickedButton = obj as Button;
+                Button clickedButton = sender as Button;
                 this.m_CurrentMove += clickedButton.Name;
                 if (this.m_CurrentMove.Length == 2)
                 {
@@ -281,6 +282,7 @@ namespace WindowsUI_Checkers
             {
                 MessageBox.Show("Invalid move! Try again.", "Checkers Game", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+
             this.labelPlayerOneScore.Text = this.m_Game.PlayerOne.BonusScore.ToString();
             this.labelPlayerTwoScore.Text = this.m_Game.PlayerTwo.BonusScore.ToString();
         }
@@ -329,11 +331,10 @@ namespace WindowsUI_Checkers
             this.m_RoundStatus = this.m_Game.NewRound(this.m_CurrentMove);
             this.handleRound();
 
-            if (this.m_Game.CurrentPlayer.IsComputer && m_GameWasCreated == true)
+            if (this.m_Game.CurrentPlayer.IsComputer && this.m_GameWasCreated == true)
             {
                 this.m_ComputerTimer.Start();
             }
-
         }
     }
 }
