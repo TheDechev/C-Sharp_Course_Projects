@@ -98,6 +98,10 @@ namespace WindowsUI_Checkers
             {
                 this.textBoxPlayer2.Text = "Computer";
             }
+            else if(this.PlayerTwoName == string.Empty)
+            {
+                this.textBoxPlayer2.Text = "Player2";
+            }
             else if (this.PlayerTwoName.Length > 15)
             {
                 this.textBoxPlayer2.Text = this.textBoxPlayer2.Text.Substring(0, 14);
